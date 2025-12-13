@@ -8,8 +8,9 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     <header>
-        <nav>
+        <nav aria-label="Main navigation">
             <div class="container">
                 <div class="logo">
                     <h1>ZOLO-A6-9VxNUNA-</h1>
@@ -24,7 +25,7 @@
         </nav>
     </header>
 
-    <main>
+    <main id="main-content">
         <section class="hero">
             <div class="container">
                 <div class="hero-content">
@@ -38,25 +39,25 @@
             <div class="container">
                 <h2>Contact Us</h2>
                 
-                <form class="contact-form" id="contactForm">
+                <form class="contact-form" id="contactForm" aria-label="Contact form">
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input type="text" id="name" name="name" required>
+                        <input type="text" id="name" name="name" required autocomplete="name" aria-required="true">
                     </div>
                     
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" id="email" name="email" required>
+                        <input type="email" id="email" name="email" required autocomplete="email" aria-required="true">
                     </div>
                     
                     <div class="form-group">
                         <label for="subject">Subject</label>
-                        <input type="text" id="subject" name="subject" required>
+                        <input type="text" id="subject" name="subject" required aria-required="true">
                     </div>
                     
                     <div class="form-group">
                         <label for="message">Message</label>
-                        <textarea id="message" name="message" required></textarea>
+                        <textarea id="message" name="message" required aria-required="true"></textarea>
                     </div>
                     
                     <button type="submit" class="btn btn-primary btn-full-width">Send Message</button>

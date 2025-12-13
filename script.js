@@ -13,20 +13,32 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 // Add active class to current navigation item
-let currentLocation;
-if (
-    location.pathname === '/' ||
-    location.pathname === '' ||
-    location.pathname.endsWith('/')
-) {
-    currentLocation = 'index.html';
-} else {
-    currentLocation = location.pathname.split('/').pop();
+function normalizePath(path) {
+    // Handle null/undefined
+    if (!path) return 'index.html';
+    
+    // Remove query string and hash
+    path = path.split('?')[0].split('#')[0];
+    
+    // If path is '/' or empty, return 'index.html'
+    if (path === '/' || path === '') return 'index.html';
+    
+    // If path ends with '/', remove it and get last segment
+    if (path.endsWith('/')) {
+        path = path.slice(0, -1);
+    }
+    
+    // Get last segment
+    const lastSegment = path.split('/').pop();
+    return lastSegment === '' ? 'index.html' : lastSegment;
 }
+
+const currentLocation = normalizePath(location.pathname);
 const navLinks = document.querySelectorAll('.nav-links a');
 
 navLinks.forEach(link => {
-    if (link.getAttribute('href') === currentLocation) {
+    const linkHref = normalizePath(link.getAttribute('href'));
+    if (linkHref === currentLocation) {
         link.classList.add('active');
     } else {
         link.classList.remove('active');
