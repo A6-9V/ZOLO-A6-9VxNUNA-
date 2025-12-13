@@ -13,7 +13,16 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 // Add active class to current navigation item
-const currentLocation = location.pathname.split('/').pop() || 'index.html';
+let currentLocation;
+if (
+    location.pathname === '/' ||
+    location.pathname === '' ||
+    location.pathname.endsWith('/')
+) {
+    currentLocation = 'index.html';
+} else {
+    currentLocation = location.pathname.split('/').pop();
+}
 const navLinks = document.querySelectorAll('.nav-links a');
 
 navLinks.forEach(link => {
@@ -52,4 +61,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Mobile menu toggle (future enhancement)
 // This can be expanded if a hamburger menu is needed for mobile devices
-console.log('Website loaded successfully!');
+
+// Contact form handler
+document.addEventListener('DOMContentLoaded', () => {
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your message! This is a demo form. In a production environment, this would send your message to our team.');
+            this.reset();
+        });
+    }
+});
