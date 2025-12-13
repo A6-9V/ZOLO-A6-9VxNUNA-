@@ -63,13 +63,11 @@ document.addEventListener('DOMContentLoaded', () => {
 // This can be expanded if a hamburger menu is needed for mobile devices
 
 // Contact form handler
-document.addEventListener('DOMContentLoaded', () => {
-    const contactForm = document.getElementById('contactForm');
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Thank you for your message! This is a demo form. In a production environment, this would send your message to our team.');
-            this.reset();
-        });
-    }
-});
+const contactForm = document.getElementById('contactForm');
+if (contactForm) {
+    contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert('Thank you for your message! This is a demo form. In a production environment, this would send your message to our team.');
+        this.reset();
+    });
+}
