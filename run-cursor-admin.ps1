@@ -34,3 +34,4 @@ Write-Host ""
 Write-Host "Cursor should now be running with administrator privileges." -ForegroundColor Green
 Write-Host "Copilot features should be available." -ForegroundColor Green
 
+

@@ -9,19 +9,25 @@ Write-Host ""
 # Check if GitHub Desktop is installed
 $desktopPaths = @(
     "$env:LOCALAPPDATA\GitHubDesktop\GitHubDesktop.exe",
-    "$env:PROGRAMFILES\GitHub Desktop\GitHubDesktop.exe",
-    "$env:PROGRAMFILES(X86)\GitHub Desktop\GitHubDesktop.exe"
+    "$env:PROGRAMFILES\GitHub Desktop\GitHubDesktop.exe"
 )
+# Add ProgramFiles(x86) path if it exists (for 32-bit systems)
+try {
+    $programFilesX86 = (Get-Item "Env:ProgramFiles(x86)").Value
+    if ($programFilesX86) {
+        $desktopPaths += "$programFilesX86\GitHub Desktop\GitHubDesktop.exe"
+    }
+}
+catch {
+    # ProgramFiles(x86) may not exist on 64-bit only systems
+}
 
 $desktopInstalled = $false
-$desktopPath = $null
 $desktopVersion = $null
 
 foreach ($path in $desktopPaths) {
     if (Test-Path $path) {
         $desktopInstalled = $true
-        $desktopPath = $path
-        
         # Get version information
         try {
             $versionInfo = (Get-Item $path).VersionInfo
@@ -29,6 +35,18 @@ foreach ($path in $desktopPaths) {
             Write-Host "[OK] GitHub Desktop found" -ForegroundColor Green
             Write-Host "     Path: $path" -ForegroundColor White
             Write-Host "     Version: $desktopVersion" -ForegroundColor White
+            
+            # Check if version is older than 3.3.0
+            if ($desktopVersion) {
+                $parts = $desktopVersion -split '\.'
+                if ($parts.Count -ge 2) {
+                    $major = [int]$parts[0]
+                    $minor = [int]$parts[1]
+                    if (($major -lt 3) -or ($major -eq 3 -and $minor -lt 3)) {
+                        Write-Host "[WARNING] GitHub Desktop version ($desktopVersion) is older than 3.3.0. Consider updating." -ForegroundColor Yellow
+                    }
+                }
+            }
         } catch {
             Write-Host "[OK] GitHub Desktop found at: $path" -ForegroundColor Green
         }

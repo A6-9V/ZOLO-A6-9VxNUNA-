@@ -17,7 +17,8 @@
 - ✅ Credentials stored in Windows Credential Manager
 
 ### Git Repository Status
-- ✅ Repository: https://github.com/Mouy-leng/Window-setup.git
+
+- ✅ Repository: <https://github.com/Mouy-leng/Window-setup.git>
 - ✅ Remote configured correctly
 - ✅ 37 files tracked in repository
 - ✅ Git email configured to use GitHub no-reply address
@@ -60,4 +61,5 @@ All automation scripts and documentation have been saved:
 ---
 
 **Status**: All systems debugged and saved successfully! ✅
+
 

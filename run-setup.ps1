@@ -16,3 +16,4 @@ Write-Host ""
 
 Start-Process powershell.exe -Verb RunAs -ArgumentList "-ExecutionPolicy Bypass -NoExit -File `"$scriptPath`""
 
+

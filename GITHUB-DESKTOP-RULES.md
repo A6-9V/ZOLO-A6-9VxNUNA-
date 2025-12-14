@@ -14,9 +14,11 @@ This document defines the rules and best practices for using GitHub Desktop with
 
 ### Automatic Detection
 - Scripts check for GitHub Desktop in standard installation paths:
-  - `%LOCALAPPDATA%\GitHubDesktop\GitHubDesktop.exe`
+  - `%LOCALAPPDATA%\GitHubDesktop\GitHubDesktop.exe` (Primary location on Windows 11)
   - `%PROGRAMFILES%\GitHub Desktop\GitHubDesktop.exe`
-  - `%PROGRAMFILES(X86)%\GitHub Desktop\GitHubDesktop.exe`
+  - `%PROGRAMFILES(X86)%\GitHub Desktop\GitHubDesktop.exe` (Checked safely with error handling)
+- **System**: NuNa (Windows 11 Home Single Language 25H2, 64-bit x64)
+- **Note**: ProgramFiles(x86) path is checked with try-catch to handle 64-bit systems gracefully
 
 ### Installation Process
 1. If not found, script provides download link
@@ -169,8 +171,20 @@ When GitHub Desktop releases new versions:
 - GitHub Repository: https://github.com/Mouy-leng/Window-setup.git
 - Automation Rules: See `AUTOMATION-RULES.md`
 
+## System Configuration
+
+- **Device**: NuNa
+- **OS**: Windows 11 Home Single Language 25H2 (Build 26220.7344)
+- **Architecture**: 64-bit x64-based processor
+- **Processor**: Intel(R) Core(TM) i3-N305 (1.80 GHz)
+- **RAM**: 8.00 GB (7.63 GB usable)
+- **Installation Date**: 12/9/2025
+
+For complete system information, see `SYSTEM-INFO.md`.
+
 ---
 
-**Last Updated**: Based on GitHub Desktop release notes review
+**Last Updated**: 2025-12-09
+**System**: NuNa (Windows 11 Home Single Language 25H2)
 **Next Review**: Check release notes monthly for updates
 

@@ -8,13 +8,28 @@ desktop.ini
 *.temp
 *.log
 
-# Personal files (if any)
+# Personal files and directories
 *.pdf
 *.docx
 *.xlsx
+Desktop/
+Pictures/
+documents/
+*.exe
+*.jpg
+*.jpeg
+*.png
+*.bmp
+*.one
+*.url
+*.rdp
+*.zip
+*.xml
+*.html
 
 # System files
 .DS_Store
+.849C9593-D756-4E56-8D6E-42412F2A707B
 
 # Security - Never commit tokens or secrets
 *.token
@@ -23,4 +38,7 @@ desktop.ini
 *config.local*
 git-credentials.txt
 .github-token
+
+# Cursor (optional - uncomment if you don't want to track Cursor rules)
+# .cursor/
 

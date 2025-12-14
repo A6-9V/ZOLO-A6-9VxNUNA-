@@ -15,3 +15,4 @@ echo.
 powershell.exe -ExecutionPolicy Bypass -File "%~dp0run-all-auto.ps1"
 pause
 
+

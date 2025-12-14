@@ -20,3 +20,4 @@ echo Requesting administrator privileges...
 echo.
 powershell.exe -ExecutionPolicy Bypass -NoExit -File "%~dp0setup-cloud-sync.ps1"
 
+

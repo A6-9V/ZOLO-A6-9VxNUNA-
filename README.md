@@ -14,8 +14,8 @@ Complete Windows configuration scripts for setting up cloud sync, security, and 
 
 ## Accounts
 
-- **Microsoft/Outlook**: Lengkundee01@outlook.com
-- **Google/Gmail**: Lengkundee01@gmail.com
+- **Microsoft/Outlook**: <Lengkundee01@outlook.com>
+- **Google/Gmail**: <Lengkundee01@gmail.com>
 
 ## Quick Start
 
@@ -39,71 +39,103 @@ Complete Windows configuration scripts for setting up cloud sync, security, and 
 - `github-desktop-setup.ps1` - Configure GitHub Desktop integration
 - `check-github-desktop-updates.ps1` - Check GitHub Desktop version and release notes
 
+### Security Scripts
+
+- `security-check.ps1` - Comprehensive security validation (tokens, scripts, git, Windows)
+- `plugin-protection.ps1` - Plugin and extension security protection
+- `run-security-check.ps1` - Master script to run all security checks
+- `debug-and-save.ps1` - Debug script with security validation
+
 ## Files
 
 ### Main Scripts
+
 - `complete-windows-setup.ps1` - Main setup script (run this)
 - `setup-cloud-sync.ps1` - Cloud sync security configuration
 
-### Helper Scripts
-- `open-settings.ps1` - Open Windows Settings
-- `check-cloud-services.ps1` - Check cloud services status
-- `run-cursor-admin.ps1` - Run Cursor as admin
-- `run-vscode-admin.ps1` - Run VSCode as admin
-- `clone-repo.ps1` - Clone repository
-
 ### Documentation
+
 - `MANUAL-SETUP-GUIDE.md` - Step-by-step manual configuration guide
 - `SETUP-INSTRUCTIONS.txt` - Setup instructions
 - `AUTOMATION-RULES.md` - Automation rules and best practices
 - `GITHUB-DESKTOP-RULES.md` - GitHub Desktop integration rules
+- `SYSTEM-INFO.md` - System specifications and configuration
 - `DEBUG-SUMMARY.md` - Debug and troubleshooting guide
+- `AGENTS.md` - Cursor AI agent instructions
+- `.cursor/rules/` - Cursor project rules (PowerShell standards, automation patterns, security)
 - `README.md` - This file
 
 ## Requirements
 
-- Windows 10/11
+- Windows 10/11 (Tested on Windows 11 Home Single Language 25H2)
 - Administrator privileges
 - PowerShell 5.1 or later
+- 64-bit x64-based processor (recommended)
+
+## System Information
+
+- **Current System**: NuNa
+- **OS**: Windows 11 Home Single Language 25H2 (Build 26220.7344)
+- **Processor**: Intel(R) Core(TM) i3-N305 (1.80 GHz)
+- **RAM**: 8.00 GB (7.63 GB usable)
+- **Architecture**: 64-bit x64-based processor
+
+For detailed system information, see `SYSTEM-INFO.md`.
 
 ## Cloud Services
 
 The scripts configure security settings for:
-- **OneDrive** (Lengkundee01@outlook.com)
-- **Google Drive** (Lengkundee01@gmail.com)
+
+- **OneDrive** (<Lengkundee01@outlook.com>)
+- **Google Drive** (<Lengkundee01@gmail.com>)
 - **Dropbox** (if installed)
 
 ## Usage
 
 ### Initial Setup
+
 ```powershell
 # Run as Administrator
 .\complete-windows-setup.ps1
 ```
 
 ### Check Cloud Services
+
 ```powershell
 .\check-cloud-services.ps1
 ```
 
 ### Open Settings
+
 ```powershell
 .\open-settings.ps1
 ```
 
 ### Run Cursor/VSCode as Admin
+
 ```powershell
 .\run-cursor-admin.ps1
 .\run-vscode-admin.ps1
+```
+
+### Run Security Checks
+
+```powershell
+# Run all security checks
+.\run-security-check.ps1
+
+# Or run individually
+.\security-check.ps1
+.\plugin-protection.ps1
 ```
 
 ## Manual Steps Required
 
 After running the setup script, you need to:
 
-1. Sign in to Microsoft account (Lengkundee01@outlook.com) in Windows Settings
-2. Sign in to OneDrive with Lengkundee01@outlook.com
-3. Sign in to Google Drive with Lengkundee01@gmail.com
+1. Sign in to Microsoft account (<Lengkundee01@outlook.com>) in Windows Settings
+2. Sign in to OneDrive with <Lengkundee01@outlook.com>
+3. Sign in to Google Drive with <Lengkundee01@gmail.com>
 4. Sign in to Dropbox (if using)
 5. Configure default apps in Settings > Apps > Default apps
 6. Enable browser sync in Chrome/Edge/Firefox
@@ -113,9 +145,10 @@ See `MANUAL-SETUP-GUIDE.md` for detailed instructions.
 
 ## Repository
 
-- **GitHub**: https://github.com/Mouy-leng/Window-setup.git
+- **GitHub**: <https://github.com/Mouy-leng/Window-setup.git>
 
 ### Clone Repository
+
 ```bash
 # Using GitHub CLI
 gh repo clone Mouy-leng/Window-setup
@@ -124,13 +157,14 @@ gh repo clone Mouy-leng/Window-setup
 git clone https://github.com/Mouy-leng/Window-setup.git
 
 # Using GitHub Desktop
-# Download from: https://desktop.github.com/
-# File > Clone Repository > https://github.com/Mouy-leng/Window-setup.git
+# Download from: <https://desktop.github.com/>
+# File > Clone Repository > <https://github.com/Mouy-leng/Window-setup.git>
 ```
 
 ### GitHub Desktop Integration
-- **Download**: https://desktop.github.com/
-- **Release Notes**: https://desktop.github.com/release-notes/
+
+- **Download**: <https://desktop.github.com/>
+- **Release Notes**: <https://desktop.github.com/release-notes/>
 - **Setup Script**: Run `github-desktop-setup.ps1` after installation
 - **Update Check**: Run `check-github-desktop-updates.ps1` to check version and review release notes
 - **Documentation**: See `GITHUB-DESKTOP-RULES.md` for integration rules
@@ -138,16 +172,20 @@ git clone https://github.com/Mouy-leng/Window-setup.git
 ## Troubleshooting
 
 ### Script won't run
+
 - Make sure you're running as Administrator
 - Check PowerShell execution policy: `Set-ExecutionPolicy RemoteSigned -Scope CurrentUser`
 
 ### Cloud services not found
+
 - Install the services manually:
-  - OneDrive: https://www.microsoft.com/microsoft-365/onedrive/download
-  - Google Drive: https://www.google.com/drive/download/
-  - Dropbox: https://www.dropbox.com/downloading
+
+  - OneDrive: <https://www.microsoft.com/microsoft-365/onedrive/download>
+  - Google Drive: <https://www.google.com/drive/download/>
+  - Dropbox: <https://www.dropbox.com/downloading>
 
 ### Sync not working
+
 - Verify you're signed in to each service
 - Check Windows Security exclusions
 - Restart the cloud service
@@ -160,4 +198,3 @@ This project is for personal use.
 ## Author
 
 Lengkundee01
-

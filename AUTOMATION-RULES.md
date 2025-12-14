@@ -83,6 +83,7 @@ This document defines the automation rules and intelligent defaults used by the 
 ### Documentation
 - `AUTOMATION-RULES.md` - This file
 - `README.md` - Project documentation
+- `SYSTEM-INFO.md` - System specifications and configuration
 - `MANUAL-SETUP-GUIDE.md` - Manual steps guide
 
 ## Execution Flow
@@ -106,6 +107,16 @@ This document defines the automation rules and intelligent defaults used by the 
 3. **Efficiency**: Minimal prompts, maximum automation
 4. **Reliability**: Error handling at every step
 5. **Maintainability**: Clear code structure and comments
+
+## System Configuration
+
+- **Device**: NuNa
+- **OS**: Windows 11 Home Single Language 25H2 (Build 26220.7344)
+- **Architecture**: 64-bit x64-based processor
+- **Processor**: Intel(R) Core(TM) i3-N305 (1.80 GHz)
+- **RAM**: 8.00 GB (7.63 GB usable)
+
+All scripts are tested and optimized for this system configuration. See `SYSTEM-INFO.md` for complete system details.
 
 ## Customization
 

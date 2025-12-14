@@ -39,3 +39,4 @@ Write-Host "  1. Install GitHub Copilot extension" -ForegroundColor White
 Write-Host "  2. Sign in with your GitHub account" -ForegroundColor White
 Write-Host "  3. Start using Copilot features" -ForegroundColor White
 
+

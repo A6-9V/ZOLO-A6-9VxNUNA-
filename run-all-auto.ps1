@@ -8,7 +8,7 @@ Write-Host "========================================" -ForegroundColor Cyan
 Write-Host ""
 
 # Step 1: Run Windows Setup
-Write-Host "[1/3] Running Windows Setup..." -ForegroundColor Yellow
+Write-Host "[1/4] Running Windows Setup..." -ForegroundColor Yellow
 Write-Host ""
 $setupScript = Join-Path $PSScriptRoot "auto-setup.ps1"
 if (Test-Path $setupScript) {
@@ -21,7 +21,7 @@ Write-Host ""
 Start-Sleep -Seconds 2
 
 # Step 2: Run Git Push (automated with saved token)
-Write-Host "[2/3] Running Git Push (using saved credentials)..." -ForegroundColor Yellow
+Write-Host "[2/4] Running Git Push (using saved credentials)..." -ForegroundColor Yellow
 Write-Host ""
 $gitScript = Join-Path $PSScriptRoot "auto-git-push.ps1"
 if (Test-Path $gitScript) {
@@ -64,4 +64,3 @@ Write-Host "All decisions were made automatically using best practices." -Foregr
 Write-Host ""
 Write-Host "GitHub Desktop Release Notes: https://desktop.github.com/release-notes/" -ForegroundColor Cyan
 Write-Host ""
-
