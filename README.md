@@ -130,6 +130,7 @@ git clone https://github.com/Mouy-leng/Window-setup.git
 - **Download**: https://desktop.github.com/
 - **Release Notes**: https://desktop.github.com/release-notes/
 - **Setup Script**: Run `github-desktop-setup.ps1` after installation
+- **Update Check**: Run `check-github-desktop-updates.ps1` to check version and review release notes
 - **Documentation**: See `GITHUB-DESKTOP-RULES.md` for integration rules
 
 ## Troubleshooting

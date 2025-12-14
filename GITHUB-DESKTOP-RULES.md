@@ -124,17 +124,24 @@ This document defines the rules and best practices for using GitHub Desktop with
 
 ## Release Notes Monitoring
 
+### Release Notes URL
+- **Official Release Notes**: https://desktop.github.com/release-notes/
+- Check regularly for latest updates and features
+- Use `check-github-desktop-updates.ps1` script to check version and open release notes
+
 ### Regular Checks
 - Check release notes monthly: https://desktop.github.com/release-notes/
 - Review new features and improvements
 - Update documentation if needed
 - Test new features with automation scripts
+- Run update check script: `.\check-github-desktop-updates.ps1`
 
 ### Breaking Changes
 - Monitor release notes for breaking changes
 - Update automation rules accordingly
 - Test scripts after GitHub Desktop updates
 - Document any compatibility issues
+- Update `github-desktop-setup.ps1` if configuration changes
 
 ## Documentation Updates
 
