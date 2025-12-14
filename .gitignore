@@ -38,6 +38,7 @@ documents/
 *config.local*
 git-credentials.txt
 .github-token
+mql5-config.txt
 
 # Sensitive credentials and keys (from my-drive-projects)
 *.pem

@@ -1,4 +1,4 @@
-# GitHub Website Service - ZOLO-A6-9VxNUNA
+﻿# GitHub Website Service - ZOLO-A6-9VxNUNA
 $ErrorActionPreference = "Continue"
 $workspaceRoot = "C:\Users\USER\OneDrive"
 $websitePath = "$workspaceRoot\ZOLO-A6-9VxNUNA"
@@ -8,21 +8,11 @@ $logsPath = "C:\Users\USER\OneDrive\vps-logs"
 if (-not (Test-Path $websitePath)) {
     Write-Host "[$(Get-Date)] Cloning ZOLO-A6-9VxNUNA repository..." | Out-File -Append "$logsPath\website-service.log"
     Set-Location $workspaceRoot
-    # Use HTTPS (works without SSH keys)
-    git clone https://github.com/Mouy-leng/ZOLO-A6-9VxNUNA-.git $websitePath 2>&1 | Out-File -Append "$logsPath\website-service.log"
+    git clone git@github.com:Mouy-leng/ZOLO-A6-9VxNUNA-.git $websitePath 2>&1 | Out-File -Append "$logsPath\website-service.log"
 } else {
     Write-Host "[$(Get-Date)] Updating ZOLO-A6-9VxNUNA repository..." | Out-File -Append "$logsPath\website-service.log"
     Set-Location $websitePath
-    # Update remote to HTTPS if needed
-    $remoteUrl = git remote get-url origin 2>&1
-    if ($remoteUrl -like "*git@github.com*") {
-        git remote set-url origin https://github.com/Mouy-leng/ZOLO-A6-9VxNUNA-.git 2>&1 | Out-Null
-    }
-    # Try pull, if fails due to unrelated histories, use allow-unrelated-histories
-    git pull origin main --allow-unrelated-histories 2>&1 | Out-File -Append "$logsPath\website-service.log"
-    if ($LASTEXITCODE -ne 0) {
-        git pull origin main 2>&1 | Out-File -Append "$logsPath\website-service.log"
-    }
+    git pull origin main 2>&1 | Out-File -Append "$logsPath\website-service.log"
 }
 
 # Launch website in Firefox

@@ -207,8 +207,45 @@ try {
     Write-Host "    [WARNING] Screen event task creation had issues: $_" -ForegroundColor Yellow
 }
 
-# Step 6: Create initial flag file (for first restart detection)
-Write-Host "[6/6] Setting up restart flag..." -ForegroundColor Yellow
+# Step 6: Create Scheduled Task for Shutdown Handler
+Write-Host "[6/7] Creating scheduled task for shutdown handler..." -ForegroundColor Yellow
+try {
+    $taskName = "VPS-Shutdown-Handler"
+    $shutdownHandlerPath = Join-Path $workspaceRoot "shutdown-handler.ps1"
+    
+    # Remove existing task if it exists
+    Unregister-ScheduledTask -TaskName $taskName -Confirm:$false -ErrorAction SilentlyContinue
+    
+    # Create task action
+    $taskAction = New-ScheduledTaskAction -Execute "powershell.exe" `
+        -Argument "-ExecutionPolicy Bypass -NoProfile -WindowStyle Hidden -File `"$shutdownHandlerPath`"" `
+        -WorkingDirectory $workspaceRoot
+    
+    # Create trigger: On system shutdown
+    $taskTrigger = New-ScheduledTaskTrigger -AtStartup
+    # Note: Windows doesn't have direct shutdown trigger, so we'll use a workaround
+    # The flag file will be created/updated by the restart detector
+    
+    # Create principal
+    $taskPrincipal = New-ScheduledTaskPrincipal -UserId "$env:USERDOMAIN\$env:USERNAME" `
+        -LogonType Interactive -RunLevel Highest
+    
+    # Create settings
+    $taskSettings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries `
+        -DontStopIfGoingOnBatteries -StartWhenAvailable
+    
+    # Register task (runs on startup to ensure flag exists)
+    Register-ScheduledTask -TaskName $taskName -Action $taskAction `
+        -Trigger $taskTrigger -Principal $taskPrincipal -Settings $taskSettings `
+        -Description "VPS Shutdown Handler - Preserves restart flag" -Force | Out-Null
+    
+    Write-Host "    [OK] Shutdown handler task created: $taskName" -ForegroundColor Green
+} catch {
+    Write-Host "    [WARNING] Shutdown handler task creation had issues: $_" -ForegroundColor Yellow
+}
+
+# Step 7: Create initial flag file (for first restart detection)
+Write-Host "[7/7] Setting up restart flag..." -ForegroundColor Yellow
 try {
     if (-not (Test-Path $flagFile)) {
         New-Item -ItemType File -Path $flagFile -Force | Out-Null

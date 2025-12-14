@@ -397,3 +397,5 @@ if ($securityIssues.Count -eq 0 -and $securityWarnings.Count -eq 0) {
 Write-Host ""
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host ""
+
+
