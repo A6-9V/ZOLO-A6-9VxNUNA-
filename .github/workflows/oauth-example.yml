@@ -7,9 +7,15 @@ on:
       - main
       - develop
 
+permissions:
+  contents: read
+
 jobs:
   oauth-demo:
     runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
     
     env:
       CLIENT_ID: ${{ secrets.CLIENT_ID }}
