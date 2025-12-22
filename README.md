@@ -40,6 +40,19 @@ This repository contains the complete device skeleton structure, project bluepri
 
 ## 🚀 Quick Start
 
+### GitHub Secrets Setup
+
+Set up OAuth credentials for GitHub Actions:
+
+```powershell
+# Run the automated setup script
+.\setup-github-secrets.ps1
+```
+
+Or double-click: `SETUP-GITHUB-SECRETS.bat`
+
+See **GITHUB-SECRETS-SETUP.md** for detailed instructions and usage examples.
+
 ### Complete Device Setup
 
 Run the comprehensive device setup script:
@@ -95,6 +108,12 @@ This will:
 
 ## 📋 Features
 
+### GitHub Actions & Automation
+- ✅ OAuth credentials securely stored as repository secrets
+- ✅ Automated workflow for OAuth integration
+- ✅ CI/CD ready with secure credential management
+- ✅ Example workflows for common automation tasks
+
 ### Windows Setup Scripts
 - ✅ Configure Windows Account Sync
 - ✅ Set up File Explorer preferences
@@ -149,8 +168,15 @@ Sensitive files including credentials, API keys, certificates, and logs are auto
 - Temporary files
 - Personal directories and media files
 
+**GitHub Secrets:**
+- OAuth credentials stored as encrypted repository secrets
+- CLIENT_ID and CLIENT_SECRET configured for GitHub Actions
+- Automatic secret masking in workflow logs
+- See **GITHUB-SECRETS-SETUP.md** for details
+
 ## 📚 Documentation
 
+- **GITHUB-SECRETS-SETUP.md** - GitHub OAuth credentials setup guide
 - **DEVICE-SKELETON.md** - Complete device structure blueprint
 - **PROJECT-BLUEPRINTS.md** - Detailed project blueprints
 - **SYSTEM-INFO.md** - System specifications

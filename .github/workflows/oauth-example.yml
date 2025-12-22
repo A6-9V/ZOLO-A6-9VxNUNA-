@@ -1,0 +1,52 @@
+name: OAuth Integration Example
+
+on:
+  workflow_dispatch:  # Manual trigger
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  oauth-demo:
+    runs-on: ubuntu-latest
+    
+    env:
+      CLIENT_ID: ${{ secrets.CLIENT_ID }}
+      CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Verify OAuth credentials are set
+        run: |
+          if [ -z "$CLIENT_ID" ]; then
+            echo "❌ ERROR: CLIENT_ID secret is not set"
+            exit 1
+          fi
+          
+          if [ -z "$CLIENT_SECRET" ]; then
+            echo "❌ ERROR: CLIENT_SECRET secret is not set"
+            exit 1
+          fi
+          
+          echo "✅ OAuth credentials are properly configured"
+          echo "Client ID length: ${#CLIENT_ID}"
+          echo "Client Secret length: ${#CLIENT_SECRET}"
+      
+      - name: Use OAuth credentials
+        run: |
+          echo "🔐 Using OAuth credentials for authentication..."
+          # Add your OAuth authentication logic here
+          # Example: curl with OAuth credentials
+          # Note: Never echo or log the actual secret values
+          echo "✅ OAuth authentication would be performed here"
+          
+      - name: Summary
+        run: |
+          echo "## OAuth Integration Status" >> $GITHUB_STEP_SUMMARY
+          echo "✅ CLIENT_ID: Configured" >> $GITHUB_STEP_SUMMARY
+          echo "✅ CLIENT_SECRET: Configured" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "OAuth credentials are ready to use in workflows!" >> $GITHUB_STEP_SUMMARY
