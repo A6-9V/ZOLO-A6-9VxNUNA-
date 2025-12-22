@@ -1,5 +1,19 @@
 # GitHub Secrets Implementation Summary
 
+## ⚠️ Important Security Note
+
+This implementation contains OAuth credentials provided by the user for setup purposes. These credentials are meant to be stored as GitHub Secrets (encrypted by GitHub) and used in workflows. The credentials appear in:
+- Documentation files (as setup instructions)
+- Automation scripts (for automated setup)
+
+**Once secrets are set in GitHub, they are**:
+- ✅ Encrypted and stored securely by GitHub
+- ✅ Only accessible to authorized repository workflows
+- ✅ Automatically masked in workflow logs
+- ✅ Never exposed in repository code or pull requests
+
+**If using this as a template**: Replace example credentials with your own OAuth application credentials.
+
 ## ✅ What Has Been Completed
 
 This implementation provides a complete setup for GitHub OAuth credentials as repository secrets for `Mouy-leng/ZOLO-A6-9VxNUNA-`.

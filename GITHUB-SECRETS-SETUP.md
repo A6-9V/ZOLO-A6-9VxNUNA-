@@ -2,6 +2,15 @@
 
 This document provides complete instructions for setting up GitHub OAuth credentials as repository secrets.
 
+## ⚠️ Security Notice
+
+**IMPORTANT**: This documentation contains OAuth credentials that are intended to be stored as GitHub Secrets. Once these credentials are set as repository secrets:
+- They are encrypted by GitHub and stored securely
+- They are only accessible to authorized workflows
+- They are automatically masked in logs
+
+**Note**: If you're using this as a template for your own repository, replace these example credentials with your own OAuth application credentials. Never commit real production secrets to public repositories.
+
 ## 📋 Overview
 
 GitHub Secrets allow you to store sensitive information like OAuth credentials securely. These secrets can be used in GitHub Actions workflows without exposing the actual values in your code.
