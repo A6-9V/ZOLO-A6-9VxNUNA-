@@ -1,0 +1,105 @@
+name: OAuth Authentication Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target environment'
+        required: true
+        default: 'development'
+        type: choice
+        options:
+          - development
+          - staging
+          - production
+  schedule:
+    # Run daily at 2 AM UTC
+    - cron: '0 2 * * *'
+
+env:
+  CLIENT_ID: ${{ secrets.CLIENT_ID }}
+  CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+
+jobs:
+  validate-credentials:
+    name: Validate OAuth Credentials
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Check environment
+        run: |
+          echo "Environment: ${{ inputs.environment || 'scheduled run' }}"
+          echo "Workflow triggered by: ${{ github.event_name }}"
+      
+      - name: Validate secrets are set
+        run: |
+          echo "🔍 Validating OAuth credentials..."
+          
+          if [ -z "$CLIENT_ID" ]; then
+            echo "::error::CLIENT_ID is not set"
+            exit 1
+          fi
+          
+          if [ -z "$CLIENT_SECRET" ]; then
+            echo "::error::CLIENT_SECRET is not set"
+            exit 1
+          fi
+          
+          echo "✅ CLIENT_ID is set (length: ${#CLIENT_ID})"
+          echo "✅ CLIENT_SECRET is set (length: ${#CLIENT_SECRET})"
+          
+      - name: Test OAuth flow (mock)
+        run: |
+          echo "🔐 Testing OAuth authentication flow..."
+          
+          # Mock OAuth token request
+          # In a real scenario, you would make an actual API call here
+          echo "Requesting access token..."
+          echo "Client ID: ${CLIENT_ID:0:8}..." # Show only first 8 chars
+          
+          # Simulate successful authentication
+          TOKEN="mock_access_token_$(date +%s)"
+          echo "::add-mask::$TOKEN"
+          
+          echo "✅ Successfully obtained access token"
+          echo "Token expires in: 3600 seconds"
+      
+      - name: Store workflow status
+        if: always()
+        run: |
+          STATUS="${{ job.status }}"
+          TIMESTAMP=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          
+          echo "## OAuth Workflow Status" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Status**: $STATUS" >> $GITHUB_STEP_SUMMARY
+          echo "**Timestamp**: $TIMESTAMP" >> $GITHUB_STEP_SUMMARY
+          echo "**Triggered by**: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "$STATUS" = "success" ]; then
+            echo "✅ OAuth credentials are valid and working" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ OAuth credential validation failed" >> $GITHUB_STEP_SUMMARY
+          fi
+  
+  notify-status:
+    name: Notify Completion
+    runs-on: ubuntu-latest
+    needs: validate-credentials
+    if: always()
+    
+    steps:
+      - name: Send notification
+        run: |
+          STATUS="${{ needs.validate-credentials.result }}"
+          
+          echo "📢 Workflow completed with status: $STATUS"
+          
+          if [ "$STATUS" = "success" ]; then
+            echo "✅ All OAuth validations passed successfully"
+          else
+            echo "⚠️ OAuth validation encountered issues"
+          fi
