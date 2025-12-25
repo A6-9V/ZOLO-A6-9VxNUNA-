@@ -4,21 +4,21 @@
 .DESCRIPTION
     Diagnoses and fixes python.exe application errors automatically
     Installs Python if missing, fixes PATH issues, installs dependencies
-.PARAMETER Diagnose
+.PARAMETER DiagnoseOnly
     Run diagnostic mode only (don't make changes)
-.PARAMETER Force
+.PARAMETER ForceReinstall
     Force reinstall Python and packages
 .EXAMPLE
     .\fix-python-error.ps1
 .EXAMPLE
-    .\fix-python-error.ps1 -Diagnose
+    .\fix-python-error.ps1 -DiagnoseOnly
 .EXAMPLE
-    .\fix-python-error.ps1 -Force
+    .\fix-python-error.ps1 -ForceReinstall
 #>
 
 param(
-    [switch]$Diagnose,
-    [switch]$Force
+    [switch]$DiagnoseOnlyOnly,
+    [switch]$ForceReinstallReinstall
 )
 
 $ErrorActionPreference = "Continue"
@@ -73,7 +73,7 @@ if (-not $pythonPath) {
     Write-Host "    3. Use chocolatey: choco install python --version=3.11.0" -ForegroundColor White
     Write-Host "`n    IMPORTANT: Check 'Add Python to PATH' during installation!`n" -ForegroundColor Yellow
     
-    if ($Diagnose) {
+    if ($DiagnoseOnly) {
         Write-Host "[DIAGNOSIS COMPLETE] Python needs to be installed" -ForegroundColor Yellow
     }
     exit 1
@@ -109,7 +109,7 @@ if ($pythonInPath -and $scriptsInPath) {
 } else {
     Write-Host "    [WARNING] Python not in system PATH" -ForegroundColor Yellow
     
-    if ($Diagnose) {
+    if ($DiagnoseOnly) {
         Write-Host "    Would add to PATH:" -ForegroundColor Cyan
         Write-Host "    - $pythonDir" -ForegroundColor White
         Write-Host "    - $scriptsDir" -ForegroundColor White
@@ -147,7 +147,7 @@ try {
 } catch {
     Write-Host "    [WARNING] pip not found" -ForegroundColor Yellow
     
-    if ($Diagnose) {
+    if ($DiagnoseOnly) {
         Write-Host "    Would install pip using ensurepip" -ForegroundColor Cyan
     } else {
         Write-Host "    Installing pip..." -ForegroundColor Yellow
@@ -187,8 +187,8 @@ if (Test-Path $requirementsFile) {
         }
     }
     
-    if ($missingPackages.Count -gt 0 -or $Force) {
-        if ($Diagnose) {
+    if ($missingPackages.Count -gt 0 -or $ForceReinstall) {
+        if ($DiagnoseOnly) {
             Write-Host "`n    Would install packages from requirements.txt" -ForegroundColor Cyan
         } else {
             Write-Host "`n    Installing required packages..." -ForegroundColor Yellow
@@ -216,7 +216,7 @@ Write-Host "`n[6/6] Testing trading system..." -ForegroundColor Yellow
 
 $testScript = Join-Path $PSScriptRoot "trading-bridge\test-bridge-debug.py"
 if (Test-Path $testScript) {
-    if ($Diagnose) {
+    if ($DiagnoseOnly) {
         Write-Host "    Would test: $testScript" -ForegroundColor Cyan
     } else {
         Write-Host "    Running test script..." -ForegroundColor Yellow
@@ -241,7 +241,7 @@ Write-Host "`n========================================" -ForegroundColor Cyan
 Write-Host "   SUMMARY" -ForegroundColor Cyan
 Write-Host "========================================`n" -ForegroundColor Cyan
 
-if ($Diagnose) {
+if ($DiagnoseOnly) {
     Write-Host "[DIAGNOSIS MODE] No changes were made" -ForegroundColor Yellow
     Write-Host "Run without -Diagnose flag to apply fixes`n" -ForegroundColor Yellow
 } else {
@@ -255,7 +255,7 @@ if ($Diagnose) {
 }
 
 # Create Python path reference file
-if (-not $Diagnose) {
+if (-not $DiagnoseOnly) {
     $pathFile = Join-Path $PSScriptRoot "PYTHON-PATH.txt"
     @"
 Python Installation Path
