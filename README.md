@@ -144,6 +144,23 @@ This will:
 .\setup-workspace.ps1
 ```
 
+### Branch Management
+
+Automated tools for managing Git branches and pull requests:
+
+```powershell
+# Merge pull requests interactively
+.\merge-branches.ps1
+
+# Clean up old and merged branches (dry run)
+.\delete-merged-branches.ps1
+
+# Actually delete branches
+.\delete-merged-branches.ps1 -DryRun $false
+```
+
+**📖 See**: [Branch Management Guide](BRANCH-MANAGEMENT-GUIDE.md) for complete documentation
+
 ## 📋 Features
 
 ### Windows Setup Scripts
