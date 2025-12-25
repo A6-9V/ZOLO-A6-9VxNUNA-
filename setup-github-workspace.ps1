@@ -209,7 +209,7 @@ Write-Host "     .\system-setup\verify-github-app.ps1 -Verbose" -ForegroundColor
 Write-Host ""
 
 Write-Host "  5. Test GitHub Actions:" -ForegroundColor White
-Write-Host "     git push origin copilot/setup-workspace-github-app" -ForegroundColor Gray
+Write-Host "     git push origin <your-branch>" -ForegroundColor Gray
 Write-Host ""
 
 Write-Host "📚 Documentation:" -ForegroundColor Yellow
