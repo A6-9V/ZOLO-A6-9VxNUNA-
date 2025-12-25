@@ -371,12 +371,22 @@ git submodule update --init --recursive
 
 ### Authentication Issues
 
-1. **Regenerate Token:**
+1. **GitHub Account Selection Prompt:**
+   If GitHub keeps asking which account to choose (A6-9V or Mouy-leng):
+   ```powershell
+   # Quick fix - automatically sets default to Mouy-leng
+   .\fix-github-account-prompt.ps1
+   
+   # Or configure manually
+   .\configure-github-account.ps1 -Account "Mouy-leng" -SetGlobal
+   ```
+
+2. **Regenerate Token:**
    - Go to GitHub Settings → Developer settings
    - Regenerate token with required scopes
    - Update MCP configuration
 
-2. **Clear Cached Credentials:**
+3. **Clear Cached Credentials:**
    ```powershell
    # Remove cached credentials
    cmdkey /delete:GitHub

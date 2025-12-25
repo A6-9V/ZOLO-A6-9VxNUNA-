@@ -229,6 +229,16 @@ gh auth logout
 gh auth login
 ```
 
+### Issue: "GitHub keeps asking which account to choose (A6-9V or Mouy-leng)"
+**Solution:**
+```powershell
+# Quick fix - sets default to Mouy-leng globally
+.\fix-github-account-prompt.ps1
+
+# Or manually configure specific account
+.\configure-github-account.ps1 -Account "Mouy-leng" -SetGlobal
+```
+
 ### Issue: "Workflows not running"
 **Solution:**
 1. Check workflow files in `.github/workflows/`
