@@ -69,7 +69,13 @@ logs/
 qr_tmp.*
 
 # Duplicates (files with (1), (2), etc.)
-* (*).* 
+* (*).*
+
+# Backup and copy files
+Copy of *
+*_backup.*
+*_old.*
+*.bak
 
 # Google Drive metadata
 *.gdoc
