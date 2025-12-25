@@ -1,0 +1,229 @@
+{
+    "folders": [
+        {
+            "name": "🏠 ZOLO-A6-9VxNUNA (Root)",
+            "path": "."
+        },
+        {
+            "name": "📋 Cursor Rules",
+            "path": ".cursor/rules"
+        },
+        {
+            "name": "🤖 VPS Services",
+            "path": "vps-services"
+        },
+        {
+            "name": "🚀 Projects",
+            "path": "projects"
+        },
+        {
+            "name": "🔍 Project Scanner",
+            "path": "project-scanner"
+        },
+        {
+            "name": "⚙️ System Setup",
+            "path": "system-setup"
+        },
+        {
+            "name": "💾 Storage Management",
+            "path": "storage-management"
+        },
+        {
+            "name": "🌉 Trading Bridge",
+            "path": "trading-bridge"
+        },
+        {
+            "name": "📚 Documentation",
+            "path": "documents"
+        }
+    ],
+    "settings": {
+        "files.exclude": {
+            "**/.git": false,
+            "**/node_modules": true,
+            "**/__pycache__": true,
+            "**/Backup_*": true,
+            "**/.snapshots": true
+        },
+        "search.exclude": {
+            "**/node_modules": true,
+            "**/__pycache__": true,
+            "**/Backup_*": true,
+            "**/.snapshots": true,
+            "**/Security-Credentials": true
+        },
+        "files.watcherExclude": {
+            "**/.git/objects/**": true,
+            "**/.git/subtree-cache/**": true,
+            "**/node_modules/**": true,
+            "**/__pycache__/**": true,
+            "**/Backup_*/**": true,
+            "**/.snapshots/**": true
+        },
+        "workbench.colorTheme": "Default Light+",
+        "terminal.integrated.defaultProfile.windows": "PowerShell",
+        "powershell.codeFormatting.preset": "OTBS",
+        "powershell.integratedConsole.showOnStartup": false,
+        "editor.formatOnSave": false,
+        "editor.rulers": [80, 120],
+        "editor.tabSize": 4,
+        "editor.insertSpaces": true,
+        "files.encoding": "utf8",
+        "files.eol": "\n",
+        "git.enableSmartCommit": true,
+        "git.confirmSync": false,
+        "git.autofetch": true,
+        "markdown.preview.fontSize": 14,
+        "markdown.preview.lineHeight": 1.6
+    },
+    "extensions": {
+        "recommendations": [
+            "ms-vscode.powershell",
+            "yzhang.markdown-all-in-one",
+            "eamodio.gitlens",
+            "streetsidesoftware.code-spell-checker",
+            "ms-python.python",
+            "ms-python.debugpy",
+            "redhat.vscode-yaml",
+            "ms-vscode.vscode-json"
+        ]
+    },
+    "tasks": {
+        "version": "2.0.0",
+        "tasks": [
+            {
+                "label": "Verify Cursor Workspace",
+                "type": "shell",
+                "command": "powershell.exe",
+                "args": [
+                    "-ExecutionPolicy",
+                    "Bypass",
+                    "-File",
+                    "${workspaceFolder}/verify-cursor-workspace.ps1"
+                ],
+                "group": "test",
+                "presentation": {
+                    "echo": true,
+                    "reveal": "always",
+                    "focus": true,
+                    "panel": "shared"
+                },
+                "problemMatcher": []
+            },
+            {
+                "label": "Setup Workspace",
+                "type": "shell",
+                "command": "powershell.exe",
+                "args": [
+                    "-ExecutionPolicy",
+                    "Bypass",
+                    "-File",
+                    "${workspaceFolder}/setup-workspace.ps1"
+                ],
+                "group": "build",
+                "presentation": {
+                    "echo": true,
+                    "reveal": "always",
+                    "focus": true,
+                    "panel": "shared"
+                },
+                "problemMatcher": []
+            },
+            {
+                "label": "Complete Device Setup (Admin Required)",
+                "type": "shell",
+                "command": "powershell.exe",
+                "args": [
+                    "-ExecutionPolicy",
+                    "Bypass",
+                    "-File",
+                    "${workspaceFolder}/complete-device-setup.ps1"
+                ],
+                "group": "build",
+                "presentation": {
+                    "echo": true,
+                    "reveal": "always",
+                    "focus": true,
+                    "panel": "shared"
+                },
+                "problemMatcher": []
+            },
+            {
+                "label": "Start VPS Trading System (Admin Required)",
+                "type": "shell",
+                "command": "powershell.exe",
+                "args": [
+                    "-ExecutionPolicy",
+                    "Bypass",
+                    "-File",
+                    "${workspaceFolder}/auto-start-vps-admin.ps1"
+                ],
+                "group": "none",
+                "presentation": {
+                    "echo": true,
+                    "reveal": "always",
+                    "focus": true,
+                    "panel": "shared"
+                },
+                "problemMatcher": []
+            },
+            {
+                "label": "Check Trading Status",
+                "type": "shell",
+                "command": "powershell.exe",
+                "args": [
+                    "-ExecutionPolicy",
+                    "Bypass",
+                    "-File",
+                    "${workspaceFolder}/check-trading-status.ps1"
+                ],
+                "group": "test",
+                "presentation": {
+                    "echo": true,
+                    "reveal": "always",
+                    "focus": false,
+                    "panel": "shared"
+                },
+                "problemMatcher": []
+            },
+            {
+                "label": "System Status Report",
+                "type": "shell",
+                "command": "powershell.exe",
+                "args": [
+                    "-ExecutionPolicy",
+                    "Bypass",
+                    "-File",
+                    "${workspaceFolder}/system-status-report.ps1"
+                ],
+                "group": "test",
+                "presentation": {
+                    "echo": true,
+                    "reveal": "always",
+                    "focus": false,
+                    "panel": "shared"
+                },
+                "problemMatcher": []
+            }
+        ]
+    },
+    "launch": {
+        "version": "0.2.0",
+        "configurations": [
+            {
+                "name": "PowerShell: Launch Current File",
+                "type": "PowerShell",
+                "request": "launch",
+                "script": "${file}",
+                "cwd": "${workspaceFolder}"
+            },
+            {
+                "name": "PowerShell: Launch Workspace Verification",
+                "type": "PowerShell",
+                "request": "launch",
+                "script": "${workspaceFolder}/verify-cursor-workspace.ps1",
+                "cwd": "${workspaceFolder}"
+            }
+        ]
+    }
+}
