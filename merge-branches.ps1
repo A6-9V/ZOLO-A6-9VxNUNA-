@@ -144,6 +144,12 @@ try {
     
     & gh @mergeArgs
     
+    if ($LASTEXITCODE -ne 0) {
+        Write-ColorOutput "`n[ERROR] Failed to merge PR #$PRNumber" -Type Error
+        Write-ColorOutput "GitHub CLI returned exit code: $LASTEXITCODE" -Type Error
+        exit 1
+    }
+    
     Write-ColorOutput "`n[SUCCESS] PR #$PRNumber merged successfully!" -Type Success
     
     if ($DeleteBranch) {
