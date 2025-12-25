@@ -172,6 +172,11 @@ This will:
 - ✅ Issue and PR templates
 - ✅ Dependabot for dependency updates
 - ✅ GitHub App integration support
+### Cursor IDE Setup (New!)
+- ✅ Cursor rules for AI assistance
+- ✅ Theme automation (light/dark switching)
+- ✅ Settings configuration
+- ✅ Documentation standards
 - ✅ MCP GitHub server integration
 - ✅ MCP (Model Context Protocol) setup
 
@@ -191,7 +196,8 @@ Sensitive files including credentials, API keys, certificates, and logs are auto
 ## 📚 Documentation
 
 - **README.md** - Project overview and quick start
-- **GITHUB-INTEGRATION.md** - Complete GitHub integration guide (New!)
+- **CURSOR-SETUP.md** - Cursor IDE configuration and theme automation (New!)
+- **GITHUB-INTEGRATION.md** - Complete GitHub integration guide
 - **DEVICE-SKELETON.md** - Complete device structure blueprint
 - **PROJECT-BLUEPRINTS.md** - Detailed project blueprints
 - **SYSTEM-INFO.md** - System specifications
@@ -200,7 +206,7 @@ Sensitive files including credentials, API keys, certificates, and logs are auto
 - **AUTOMATION-RULES.md** - Automation patterns
 - **GITHUB-DESKTOP-RULES.md** - GitHub Desktop integration
 - **MANUAL-SETUP-GUIDE.md** - Manual setup instructions
-- **.github/CONTRIBUTING.md** - Contributing guidelines (New!)
+- **.github/CONTRIBUTING.md** - Contributing guidelines
 
 ## 🏢 Organization
 
