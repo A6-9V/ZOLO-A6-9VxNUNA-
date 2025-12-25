@@ -28,14 +28,23 @@ if (-not (Test-Path $configPath)) {
 Write-Host "Configuring trading account: #$AccountId" -ForegroundColor Yellow
 Write-Host ""
 
+# Helper function to redact secrets
+function Get-RedactedSecret {
+    param([string]$Value)
+    if (-not $Value -or $Value.Length -le 4) { return "****" }
+    return $Value.Substring(0, 4) + "****"
+}
+
 # Read current configuration
 try {
     $config = Get-Content $configPath -Raw | ConvertFrom-Json
     
     Write-Host "[1/3] Current configuration:" -ForegroundColor Yellow
     Write-Host "  Account ID: $($config.brokers[0].account_id)" -ForegroundColor Gray
-    Write-Host "  API Key: $($config.brokers[0].api_key)" -ForegroundColor Gray
-    Write-Host "  API Secret: $($config.brokers[0].api_secret)" -ForegroundColor Gray
+    $redactedApiKey = Get-RedactedSecret -Value $config.brokers[0].api_key
+    $redactedApiSecret = Get-RedactedSecret -Value $config.brokers[0].api_secret
+    Write-Host "  API Key (redacted): $redactedApiKey" -ForegroundColor Gray
+    Write-Host "  API Secret (redacted): $redactedApiSecret" -ForegroundColor Gray
     Write-Host ""
     
     # Update account ID

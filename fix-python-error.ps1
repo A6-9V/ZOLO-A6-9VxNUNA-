@@ -17,8 +17,8 @@
 #>
 
 param(
-    [switch]$DiagnoseOnlyOnly,
-    [switch]$ForceReinstallReinstall
+    [switch]$DiagnoseOnly,
+    [switch]$ForceReinstall
 )
 
 $ErrorActionPreference = "Continue"
