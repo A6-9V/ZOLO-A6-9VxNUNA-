@@ -243,7 +243,7 @@ Write-Host "========================================`n" -ForegroundColor Cyan
 
 if ($DiagnoseOnly) {
     Write-Host "[DIAGNOSIS MODE] No changes were made" -ForegroundColor Yellow
-    Write-Host "Run without -Diagnose flag to apply fixes`n" -ForegroundColor Yellow
+    Write-Host "Run without -DiagnoseOnly flag to apply fixes`n" -ForegroundColor Yellow
 } else {
     Write-Host "Python Configuration:" -ForegroundColor White
     Write-Host "  Path: $pythonPath" -ForegroundColor Cyan
