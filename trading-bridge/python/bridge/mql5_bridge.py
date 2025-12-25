@@ -80,7 +80,8 @@ class MQL5Bridge:
             self.socket = self.context.socket(zmq.REP)
             bind_address = f"tcp://{self.host}:{self.port}"
             self.socket.bind(bind_address)
-            self.socket.setsockopt(zmq.RCVTIMEO, 5000)  # 5 second timeout
+            # Increased timeout to reduce CPU usage on low-spec systems
+            self.socket.setsockopt(zmq.RCVTIMEO, 10000)  # 10 second timeout
             
             self.running = True
             self.connection_status = "listening"
@@ -103,10 +104,11 @@ class MQL5Bridge:
         while self.running:
             try:
                 # Wait for request from MQL5 EA
+                # Use blocking receive with timeout instead of NOBLOCK to reduce CPU usage
                 try:
-                    message = self.socket.recv_string(zmq.NOBLOCK)
+                    message = self.socket.recv_string()
                 except zmq.Again:
-                    time.sleep(0.1)
+                    # Timeout occurred, continue waiting
                     continue
                 
                 # Parse request
@@ -133,7 +135,8 @@ class MQL5Bridge:
                         self.socket.send_string(json.dumps(response))
                     except:
                         pass
-                time.sleep(1)
+                # Longer sleep on error to reduce resource usage during issues
+                time.sleep(2)
     
     def _process_request(self, request: Dict[str, Any]) -> Dict[str, Any]:
         """
@@ -213,7 +216,8 @@ class MQL5Bridge:
     def _monitor_heartbeat(self):
         """Monitor MQL5 connection heartbeat"""
         while self.running:
-            time.sleep(5)
+            # Increased sleep interval to reduce CPU usage on low-spec systems
+            time.sleep(10)
             if self.last_heartbeat:
                 elapsed = (datetime.now() - self.last_heartbeat).total_seconds()
                 if elapsed > self.heartbeat_timeout:

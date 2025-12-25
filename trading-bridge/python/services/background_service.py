@@ -31,6 +31,7 @@ try:
     from bridge.mql5_bridge import MQL5Bridge
     from brokers.broker_factory import BrokerFactory
     from trader.multi_symbol_trader import MultiSymbolTrader
+    from utils.resource_monitor import ResourceMonitor
 except ImportError as e:
     # Log error but don't crash - allow service to start with minimal
     # functionality
@@ -44,6 +45,7 @@ except ImportError as e:
     MQL5Bridge = None
     BrokerFactory = None
     MultiSymbolTrader = None
+    ResourceMonitor = None
 finally:
     # Restore original working directory
     try:
@@ -90,7 +92,18 @@ class BackgroundTradingService:
 
         # Health check
         self.last_health_check = None
-        self.health_check_interval = 60  # seconds
+        self.health_check_interval = 120  # seconds - increased for low-spec systems
+
+        # Resource monitor for adaptive performance
+        self.resource_monitor = None
+        if ResourceMonitor is not None:
+            self.resource_monitor = ResourceMonitor(
+                cpu_warning_threshold=70.0,
+                cpu_critical_threshold=85.0,
+                memory_warning_threshold=80.0,
+                memory_critical_threshold=90.0,
+                check_interval=30
+            )
 
         # Check if modules are available
         self.modules_available = MQL5Bridge is not None
@@ -173,6 +186,20 @@ class BackgroundTradingService:
         """Main service loop"""
         while self.running:
             try:
+                # Check and adapt to resource usage
+                if self.resource_monitor:
+                    resources = self.resource_monitor.check_resources()
+                    
+                    # Emergency brake if resources critical
+                    if resources['is_critical']:
+                        logger.warning(
+                            "CRITICAL: System resources exhausted - "
+                            "pausing heavy operations"
+                        )
+                        # Skip trading operations but keep monitoring
+                        time.sleep(resources['sleep_interval'])
+                        continue
+                
                 # Health check
                 self._health_check()
 
@@ -188,8 +215,13 @@ class BackgroundTradingService:
                             "Bridge disconnected, attempting to reconnect...")
                         # Bridge will auto-reconnect on next request
 
-                # Sleep before next iteration
-                time.sleep(5)
+                # Use adaptive sleep based on resource usage
+                if self.resource_monitor:
+                    sleep_interval = self.resource_monitor.get_adaptive_sleep()
+                else:
+                    sleep_interval = 10
+                
+                time.sleep(sleep_interval)
 
             except KeyboardInterrupt:
                 logger.info("Service interrupted by user")
@@ -197,7 +229,8 @@ class BackgroundTradingService:
                 break
             except Exception as e:
                 logger.error(f"Service loop error: {e}")
-                time.sleep(10)
+                # Longer sleep on error to prevent resource exhaustion
+                time.sleep(30)
 
     def _service_loop_minimal(self):
         """Minimal service loop when modules not available"""
@@ -212,7 +245,8 @@ class BackgroundTradingService:
                 break
             except Exception as e:
                 logger.error(f"Service loop error: {e}")
-                time.sleep(10)
+                # Longer sleep on error to prevent resource exhaustion
+                time.sleep(30)
 
     def _health_check(self):
         """Perform health check"""
@@ -221,6 +255,10 @@ class BackgroundTradingService:
         if (self.last_health_check is None or
                 current_time - self.last_health_check >=
                 self.health_check_interval):
+
+            # Log resource usage
+            if self.resource_monitor:
+                self.resource_monitor.log_summary()
 
             # Check bridge
             if self.bridge:
