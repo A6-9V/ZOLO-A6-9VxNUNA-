@@ -90,5 +90,17 @@ chrome_qrcode_*.png
 *.dmg
 *.pkg
 
+# GitHub-specific temporary files
+.github/workflows/*.log
+.github/workflows/*.tmp
+
 # Cursor (optional - uncomment if you don't want to track Cursor rules)
 # .cursor/
+
+# Node modules (for MCP servers)
+node_modules/
+package-lock.json
+
+# IDE and editor files
+.vscode/*.log
+.idea/

@@ -1,0 +1,64 @@
+name: Security Scan
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    # Run weekly on Monday at 00:00 UTC
+    - cron: '0 0 * * 1'
+
+jobs:
+  secret-scan:
+    name: Scan for Secrets
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        
+    - name: Run Gitleaks
+      uses: gitleaks/gitleaks-action@v2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+  security-audit:
+    name: Security Audit
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Check for Hardcoded Credentials
+      shell: powershell
+      run: |
+        $patterns = @(
+          'password\s*=\s*[''"].*[''"]',
+          'token\s*=\s*[''"].*[''"]',
+          'api[_-]?key\s*=\s*[''"].*[''"]',
+          'secret\s*=\s*[''"].*[''"]'
+        )
+        
+        $files = Get-ChildItem -Path . -Include *.ps1,*.md,*.json,*.txt -Recurse -File | 
+                 Where-Object { $_.FullName -notmatch '\\\.git\\' }
+        
+        $issues = @()
+        foreach ($file in $files) {
+          $content = Get-Content $file.FullName -Raw
+          foreach ($pattern in $patterns) {
+            if ($content -match $pattern) {
+              $issues += "Potential credential in $($file.Name)"
+            }
+          }
+        }
+        
+        if ($issues.Count -gt 0) {
+          Write-Warning "Potential security issues found:"
+          $issues | ForEach-Object { Write-Warning "  $_" }
+        } else {
+          Write-Host "No obvious hardcoded credentials found" -ForegroundColor Green
+        }

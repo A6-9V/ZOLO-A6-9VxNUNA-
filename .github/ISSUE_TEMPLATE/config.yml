@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Documentation
+    url: https://github.com/Mouy-leng/ZOLO-A6-9VxNUNA-/blob/main/README.md
+    about: View the project documentation
+  - name: Discussions
+    url: https://github.com/Mouy-leng/ZOLO-A6-9VxNUNA-/discussions
+    about: Ask questions and discuss ideas with the community

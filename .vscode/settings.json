@@ -4,5 +4,27 @@
         "**/LanguageServer/_generated_/**": true,
         "{**/.c4z/.extsrcs/*.PROTSYM.cbl,**/.c4z/.extsrcs/*.PROTSYM.listing}": true
     },
-    "workbench.colorTheme": "Default Light+"
+    "workbench.colorTheme": "Default Light+",
+    "files.exclude": {
+        "**/.git": false,
+        "**/node_modules": true,
+        "**/*.log": true
+    },
+    "files.associations": {
+        "*.ps1": "powershell",
+        ".github/workflows/*.yml": "yaml",
+        ".github/workflows/*.yaml": "yaml"
+    },
+    "editor.formatOnSave": true,
+    "editor.rulers": [120],
+    "git.autofetch": true,
+    "git.confirmSync": false,
+    "git.enableSmartCommit": true,
+    "github.gitProtocol": "https",
+    "powershell.scriptAnalysis.enable": true,
+    "powershell.codeFormatting.preset": "OTBS",
+    "yaml.schemas": {
+        "https://json.schemastore.org/github-workflow.json": ".github/workflows/*.{yml,yaml}",
+        "https://json.schemastore.org/github-action.json": "action.{yml,yaml}"
+    }
 }

@@ -6,6 +6,14 @@ This repository contains the complete device skeleton structure, project bluepri
 
 ```
 .
+├── .github/                          # GitHub Configuration
+│   ├── workflows/                    # GitHub Actions workflows
+│   │   ├── ci.yml                   # CI for PowerShell scripts
+│   │   └── security.yml             # Security scanning
+│   ├── ISSUE_TEMPLATE/              # Issue templates
+│   ├── CODEOWNERS                   # Code ownership
+│   ├── CONTRIBUTING.md              # Contributing guidelines
+│   └── dependabot.yml               # Dependency updates
 ├── .cursor/                          # Cursor IDE Configuration
 │   └── rules/                        # AI Assistant Rules
 ├── Scripts/                          # PowerShell Automation Scripts
@@ -19,6 +27,7 @@ This repository contains the complete device skeleton structure, project bluepri
 │   ├── PROJECT-BLUEPRINTS.md         # Project blueprints
 │   ├── SYSTEM-INFO.md               # System specifications
 │   ├── WORKSPACE-SETUP.md           # Workspace setup guide
+│   ├── GITHUB-INTEGRATION.md        # GitHub integration guide
 │   └── SET-REPOS-PRIVATE.md         # Instructions for private repos
 ├── vps-services/                     # VPS 24/7 Trading System Services
 │   ├── exness-service.ps1           # Exness MT5 Terminal service
@@ -32,6 +41,9 @@ This repository contains the complete device skeleton structure, project bluepri
 │   └── LiteWriter/                  # LiteWriter application
 ├── project-scanner/                  # Project Discovery & Execution System
 ├── system-setup/                     # System Configuration & Optimization
+│   ├── mcp-config.json              # MCP configuration
+│   ├── GITHUB-APP-SETUP.md          # GitHub App setup guide
+│   └── complete-setup.ps1           # Complete setup script
 ├── storage-management/               # Storage and drive management tools
 ├── Document,sheed,PDF, PICTURE/     # Documentation and media
 ├── Secrets/                          # Protected credentials (not tracked in git)
@@ -39,6 +51,23 @@ This repository contains the complete device skeleton structure, project bluepri
 ```
 
 ## 🚀 Quick Start
+
+### GitHub Workspace Setup (New!)
+
+Set up GitHub integration and workspace:
+
+```powershell
+# Quick setup with Personal Access Token
+.\setup-github-workspace.ps1 -UsePersonalToken -Token 'your-token-here'
+
+# Or for GitHub App setup
+.\setup-github-workspace.ps1 -UseGitHubApp
+
+# Verify setup
+.\system-setup\verify-github-app.ps1 -Verbose
+```
+
+See **[GITHUB-INTEGRATION.md](GITHUB-INTEGRATION.md)** for complete setup guide.
 
 ### Complete Device Setup
 
@@ -136,6 +165,16 @@ This will:
 - ✅ Cursor IDE configuration
 - ✅ MCP (Model Context Protocol) setup
 
+### GitHub Integration (New!)
+- ✅ GitHub Actions CI/CD workflows
+- ✅ Automated PowerShell script linting
+- ✅ Security scanning (secrets and credentials)
+- ✅ Issue and PR templates
+- ✅ Dependabot for dependency updates
+- ✅ GitHub App integration support
+- ✅ MCP GitHub server integration
+- ✅ MCP (Model Context Protocol) setup
+
 ## 🔒 Security
 
 Sensitive files including credentials, API keys, certificates, and logs are automatically excluded from version control via `.gitignore`.
@@ -151,6 +190,8 @@ Sensitive files including credentials, API keys, certificates, and logs are auto
 
 ## 📚 Documentation
 
+- **README.md** - Project overview and quick start
+- **GITHUB-INTEGRATION.md** - Complete GitHub integration guide (New!)
 - **DEVICE-SKELETON.md** - Complete device structure blueprint
 - **PROJECT-BLUEPRINTS.md** - Detailed project blueprints
 - **SYSTEM-INFO.md** - System specifications
@@ -159,6 +200,7 @@ Sensitive files including credentials, API keys, certificates, and logs are auto
 - **AUTOMATION-RULES.md** - Automation patterns
 - **GITHUB-DESKTOP-RULES.md** - GitHub Desktop integration
 - **MANUAL-SETUP-GUIDE.md** - Manual setup instructions
+- **.github/CONTRIBUTING.md** - Contributing guidelines (New!)
 
 ## 🏢 Organization
 

@@ -1,0 +1,24 @@
+# Repository owners and maintainers
+# These users will be automatically requested for review on PRs
+
+# Default owners for everything in the repo
+* @Mouy-leng
+
+# PowerShell scripts
+*.ps1 @Mouy-leng
+
+# Documentation
+*.md @Mouy-leng
+
+# System setup and configuration
+/system-setup/ @Mouy-leng
+/.cursor/ @Mouy-leng
+/.vscode/ @Mouy-leng
+
+# Security-sensitive files
+/.github/ @Mouy-leng
+.gitignore @Mouy-leng
+
+# VPS and trading system
+/vps-services/ @Mouy-leng
+/trading-bridge/ @Mouy-leng
