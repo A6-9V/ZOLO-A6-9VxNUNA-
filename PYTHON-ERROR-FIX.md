@@ -167,7 +167,7 @@ C:\trading-venv\Scripts\Activate.ps1
 pip install -r trading-bridge/requirements.txt
 
 # Update scripts to use virtual environment
-# Edit start-trading-system.ps1and change:
+# Edit start-trading-system.ps1 and change:
 # python -> C:\trading-venv\Scripts\python.exe
 ```
 
@@ -236,7 +236,7 @@ If you still have issues after following this guide:
 
 2. **Run diagnostic script:**
    ```powershell
-   .\fix-python-error.ps1 -Diagnose
+   .\fix-python-error.ps1 -DiagnoseOnly
    ```
 
 3. **Check Event Viewer:**
