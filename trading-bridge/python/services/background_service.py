@@ -90,7 +90,7 @@ class BackgroundTradingService:
 
         # Health check
         self.last_health_check = None
-        self.health_check_interval = 60  # seconds
+        self.health_check_interval = 120  # seconds - increased for low-spec systems
 
         # Check if modules are available
         self.modules_available = MQL5Bridge is not None
@@ -188,8 +188,8 @@ class BackgroundTradingService:
                             "Bridge disconnected, attempting to reconnect...")
                         # Bridge will auto-reconnect on next request
 
-                # Sleep before next iteration
-                time.sleep(5)
+                # Sleep before next iteration - longer sleep for low-spec systems
+                time.sleep(10)
 
             except KeyboardInterrupt:
                 logger.info("Service interrupted by user")
@@ -197,7 +197,8 @@ class BackgroundTradingService:
                 break
             except Exception as e:
                 logger.error(f"Service loop error: {e}")
-                time.sleep(10)
+                # Longer sleep on error to prevent resource exhaustion
+                time.sleep(30)
 
     def _service_loop_minimal(self):
         """Minimal service loop when modules not available"""
@@ -212,7 +213,8 @@ class BackgroundTradingService:
                 break
             except Exception as e:
                 logger.error(f"Service loop error: {e}")
-                time.sleep(10)
+                # Longer sleep on error to prevent resource exhaustion
+                time.sleep(30)
 
     def _health_check(self):
         """Perform health check"""

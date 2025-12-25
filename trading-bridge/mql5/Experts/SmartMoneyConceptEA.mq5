@@ -79,6 +79,7 @@ datetime       lastTradeTime;
 int            tradesToday;
 double         dailyPnL;
 datetime       currentDay;
+datetime       lastAnalysisTime = 0;  // Track last analysis to throttle heavy operations
 
 // Smart Money structures
 struct OrderBlock {
@@ -137,16 +138,21 @@ int OnInit()
    tradesToday = 0;
    dailyPnL = 0;
    currentDay = TimeCurrent();
+   lastAnalysisTime = 0;
    
    // Initialize market structure
    currentStructure.isBullishTrend = false;
    currentStructure.bosDetected = false;
    currentStructure.chochDetected = false;
    
+   // Set up timer for periodic operations (reduces CPU load on low-spec systems)
+   EventSetTimer(10);  // Timer every 10 seconds
+   
    Print("Smart Money Concept EA initialized");
    Print("Account Balance: $", DoubleToString(InpAccountBalance, 2));
    Print("Risk per trade: ", DoubleToString(InpRiskPercent, 1), "%");
    Print("Max Daily Loss: ", DoubleToString(InpMaxDailyLoss, 1), "%");
+   Print("Performance Mode: Optimized for low-spec systems");
    
    return(INIT_SUCCEEDED);
 }
@@ -156,6 +162,9 @@ int OnInit()
 //+------------------------------------------------------------------+
 void OnDeinit(const int reason)
 {
+   // Kill timer
+   EventKillTimer();
+   
    // Release indicator handles
    IndicatorRelease(hRSI);
    IndicatorRelease(hEMAFast);
@@ -169,6 +178,16 @@ void OnDeinit(const int reason)
 //| Expert tick function                                              |
 //+------------------------------------------------------------------+
 void OnTick()
+{
+   // Only manage existing positions on tick - lightweight operation
+   // Heavy analysis moved to OnTimer to reduce CPU usage
+   ManagePositions();
+}
+
+//+------------------------------------------------------------------+
+//| Timer function - Heavy operations run here every 10 seconds      |
+//+------------------------------------------------------------------+
+void OnTimer()
 {
    // Reset daily counters if new day
    ResetDailyCounters();
@@ -190,9 +209,6 @@ void OnTick()
       return;
    }
    
-   // Manage existing positions (trailing stop)
-   ManagePositions();
-   
    // Only check for new entries on new bar
    if(!IsNewBar())
       return;
@@ -200,6 +216,13 @@ void OnTick()
    // Skip if already have position for this symbol
    if(HasOpenPosition())
       return;
+   
+   // Throttle heavy analysis to once every 30 seconds minimum
+   datetime currentTime = TimeCurrent();
+   if(currentTime - lastAnalysisTime < 30)
+      return;
+   
+   lastAnalysisTime = currentTime;
    
    // Analyze Smart Money Concept
    AnalyzeMarketStructure();
