@@ -11,7 +11,9 @@ build/
 # OS files
 .DS_Store
 Thumbs.db
+desktop.ini
 Desktop.ini
+*.lnk
 
 # IDE
 .vscode/
@@ -30,6 +32,34 @@ logs/
 *.key
 credentials/
 secrets/
+*.token
+*.secret
+*credentials*
+*config.local*
+git-credentials.txt
+.github-token
+mql5-config.txt
+vps-config.txt
+*vps-config*
+
+# Sensitive credentials and keys (from my-drive-projects)
+discovered-projects.json
+execution-summary.json
+*.credentials.json
+*.secrets.json
+rootkey*
+rsa-*
+pk-*
+cert-*
+*key*.csv
+sharp-doodad-*
+flash-student-*
+
+# Secrets directory
+Secrets/
+
+# Project scanner output files (keep config, ignore results)
+log-summary.txt
 
 # Temporary files
 *.tmp
@@ -45,8 +75,50 @@ screenshots/
 *.png
 !assets/*.png
 !assets/og-image.png
+Screenshot_*.jpg
+Screenshot_*.png
+chrome_qrcode_*.png
 
 # Personal data
 *.csv
 *.xlsx
+*.pdf
+*.docx
+Desktop/
+Pictures/
+documents/
 
+# Personal files and directories
+*.exe
+*.jpg
+*.jpeg
+*.bmp
+*.one
+*.url
+*.rdp
+*.zip
+*.xml
+*.html
+
+# System files
+.849C9593-D756-4E56-8D6E-42412F2A707B
+
+# Duplicates (files with (1), (2), etc.)
+* (*).* 
+
+# Google Drive metadata
+*.gdoc
+*.gsheet
+*.gscript
+
+# Archives
+*.zip
+
+# Large executables and installers
+*.deb
+*.msi
+*.dmg
+*.pkg
+
+# Cursor (optional - uncomment if you don't want to track Cursor rules)
+# .cursor/
