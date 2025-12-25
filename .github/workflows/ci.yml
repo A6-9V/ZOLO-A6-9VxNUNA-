@@ -5,11 +5,15 @@ on:
     branches: [ main, develop, copilot/** ]
     paths:
       - '**.ps1'
+      - '**.mq5'
+      - 'trading-bridge/**'
       - '.github/workflows/ci.yml'
   pull_request:
     branches: [ main, develop ]
     paths:
       - '**.ps1'
+      - '**.mq5'
+      - 'trading-bridge/**'
 
 jobs:
   powershell-lint:
@@ -62,4 +66,58 @@ jobs:
         if ($failed -gt 0) {
           Write-Error "$failed script(s) failed syntax check"
           exit 1
+        }
+        
+  trading-system-verify:
+    name: Verify Trading System Configuration
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Verify TP/SL Configuration in EAs
+      shell: powershell
+      run: |
+        Write-Host "Verifying Take Profit and Stop Loss configuration..." -ForegroundColor Cyan
+        $eaFiles = Get-ChildItem -Path "trading-bridge/mql5/Experts" -Filter *.mq5 -File -ErrorAction SilentlyContinue
+        
+        if ($eaFiles.Count -eq 0) {
+          Write-Warning "No EA files found - skipping TP/SL verification"
+          exit 0
+        }
+        
+        $tpSlConfigured = 0
+        foreach ($ea in $eaFiles) {
+          $content = Get-Content $ea.FullName -Raw
+          $hasSL = $content -match 'stop.?loss|InpSL|_SL|StopLoss'
+          $hasTP = $content -match 'take.?profit|InpTP|_TP|TakeProfit'
+          
+          if ($hasSL -and $hasTP) {
+            Write-Host "✓ $($ea.Name): TP/SL configured" -ForegroundColor Green
+            $tpSlConfigured++
+          } else {
+            Write-Warning "⚠ $($ea.Name): Missing TP/SL configuration"
+          }
+        }
+        
+        Write-Host "`n$tpSlConfigured/$($eaFiles.Count) EAs have TP/SL configured" -ForegroundColor Cyan
+        
+    - name: Verify Trading Bridge Configuration
+      shell: powershell
+      run: |
+        Write-Host "Verifying trading bridge configuration..." -ForegroundColor Cyan
+        
+        if (Test-Path "trading-bridge/config/brokers.json") {
+          Write-Host "✓ Broker configuration exists" -ForegroundColor Green
+          $config = Get-Content "trading-bridge/config/brokers.json" -Raw | ConvertFrom-Json
+          Write-Host "  Account ID placeholder: $($config.account_id)" -ForegroundColor Gray
+        } else {
+          Write-Warning "⚠ Broker configuration not found"
+        }
+        
+        if (Test-Path "trading-bridge/python") {
+          Write-Host "✓ Python trading bridge exists" -ForegroundColor Green
+        } else {
+          Write-Warning "⚠ Python trading bridge not found"
         }
