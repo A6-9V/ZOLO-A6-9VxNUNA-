@@ -40,6 +40,21 @@ This repository contains the complete device skeleton structure, project bluepri
 
 ## 🚀 Quick Start
 
+### Open in Cursor IDE
+
+**Option 1 - Open Workspace File:**
+```
+File > Open Workspace > ZOLO-CURSOR-WORKSPACE.code-workspace
+```
+
+**Option 2 - Open Folder:**
+```
+File > Open Folder > Select repository root
+```
+
+✅ **Workspace Status**: Fully configured with 5 Cursor rules  
+See [CURSOR-WORKSPACE-SETUP-SUMMARY.md](CURSOR-WORKSPACE-SETUP-SUMMARY.md) for verification report.
+
 ### Complete Device Setup
 
 Run the comprehensive device setup script:
@@ -87,11 +102,18 @@ This will:
 .\complete-windows-setup.ps1
 ```
 
-### Workspace Verification
+### Cursor Workspace Verification
 
 ```powershell
+# Comprehensive workspace verification
+.\verify-cursor-workspace.ps1
+
+# Quick workspace setup check
 .\setup-workspace.ps1
 ```
+
+**Status**: ✅ Workspace fully configured with 5 Cursor rules
+- See **CURSOR-WORKSPACE-SETUP-SUMMARY.md** for complete verification report
 
 ## 📋 Features
 
@@ -151,14 +173,24 @@ Sensitive files including credentials, API keys, certificates, and logs are auto
 
 ## 📚 Documentation
 
-- **DEVICE-SKELETON.md** - Complete device structure blueprint
-- **PROJECT-BLUEPRINTS.md** - Detailed project blueprints
-- **SYSTEM-INFO.md** - System specifications
+### Workspace & Setup
+- **CURSOR-WORKSPACE-SETUP-SUMMARY.md** - ✅ Cursor workspace verification summary
+- **CURSOR-WORKSPACE-VERIFICATION.md** - Comprehensive workspace verification report
+- **CURSOR-WORKSPACE-CHECKLIST.md** - Quick setup checklist
+- **CURSOR-RULES-SETUP.md** - Cursor rules documentation
 - **WORKSPACE-SETUP.md** - Workspace setup guide
-- **VPS-SETUP-GUIDE.md** - VPS 24/7 trading system guide
+- **DEVICE-SKELETON.md** - Complete device structure blueprint
+
+### System & Configuration
+- **SYSTEM-INFO.md** - System specifications
+- **PROJECT-BLUEPRINTS.md** - Detailed project blueprints
 - **AUTOMATION-RULES.md** - Automation patterns
 - **GITHUB-DESKTOP-RULES.md** - GitHub Desktop integration
+
+### Setup Guides
+- **VPS-SETUP-GUIDE.md** - VPS 24/7 trading system guide
 - **MANUAL-SETUP-GUIDE.md** - Manual setup instructions
+- **AGENTS.md** - Cursor agent instructions
 
 ## 🏢 Organization
 
