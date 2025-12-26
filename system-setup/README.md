@@ -69,6 +69,14 @@ cd D:\my-drive-projects\system-setup
 Settings are automatically copied to:
 - `%APPDATA%\Cursor\User\settings.json`
 
+This repo’s `cursor-settings.json` is configured for a **light theme** (`Default Light+`).
+
+You can also apply it directly from the repo root:
+
+```powershell
+.\setup-cursor-light-theme.ps1
+```
+
 ### MCP Configuration
 
 MCP config is copied to:
