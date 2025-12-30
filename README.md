@@ -79,13 +79,13 @@ git clone https://github.com/Mouy-leng/ZOLO-A6-9VxNUNA-.git
 cd ZOLO-A6-9VxNUNA-
 ```
 
-### 2. Complete Device Setup
+### 2. Run the Setup
 
-Run the comprehensive device setup script:
+Run the master launch script to begin the setup on any platform:
 
 ```powershell
 # Run as Administrator
-.\complete-device-setup.ps1
+.\start.ps1
 ```
 
 This will set up:

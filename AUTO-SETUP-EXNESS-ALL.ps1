@@ -1,5 +1,12 @@
 #Requires -Version 5.1
 #Requires -RunAsAdministrator
+
+if (-not $IsWindows) {
+    Write-Host "This script is only compatible with Windows."
+    Write-Host "Please run start.ps1 to begin the setup process."
+    exit
+}
+
 <#
 .SYNOPSIS
     Complete Automated Setup for EXNESS Terminal, EAs, and VPS
