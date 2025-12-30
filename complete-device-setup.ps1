@@ -1,4 +1,11 @@
 #Requires -RunAsAdministrator
+
+if (-not $IsWindows) {
+    Write-Host "This script is only compatible with Windows."
+    Write-Host "Please run start.ps1 to begin the setup process."
+    exit
+}
+
 <#
 .SYNOPSIS
     Complete Device Setup - Sets up all parts of the NuNa device
