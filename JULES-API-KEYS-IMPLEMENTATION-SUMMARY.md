@@ -45,7 +45,7 @@ This implementation provides a complete solution for securely storing and managi
 
 ### 2. Programmatic Access
 
-#### Python Manager (`jules-api-keys-manager.py`)
+#### Python Manager (`jules_api_keys_manager.py`)
 - **Size:** 6.4KB
 - **Features:**
   - Object-oriented design
@@ -60,7 +60,7 @@ This implementation provides a complete solution for securely storing and managi
 
 **Example Usage:**
 ```python
-from jules-api-keys-manager import JulesAPIKeyManager
+from jules_api_keys_manager import JulesAPIKeyManager
 
 manager = JulesAPIKeyManager()
 key = manager.get_key(1)  # Get specific key
@@ -153,7 +153,9 @@ The setup scripts create the following GitHub secrets:
 
 ## 📊 API Keys Stored
 
-The following Jules API keys are configured in the scripts:
+The following Jules API keys are configured in the scripts (as provided by the user):
+
+> **Note:** These API keys are hardcoded in the setup scripts by design, as they were explicitly provided in the requirements. The keys are only used during the one-time setup process to create GitHub Secrets. Once the secrets are created, the keys are stored securely in GitHub's encrypted secrets storage and are never exposed in logs or committed to the repository.
 
 ```
 1.  AQ.Ab8RN6LIOs0In6K6BeypynGMY76Q8mDMEweWoB1-8sQY8rKsYA
@@ -204,7 +206,7 @@ chmod +x setup-jules-api-keys.sh
 | `setup-jules-api-keys.ps1` | 14KB | PowerShell setup script |
 | `setup-jules-api-keys.sh` | 11KB | Bash setup script |
 | `SETUP-JULES-API-KEYS.bat` | 810B | Windows launcher |
-| `jules-api-keys-manager.py` | 6.4KB | Python access manager |
+| `jules_api_keys_manager.py` | 6.4KB | Python access manager |
 | `JULES-API-KEYS-SETUP.md` | 9.3KB | Full setup guide |
 | `JULES-API-KEYS-QUICK-REFERENCE.md` | 3.3KB | Quick reference |
 | `.github/workflows/jules-api-example.yml` | 6.7KB | Workflow examples |
@@ -255,7 +257,7 @@ ZOLO-A6-9VxNUNA-/
 ├── setup-jules-api-keys.ps1             # PowerShell script
 ├── setup-jules-api-keys.sh              # Bash script
 ├── SETUP-JULES-API-KEYS.bat             # Windows launcher
-├── jules-api-keys-manager.py            # Python manager
+├── jules_api_keys_manager.py            # Python manager
 └── .github/workflows/
     └── jules-api-example.yml            # Workflow examples
 ```

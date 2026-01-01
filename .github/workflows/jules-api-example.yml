@@ -31,7 +31,7 @@ jobs:
           JULES_API_KEY_1: ${{ secrets.JULES_API_KEY_1 }}
         run: |
           echo "Using Jules API Key 1..."
-          python3 jules-api-keys-manager.py
+          python3 jules_api_keys_manager.py
           
           # Your actual API integration code here
           echo "API Key available: $([ -n "$JULES_API_KEY_1" ] && echo 'Yes' || echo 'No')"
@@ -67,7 +67,7 @@ jobs:
           JULES_API_KEY_12: ${{ secrets.JULES_API_KEY_12 }}
         run: |
           echo "Processing with all available Jules API keys..."
-          python3 jules-api-keys-manager.py
+          python3 jules_api_keys_manager.py
           
           # Your code to use multiple keys with load balancing
           echo "All keys configured and ready to use"
@@ -196,7 +196,7 @@ jobs:
           JULES_API_KEY_12: ${{ secrets.JULES_API_KEY_12 }}
         run: |
           echo "Validating Jules API keys format..."
-          python3 jules-api-keys-manager.py
+          python3 jules_api_keys_manager.py
           
           echo ""
           echo "✓ All available keys validated successfully"

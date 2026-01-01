@@ -60,7 +60,7 @@ chmod +x setup-jules-api-keys.sh
 ### In Python:
 ```python
 # Use the included manager
-from jules-api-keys-manager import JulesAPIKeyManager
+from jules_api_keys_manager import JulesAPIKeyManager
 
 manager = JulesAPIKeyManager()
 key = manager.get_key(1)  # Get first key
