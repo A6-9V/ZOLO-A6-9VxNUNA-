@@ -11,6 +11,10 @@ on:
   # pull_request:
   #   branches: [ main ]
 
+# Minimal permissions for security
+permissions:
+  contents: read
+
 jobs:
   # Example 1: Use a single Jules API key
   single-key-example:
