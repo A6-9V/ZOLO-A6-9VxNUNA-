@@ -1,0 +1,202 @@
+name: Jules API Integration Example
+
+# This workflow demonstrates how to use Jules API keys stored as GitHub secrets
+# You can customize this workflow for your specific needs
+
+on:
+  workflow_dispatch:  # Manual trigger
+  # Uncomment to run on push/pull_request:
+  # push:
+  #   branches: [ main ]
+  # pull_request:
+  #   branches: [ main ]
+
+jobs:
+  # Example 1: Use a single Jules API key
+  single-key-example:
+    name: Single Key Usage
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Use Jules API Key 1
+        env:
+          JULES_API_KEY_1: ${{ secrets.JULES_API_KEY_1 }}
+        run: |
+          echo "Using Jules API Key 1..."
+          python3 jules-api-keys-manager.py
+          
+          # Your actual API integration code here
+          echo "API Key available: $([ -n "$JULES_API_KEY_1" ] && echo 'Yes' || echo 'No')"
+  
+  # Example 2: Use all Jules API keys with round-robin
+  multiple-keys-example:
+    name: Multiple Keys Round Robin
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Use All Jules API Keys
+        env:
+          # Pass all individual keys
+          JULES_API_KEY_1: ${{ secrets.JULES_API_KEY_1 }}
+          JULES_API_KEY_2: ${{ secrets.JULES_API_KEY_2 }}
+          JULES_API_KEY_3: ${{ secrets.JULES_API_KEY_3 }}
+          JULES_API_KEY_4: ${{ secrets.JULES_API_KEY_4 }}
+          JULES_API_KEY_5: ${{ secrets.JULES_API_KEY_5 }}
+          JULES_API_KEY_6: ${{ secrets.JULES_API_KEY_6 }}
+          JULES_API_KEY_7: ${{ secrets.JULES_API_KEY_7 }}
+          JULES_API_KEY_8: ${{ secrets.JULES_API_KEY_8 }}
+          JULES_API_KEY_9: ${{ secrets.JULES_API_KEY_9 }}
+          JULES_API_KEY_10: ${{ secrets.JULES_API_KEY_10 }}
+          JULES_API_KEY_11: ${{ secrets.JULES_API_KEY_11 }}
+          JULES_API_KEY_12: ${{ secrets.JULES_API_KEY_12 }}
+        run: |
+          echo "Processing with all available Jules API keys..."
+          python3 jules-api-keys-manager.py
+          
+          # Your code to use multiple keys with load balancing
+          echo "All keys configured and ready to use"
+  
+  # Example 3: Use combined keys (comma-separated)
+  combined-keys-example:
+    name: Combined Keys Usage
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Process with Combined Keys
+        env:
+          JULES_API_KEYS_ALL: ${{ secrets.JULES_API_KEYS_ALL }}
+        run: |
+          echo "Processing with combined Jules API keys..."
+          
+          # Split and process each key
+          IFS=',' read -ra KEYS <<< "$JULES_API_KEYS_ALL"
+          KEY_COUNT=${#KEYS[@]}
+          
+          echo "Total keys available: $KEY_COUNT"
+          
+          for i in "${!KEYS[@]}"; do
+            KEY_NUM=$((i + 1))
+            KEY="${KEYS[$i]}"
+            # Show only first 10 characters for security
+            MASKED="${KEY:0:10}...***"
+            echo "  Key $KEY_NUM: $MASKED"
+          done
+  
+  # Example 4: PowerShell usage (Windows runner)
+  windows-powershell-example:
+    name: Windows PowerShell Integration
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Use Jules API in PowerShell
+        env:
+          JULES_KEY_1: ${{ secrets.JULES_API_KEY_1 }}
+          JULES_KEY_2: ${{ secrets.JULES_API_KEY_2 }}
+        shell: pwsh
+        run: |
+          Write-Host "Using Jules API keys in PowerShell..."
+          
+          # Access environment variables
+          $apiKey1 = $env:JULES_KEY_1
+          $apiKey2 = $env:JULES_KEY_2
+          
+          if ($apiKey1) {
+            $masked1 = $apiKey1.Substring(0, [Math]::Min(10, $apiKey1.Length)) + "...***"
+            Write-Host "Key 1 available: $masked1" -ForegroundColor Green
+          }
+          
+          if ($apiKey2) {
+            $masked2 = $apiKey2.Substring(0, [Math]::Min(10, $apiKey2.Length)) + "...***"
+            Write-Host "Key 2 available: $masked2" -ForegroundColor Green
+          }
+          
+          Write-Host "Ready to integrate with Jules API" -ForegroundColor Cyan
+  
+  # Example 5: Bash script usage
+  bash-script-example:
+    name: Bash Script Integration
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Use Jules API in Bash
+        env:
+          JULES_API_KEY_1: ${{ secrets.JULES_API_KEY_1 }}
+        run: |
+          #!/bin/bash
+          set -e
+          
+          echo "Using Jules API key in Bash script..."
+          
+          if [ -n "$JULES_API_KEY_1" ]; then
+            # Mask the key for secure logging
+            MASKED_KEY="${JULES_API_KEY_1:0:10}...***"
+            echo "✓ API Key available: $MASKED_KEY"
+            
+            # Your actual API integration here
+            # curl -H "Authorization: Bearer $JULES_API_KEY_1" https://api.example.com/endpoint
+            
+            echo "✓ Jules API integration successful"
+          else
+            echo "✗ No API key found"
+            exit 1
+          fi
+
+  # Example 6: Key validation and health check
+  key-validation:
+    name: Validate Jules API Keys
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Validate All Keys
+        env:
+          JULES_API_KEY_1: ${{ secrets.JULES_API_KEY_1 }}
+          JULES_API_KEY_2: ${{ secrets.JULES_API_KEY_2 }}
+          JULES_API_KEY_3: ${{ secrets.JULES_API_KEY_3 }}
+          JULES_API_KEY_4: ${{ secrets.JULES_API_KEY_4 }}
+          JULES_API_KEY_5: ${{ secrets.JULES_API_KEY_5 }}
+          JULES_API_KEY_6: ${{ secrets.JULES_API_KEY_6 }}
+          JULES_API_KEY_7: ${{ secrets.JULES_API_KEY_7 }}
+          JULES_API_KEY_8: ${{ secrets.JULES_API_KEY_8 }}
+          JULES_API_KEY_9: ${{ secrets.JULES_API_KEY_9 }}
+          JULES_API_KEY_10: ${{ secrets.JULES_API_KEY_10 }}
+          JULES_API_KEY_11: ${{ secrets.JULES_API_KEY_11 }}
+          JULES_API_KEY_12: ${{ secrets.JULES_API_KEY_12 }}
+        run: |
+          echo "Validating Jules API keys format..."
+          python3 jules-api-keys-manager.py
+          
+          echo ""
+          echo "✓ All available keys validated successfully"

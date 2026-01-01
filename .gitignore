@@ -42,6 +42,12 @@ mql5-config.txt
 vps-config.txt
 *vps-config*
 
+# Jules API Keys (never commit these!)
+*jules-api-keys*
+*jules_api_keys*
+jules-api-keys-backup.encrypted
+JULES_API_KEYS*
+
 # Sensitive credentials and keys (from my-drive-projects)
 discovered-projects.json
 execution-summary.json
