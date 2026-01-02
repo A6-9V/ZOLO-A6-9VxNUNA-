@@ -69,8 +69,21 @@ jobs:
         $errors = @()
         foreach ($script in $scripts) {
           try {
-            $null = [System.Management.Automation.PSParser]::Tokenize((Get-Content $script.FullName -Raw), [ref]$null)
-            Write-Host "✓ $($script.Name)" -ForegroundColor Green
+            # Use PowerShell's Language Parser for better compatibility
+            $content = Get-Content $script.FullName -Raw
+            $tokens = $null
+            $parseErrors = $null
+            $null = [System.Management.Automation.Language.Parser]::ParseInput($content, [ref]$tokens, [ref]$parseErrors)
+            
+            if ($parseErrors.Count -gt 0) {
+              $errors += $script.Name
+              Write-Host "✗ $($script.Name):" -ForegroundColor Red
+              foreach ($err in $parseErrors) {
+                Write-Host "  Line $($err.Extent.StartLineNumber): $($err.Message)" -ForegroundColor Red
+              }
+            } else {
+              Write-Host "✓ $($script.Name)" -ForegroundColor Green
+            }
           } catch {
             $errors += $script.Name
             Write-Host "✗ $($script.Name): $($_.Exception.Message)" -ForegroundColor Red

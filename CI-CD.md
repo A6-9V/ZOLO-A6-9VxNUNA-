@@ -43,7 +43,9 @@ Get-ChildItem -Filter "*.ps1" -Recurse | ForEach-Object {
 - ✅ Lints code with flake8
 - ✅ Checks code formatting with black
 - ✅ Runs pytest tests (if available)
-- ✅ Checks for security vulnerabilities with safety
+- ✅ Checks for security vulnerabilities with safety (informational)
+
+**Note:** The security check uses `--continue-on-error` to provide information without failing the build. Review security findings manually.
 
 **How to run locally:**
 ```bash
@@ -207,11 +209,17 @@ Some workflows may require secrets. Configure them in GitHub repository settings
    - Add code coverage reporting
    - Implement automatic versioning
    - Add release automation
+   - Consider stricter security scanning (fail on vulnerabilities)
 
 3. **Performance monitoring**
    - Track build times
    - Monitor deployment success rate
    - Set up alerts for failures
+
+4. **Security enhancements**
+   - Integrate tools like `gitleaks` or `truffleHog` for comprehensive secret detection
+   - Consider using GitHub's Dependabot for automated dependency updates
+   - Set up CodeQL for advanced security analysis
 
 ## Contributing
 
