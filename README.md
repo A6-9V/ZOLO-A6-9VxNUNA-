@@ -4,6 +4,10 @@
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 [![Windows 11](https://img.shields.io/badge/Windows%2011-25H2-0078D4?style=for-the-badge&logo=windows11)](https://www.microsoft.com/windows)
 
+[![PowerShell CI](https://github.com/Mouy-leng/ZOLO-A6-9VxNUNA-/actions/workflows/powershell-ci.yml/badge.svg)](https://github.com/Mouy-leng/ZOLO-A6-9VxNUNA-/actions/workflows/powershell-ci.yml)
+[![Python CI](https://github.com/Mouy-leng/ZOLO-A6-9VxNUNA-/actions/workflows/python-ci.yml/badge.svg)](https://github.com/Mouy-leng/ZOLO-A6-9VxNUNA-/actions/workflows/python-ci.yml)
+[![Deploy to GitHub Pages](https://github.com/Mouy-leng/ZOLO-A6-9VxNUNA-/actions/workflows/pages-deploy.yml/badge.svg)](https://github.com/Mouy-leng/ZOLO-A6-9VxNUNA-/actions/workflows/pages-deploy.yml)
+
 > **AI-Powered Trading System & Complete Device Automation Platform for Windows 11**
 > **✨ Now optimized for low-spec systems - No more freezing!**
 
@@ -21,6 +25,7 @@ ZOLO-A6-9VxNUNA is a comprehensive system that combines:
 - ☁️ **Cloud Synchronization** - Seamless sync with OneDrive, Google Drive, and Dropbox
 - 🔄 **Git Integration** - Automated Git operations with multi-remote support
 - ⚡ **Performance Optimized** - Works smoothly on low-spec systems (Intel i3, 8GB RAM)
+- 🔄 **CI/CD Pipeline** - Automated testing, validation, and deployment with GitHub Actions
 
 ## 🆕 Recent Updates
 
@@ -177,6 +182,13 @@ Automated tools for managing Git branches and pull requests:
 - ✅ Automated git operations
 - ✅ Secure credential management
 
+### CI/CD Pipeline
+- ✅ Automated PowerShell script validation and linting
+- ✅ Python code testing and security checks
+- ✅ Automatic GitHub Pages deployment
+- ✅ Multi-version Python testing (3.9, 3.10, 3.11)
+- ✅ Code quality enforcement with flake8 and black
+
 ### Security Validation
 - ✅ Comprehensive security checks
 - ✅ Token security validation
@@ -249,6 +261,7 @@ Sensitive files including credentials, API keys, certificates, and logs are auto
 - [Automation Rules](docs/automation-rules.html) - Automation patterns
 - [Security Guide](docs/security.html) - Security configurations
 - [MT5 Integration](docs/mt5-integration.html) - Trading setup
+- **CI-CD.md** - CI/CD pipeline documentation and best practices
 - **DEVICE-SKELETON.md** - Complete device structure blueprint
 - **PROJECT-BLUEPRINTS.md** - Detailed project blueprints
 - **SYSTEM-INFO.md** - System specifications

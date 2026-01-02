@@ -1,0 +1,90 @@
+name: CI Summary
+
+on:
+  push:
+    branches: [ main, develop, copilot/* ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  summary:
+    name: CI/CD Status Summary
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Repository Statistics
+      run: |
+        echo "## 📊 Repository Statistics" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "- **Total Files**: $(find . -type f | wc -l)" >> $GITHUB_STEP_SUMMARY
+        echo "- **PowerShell Scripts**: $(find . -name "*.ps1" | wc -l)" >> $GITHUB_STEP_SUMMARY
+        echo "- **Python Files**: $(find . -name "*.py" | wc -l)" >> $GITHUB_STEP_SUMMARY
+        echo "- **Markdown Docs**: $(find . -name "*.md" | wc -l)" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        
+    - name: Check CI/CD Files
+      run: |
+        echo "## 🔍 CI/CD Status" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        
+        if [ -f ".github/workflows/powershell-ci.yml" ]; then
+          echo "✅ PowerShell CI workflow configured" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "❌ PowerShell CI workflow missing" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        if [ -f ".github/workflows/python-ci.yml" ]; then
+          echo "✅ Python CI workflow configured" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "❌ Python CI workflow missing" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        if [ -f ".github/workflows/pages-deploy.yml" ]; then
+          echo "✅ GitHub Pages deployment configured" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "❌ GitHub Pages deployment missing" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        if [ -f "CI-CD.md" ]; then
+          echo "✅ CI/CD documentation available" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "❌ CI/CD documentation missing" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        echo "" >> $GITHUB_STEP_SUMMARY
+        
+    - name: Security Check
+      run: |
+        echo "## 🔒 Security Scan" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        
+        # Check for common sensitive patterns
+        if grep -r "password\s*=" . --exclude-dir=.git --exclude="*.md" | head -5; then
+          echo "⚠️ Potential hardcoded passwords found (review required)" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "✅ No obvious hardcoded passwords" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        if grep -r "api[_-]key\s*=" . --exclude-dir=.git --exclude="*.md" | head -5; then
+          echo "⚠️ Potential hardcoded API keys found (review required)" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "✅ No obvious hardcoded API keys" >> $GITHUB_STEP_SUMMARY
+        fi
+        
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "✅ Basic security scan completed" >> $GITHUB_STEP_SUMMARY
+        
+    - name: Quick Stats
+      run: |
+        echo "## 📈 Quick Stats" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "- **Branch**: ${GITHUB_REF#refs/heads/}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Commit**: ${GITHUB_SHA::7}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Triggered by**: ${GITHUB_EVENT_NAME}" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "---" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "📖 For more information, see [CI-CD.md](https://github.com/${{ github.repository }}/blob/main/CI-CD.md)" >> $GITHUB_STEP_SUMMARY

@@ -1,0 +1,85 @@
+name: PowerShell CI
+
+on:
+  push:
+    branches: [ main, develop, copilot/* ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  lint:
+    name: Lint PowerShell Scripts
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Install PSScriptAnalyzer
+      shell: pwsh
+      run: |
+        Set-PSRepository PSGallery -InstallationPolicy Trusted
+        Install-Module -Name PSScriptAnalyzer -Force -Scope CurrentUser
+        
+    - name: Run PSScriptAnalyzer
+      shell: pwsh
+      run: |
+        Write-Host "Running PSScriptAnalyzer on PowerShell scripts..." -ForegroundColor Cyan
+        
+        # Get all .ps1 files
+        $scripts = Get-ChildItem -Path . -Filter "*.ps1" -Recurse | Where-Object {
+          $_.FullName -notmatch '\\node_modules\\' -and
+          $_.FullName -notmatch '\\.git\\' -and
+          $_.FullName -notmatch '\\vendor\\'
+        }
+        
+        Write-Host "Found $($scripts.Count) PowerShell scripts to analyze" -ForegroundColor Green
+        
+        $issues = @()
+        foreach ($script in $scripts) {
+          Write-Host "`nAnalyzing: $($script.Name)" -ForegroundColor Yellow
+          $results = Invoke-ScriptAnalyzer -Path $script.FullName -Severity Warning,Error
+          if ($results) {
+            $issues += $results
+            foreach ($result in $results) {
+              Write-Host "  [$($result.Severity)] $($result.RuleName): $($result.Message)" -ForegroundColor $(if ($result.Severity -eq 'Error') { 'Red' } else { 'Yellow' })
+              Write-Host "    Line $($result.Line): $($result.ScriptName)" -ForegroundColor Gray
+            }
+          }
+        }
+        
+        if ($issues.Count -gt 0) {
+          Write-Host "`n❌ Found $($issues.Count) issues" -ForegroundColor Red
+          Write-Host "Note: These are warnings/suggestions. Review and fix critical issues." -ForegroundColor Yellow
+        } else {
+          Write-Host "`n✅ No issues found!" -ForegroundColor Green
+        }
+        
+    - name: Syntax Check
+      shell: pwsh
+      run: |
+        Write-Host "Checking PowerShell script syntax..." -ForegroundColor Cyan
+        
+        $scripts = Get-ChildItem -Path . -Filter "*.ps1" -Recurse | Where-Object {
+          $_.FullName -notmatch '\\node_modules\\' -and
+          $_.FullName -notmatch '\\.git\\' -and
+          $_.FullName -notmatch '\\vendor\\'
+        }
+        
+        $errors = @()
+        foreach ($script in $scripts) {
+          try {
+            $null = [System.Management.Automation.PSParser]::Tokenize((Get-Content $script.FullName -Raw), [ref]$null)
+            Write-Host "✓ $($script.Name)" -ForegroundColor Green
+          } catch {
+            $errors += $script.Name
+            Write-Host "✗ $($script.Name): $($_.Exception.Message)" -ForegroundColor Red
+          }
+        }
+        
+        if ($errors.Count -gt 0) {
+          Write-Host "`n❌ Syntax errors found in $($errors.Count) scripts" -ForegroundColor Red
+          exit 1
+        } else {
+          Write-Host "`n✅ All scripts have valid syntax!" -ForegroundColor Green
+        }
