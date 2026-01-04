@@ -20,6 +20,7 @@ ZOLO-A6-9VxNUNA is a comprehensive system that combines:
 - 🔒 **Enterprise Security** - Multi-layer security with encryption and validation
 - ☁️ **Cloud Synchronization** - Seamless sync with OneDrive, Google Drive, and Dropbox
 - 🔄 **Git Integration** - Automated Git operations with multi-remote support
+- 🛡️ **Privacy Protection** - Integrated Privacy Badger functionality for tracker blocking
 - ⚡ **Performance Optimized** - Works smoothly on low-spec systems (Intel i3, 8GB RAM)
 
 ## 🆕 Recent Updates
@@ -32,7 +33,15 @@ ZOLO-A6-9VxNUNA is a comprehensive system that combines:
 - ✅ Added emergency brake for critical resource conditions
 - ✅ Optimized EA processing with timer-based operations
 
-**📖 See**: [Freeze Fix Quick Reference](FREEZE-FIX-QUICK-REFERENCE.md) | [Full Performance Guide](trading-bridge/PERFORMANCE-OPTIMIZATION.md)
+### Privacy Badger & Git Automation (2026-01-04)
+**Enhanced privacy and streamlined developer workflow.**
+
+- ✅ Integrated **Privacy Badger** documentation and tracker blocking info
+- ✅ Created `auto-git-workflow.ps1` for unified pull, push, commit, and merge
+- ✅ Added **GenX Trading** global organization details and links
+- ✅ Automated developer operations for @copilot, @jules, and @Cursor
+
+**📖 See**: [Privacy Badger Info](PRIVACY-BADGER-INFO.md) | [Freeze Fix Quick Reference](FREEZE-FIX-QUICK-REFERENCE.md)
 
 ## 📁 Project Structure
 
@@ -149,6 +158,9 @@ This will:
 Automated tools for managing Git branches and pull requests:
 
 ```powershell
+# Unified workflow (Pull, Commit, Push)
+.\auto-git-workflow.ps1 -Action All -Message "Your commit message"
+
 # Merge pull requests interactively
 .\merge-branches.ps1
 
@@ -249,6 +261,7 @@ Sensitive files including credentials, API keys, certificates, and logs are auto
 - [Automation Rules](docs/automation-rules.html) - Automation patterns
 - [Security Guide](docs/security.html) - Security configurations
 - [MT5 Integration](docs/mt5-integration.html) - Trading setup
+- **PRIVACY-BADGER-INFO.md** - Privacy Badger integration and GenX links
 - **DEVICE-SKELETON.md** - Complete device structure blueprint
 - **PROJECT-BLUEPRINTS.md** - Detailed project blueprints
 - **SYSTEM-INFO.md** - System specifications
@@ -260,7 +273,12 @@ Sensitive files including credentials, API keys, certificates, and logs are auto
 
 ## 🏢 Organization
 
-Managed by **A6-9V** organization for better control and collaboration.
+Managed by **A6-9V / GenX Trading** organization for better control and collaboration.
+
+### GenX Trading Global
+- **GitHub Organization**: [A6-9V](https://github.com/organizations/A6-9V)
+- **Timezone**: UTC -12:00
+- **Community**: [WhatsApp Group](https://chat.whatsapp.com/BjT9siY89k2LxYE1X1g8DC)
 
 ### Accounts
 
