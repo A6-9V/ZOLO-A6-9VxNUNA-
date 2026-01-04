@@ -103,7 +103,17 @@ This will set up:
 .\setup-mt5-integration.ps1
 ```
 
-### 4. Launch Trading System
+### 4. Monitor MetaEditor Logs
+
+```powershell
+# Monitor compilation logs and errors
+.\monitor-metaeditor-logs.ps1 -Mode errors
+
+# Or use the interactive launcher
+.\MONITOR-METAEDITOR.bat
+```
+
+### 5. Launch Trading System
 
 ```powershell
 .\start-trading-system.ps1
@@ -161,6 +171,29 @@ Automated tools for managing Git branches and pull requests:
 
 **📖 See**: [Branch Management Guide](BRANCH-MANAGEMENT-GUIDE.md) for complete documentation
 
+### MetaEditor Log Monitoring
+
+Monitor MetaEditor compilation logs for errors and warnings:
+
+```powershell
+# Interactive menu
+.\MONITOR-METAEDITOR.bat
+
+# Show recent logs
+.\monitor-metaeditor-logs.ps1 -Mode recent
+
+# Real-time monitoring
+.\monitor-metaeditor-logs.ps1 -Mode tail
+
+# Show only errors and warnings
+.\monitor-metaeditor-logs.ps1 -Mode errors
+
+# Complete summary
+.\monitor-metaeditor-logs.ps1 -Mode summary
+```
+
+**📖 See**: [MetaEditor Log Monitor Guide](METAEDITOR-LOG-MONITOR-GUIDE.md) for complete documentation
+
 ## 📋 Features
 
 ### Windows Setup Scripts
@@ -181,6 +214,13 @@ Automated tools for managing Git branches and pull requests:
 - ✅ Comprehensive security checks
 - ✅ Token security validation
 - ✅ Script integrity verification
+
+### MetaEditor Log Monitoring
+- ✅ Real-time log monitoring
+- ✅ Compilation error detection
+- ✅ Warning analysis
+- ✅ Historical log viewing
+- ✅ Automated error summaries
 
 ### VPS 24/7 Trading System
 - ✅ Exness MT5 Terminal (24/7 operation)
@@ -257,6 +297,7 @@ Sensitive files including credentials, API keys, certificates, and logs are auto
 - **AUTOMATION-RULES.md** - Automation patterns
 - **GITHUB-DESKTOP-RULES.md** - GitHub Desktop integration
 - **MANUAL-SETUP-GUIDE.md** - Manual setup instructions
+- **METAEDITOR-LOG-MONITOR-GUIDE.md** - MetaEditor log monitoring guide
 
 ## 🏢 Organization
 

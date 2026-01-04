@@ -154,9 +154,15 @@ if ($failedCount -gt 0) {
     Write-Host "  1. Open MetaEditor" -ForegroundColor White
     Write-Host "  2. Open the .mq5 file" -ForegroundColor White
     Write-Host "  3. Press F7 or click Compile" -ForegroundColor White
+    Write-Host ""
+    Write-Host "[INFO] Check detailed compilation logs:" -ForegroundColor Cyan
+    Write-Host "  .\monitor-metaeditor-logs.ps1 -Mode errors" -ForegroundColor White
 }
 
 Write-Host ""
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host "  Compilation Complete!" -ForegroundColor Cyan
 Write-Host "========================================" -ForegroundColor Cyan
+Write-Host ""
+Write-Host "[TIP] Monitor MetaEditor logs for detailed information:" -ForegroundColor Yellow
+Write-Host "  .\monitor-metaeditor-logs.ps1 -Mode errors" -ForegroundColor White
