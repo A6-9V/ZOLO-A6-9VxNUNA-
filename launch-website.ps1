@@ -11,9 +11,14 @@ $ErrorActionPreference = "Stop"
 function Write-ColorOutput {
     param(
         [string]$Message,
-        [string]$Color = "White"
+        [string]$Color = "White",
+        [switch]$NoNewline
     )
-    Write-Host $Message -ForegroundColor $Color
+    if ($NoNewline) {
+        Write-Host $Message -ForegroundColor $Color -NoNewline
+    } else {
+        Write-Host $Message -ForegroundColor $Color
+    }
 }
 
 Clear-Host
@@ -35,18 +40,18 @@ try {
     Write-Host ""
 
     # Branch information
-    switch ($currentBranch) {
+    switch -Wildcard ($currentBranch) {
         "main" {
             Write-ColorOutput "✅ On MAIN branch - Production preview" "Green"
             Write-ColorOutput "   This will show the production-ready version" "Cyan"
         }
-        "copilot/verify-launch-branch-and-port" {
+        "copilot/*" {
             Write-ColorOutput "🔧 On feature branch - Development testing" "Yellow"
             Write-ColorOutput "   Testing branch-specific changes" "Cyan"
         }
         default {
             Write-ColorOutput "⚠️  On branch: $currentBranch" "Yellow"
-            Write-ColorOutput "   Testing custom branch changes" "Cyan"
+            Write-ColorOutput "   Testing feature branch changes" "Cyan"
         }
     }
     Write-Host ""
