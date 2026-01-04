@@ -86,6 +86,16 @@ try {
         Write-ColorOutput "⚠️  Port $Port appears to be in use" "Yellow"
         Write-ColorOutput "   Trying alternative port 8080..." "Cyan"
         $Port = 8080
+
+        # Verify that the alternative port 8080 is not also in use
+        $altNetstat = netstat -an | Select-String ":$Port.*LISTENING"
+        if ($altNetstat) {
+            Write-ColorOutput "❌ Port $Port also appears to be in use" "Red"
+            Write-Host ""
+            Write-Host "Please specify a different port:"
+            Write-Host "  .\launch-website.ps1 -Port 8888"
+            exit 1
+        }
     }
 }
 
