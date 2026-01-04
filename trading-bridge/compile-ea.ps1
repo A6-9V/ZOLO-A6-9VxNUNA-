@@ -107,4 +107,7 @@ if ($metaEditor) {
 
 Write-Host ""
 Write-Host "========================================" -ForegroundColor Cyan
-
+Write-Host ""
+Write-Host "[TIP] Check MetaEditor logs for compilation details:" -ForegroundColor Yellow
+Write-Host "  ..\monitor-metaeditor-logs.ps1 -Mode errors" -ForegroundColor White
+Write-Host ""
