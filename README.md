@@ -265,19 +265,27 @@ Sensitive files including credentials, API keys, certificates, and logs are auto
 
 ## 📚 Documentation
 
+### Setup & Configuration
+- **[FULL-SETUP-GUIDE.md](FULL-SETUP-GUIDE.md)** - ⭐ Complete full setup guide (START HERE)
+- **[MANUAL-SETUP-GUIDE.md](MANUAL-SETUP-GUIDE.md)** - Manual setup instructions
+- **[VPS-SETUP-GUIDE.md](VPS-SETUP-GUIDE.md)** - VPS 24/7 trading system guide
+- **[WORKSPACE-SETUP.md](WORKSPACE-SETUP.md)** - Workspace setup guide
+
+### System & Architecture
 - [Device Skeleton](docs/device-skeleton.html) - Complete device structure
 - [Project Blueprints](docs/project-blueprints.html) - Architecture details
+- **[DEVICE-SKELETON.md](DEVICE-SKELETON.md)** - Complete device structure blueprint
+- **[PROJECT-BLUEPRINTS.md](PROJECT-BLUEPRINTS.md)** - Detailed project blueprints
+- **[SYSTEM-INFO.md](SYSTEM-INFO.md)** - System specifications
+
+### Automation & Integration
 - [Automation Rules](docs/automation-rules.html) - Automation patterns
-- [Security Guide](docs/security.html) - Security configurations
 - [MT5 Integration](docs/mt5-integration.html) - Trading setup
-- **DEVICE-SKELETON.md** - Complete device structure blueprint
-- **PROJECT-BLUEPRINTS.md** - Detailed project blueprints
-- **SYSTEM-INFO.md** - System specifications
-- **WORKSPACE-SETUP.md** - Workspace setup guide
-- **VPS-SETUP-GUIDE.md** - VPS 24/7 trading system guide
-- **AUTOMATION-RULES.md** - Automation patterns
-- **GITHUB-DESKTOP-RULES.md** - GitHub Desktop integration
-- **MANUAL-SETUP-GUIDE.md** - Manual setup instructions
+- **[AUTOMATION-RULES.md](AUTOMATION-RULES.md)** - Automation patterns
+- **[GITHUB-DESKTOP-RULES.md](GITHUB-DESKTOP-RULES.md)** - GitHub Desktop integration
+
+### Security
+- [Security Guide](docs/security.html) - Security configurations
 
 ## 🏢 Organization
 
