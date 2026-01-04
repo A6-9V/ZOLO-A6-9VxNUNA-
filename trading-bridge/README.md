@@ -85,7 +85,7 @@ trading-bridge/
 │   ├── trader/          # Multi-symbol trader
 │   ├── services/        # Background services
 │   └── security/        # Credential management
-├── mql5/
+├── mql5/                # MQL5 Workspace (see mql5/README.md)
 │   ├── Experts/         # MQL5 Expert Advisors
 │   └── Include/         # MQL5 includes
 ├── config/              # Configuration (gitignored)
@@ -109,6 +109,11 @@ trading-bridge/
 
 ### Background Service
 - **background_service.py** - Main service that runs 24/7
+
+### MQL5 Workspace
+- **Expert Advisors** - Enhanced EAs for trading execution
+- **Python Bridge EA** - ZeroMQ client for MQL5 side
+- See `mql5/README.md` for workspace details, paths, and maintenance
 
 ## Configuration
 

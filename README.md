@@ -59,6 +59,10 @@ ZOLO-A6-9VxNUNA is a comprehensive system that combines:
 │   ├── cicd-service.ps1             # CI/CD automation service
 │   ├── mql5-service.ps1              # MQL5 Forge integration
 │   └── master-controller.ps1       # Master service controller
+├── trading-bridge/                   # Trading Bridge System
+│   ├── python/                      # Python trading engine
+│   ├── mql5/                        # MQL5 Workspace (see trading-bridge/mql5/README.md)
+│   └── README.md                    # Trading bridge documentation
 ├── projects/                         # Active development projects
 │   ├── Google AI Studio/            # AI Studio related projects
 │   └── LiteWriter/                  # LiteWriter application
@@ -249,6 +253,8 @@ Sensitive files including credentials, API keys, certificates, and logs are auto
 - [Automation Rules](docs/automation-rules.html) - Automation patterns
 - [Security Guide](docs/security.html) - Security configurations
 - [MT5 Integration](docs/mt5-integration.html) - Trading setup
+- **trading-bridge/mql5/README.md** - MQL5 Workspace paths and configuration
+- **trading-bridge/README.md** - Trading bridge system documentation
 - **DEVICE-SKELETON.md** - Complete device structure blueprint
 - **PROJECT-BLUEPRINTS.md** - Detailed project blueprints
 - **SYSTEM-INFO.md** - System specifications
