@@ -20,8 +20,15 @@ echo ""
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "$SCRIPT_DIR"
 
-# Check current branch
-CURRENT_BRANCH=$(git branch --show-current)
+# Check current branch safely (git may be missing or not a repo)
+set +e
+if command -v git >/dev/null 2>&1 && git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    CURRENT_BRANCH=$(git branch --show-current 2>/dev/null)
+else
+    CURRENT_BRANCH="N/A"
+    echo -e "${YELLOW}⚠️  Git not available or not a Git repository. Branch information will be skipped.${NC}"
+fi
+set -e
 echo -e "${YELLOW}📍 Current Branch:${NC} $CURRENT_BRANCH"
 echo ""
 
