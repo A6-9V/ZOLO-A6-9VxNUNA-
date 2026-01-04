@@ -11,6 +11,25 @@
 
 **🔗 [https://mouy-leng.github.io/ZOLO-A6-9VxNUNA-/](https://mouy-leng.github.io/ZOLO-A6-9VxNUNA-/)**
 
+### 🚀 Launch Website Locally
+
+Test the website on your local machine before deploying:
+
+**Linux/Mac:**
+```bash
+./launch-website.sh
+```
+
+**Windows:**
+```powershell
+.\launch-website.ps1
+# Or double-click: launch-website.bat
+```
+
+**Access at:** http://localhost:8000/
+
+📖 **See [WEBSITE-LAUNCH-GUIDE.md](WEBSITE-LAUNCH-GUIDE.md)** for detailed instructions on branch management and deployment.
+
 ## 📋 Overview
 
 ZOLO-A6-9VxNUNA is a comprehensive system that combines:
@@ -254,6 +273,7 @@ Sensitive files including credentials, API keys, certificates, and logs are auto
 - **SYSTEM-INFO.md** - System specifications
 - **WORKSPACE-SETUP.md** - Workspace setup guide
 - **VPS-SETUP-GUIDE.md** - VPS 24/7 trading system guide
+- **WEBSITE-LAUNCH-GUIDE.md** - Website launch and deployment guide
 - **AUTOMATION-RULES.md** - Automation patterns
 - **GITHUB-DESKTOP-RULES.md** - GitHub Desktop integration
 - **MANUAL-SETUP-GUIDE.md** - Manual setup instructions
