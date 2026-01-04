@@ -117,14 +117,14 @@ if (Test-Path $includeFile) {
 Write-Host ""
 
 # Check port availability
-Write-Host "[5/5] Checking port 5555..." -ForegroundColor Yellow
+Write-Host "[5/5] Checking port 5500..." -ForegroundColor Yellow
 try {
-    $listener = [System.Net.Sockets.TcpListener]::new([System.Net.IPAddress]::Any, 5555)
+    $listener = [System.Net.Sockets.TcpListener]::new([System.Net.IPAddress]::Any, 5500)
     $listener.Start()
     $listener.Stop()
-    Write-Host "    ✓ Port 5555 is available" -ForegroundColor Green
+    Write-Host "    ✓ Port 5500 is available" -ForegroundColor Green
 } catch {
-    Write-Host "    ⚠ Port 5555 may be in use: $_" -ForegroundColor Yellow
+    Write-Host "    ⚠ Port 5500 may be in use: $_" -ForegroundColor Yellow
 }
 Write-Host ""
 

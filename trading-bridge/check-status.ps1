@@ -6,7 +6,7 @@ if ($d) {
     $ea = Join-Path $d.FullName "MQL5\Experts\PythonBridgeEA.mq5"
     $inc = Join-Path $d.FullName "MQL5\Include\PythonBridge.mqh"
     $ex5 = $ea -replace '\.mq5$', '.ex5'
-    $port = Get-NetTCPConnection -LocalPort 5555 -ErrorAction SilentlyContinue
+    $port = Get-NetTCPConnection -LocalPort 5500 -ErrorAction SilentlyContinue
     
     Write-Output "STATUS:EA_FILE:$(if (Test-Path $ea) { 'EXISTS' } else { 'MISSING' })"
     Write-Output "STATUS:INCLUDE_FILE:$(if (Test-Path $inc) { 'EXISTS' } else { 'MISSING' })"

@@ -9,17 +9,17 @@ Set-Location $scriptPath
 
 # Step 1: Check Trading Service
 Write-Host "[1/4] Checking trading service..." -ForegroundColor Yellow
-$port5555 = Get-NetTCPConnection -LocalPort 5555 -ErrorAction SilentlyContinue
-if ($port5555) {
-    Write-Host "  [OK] Trading service running on port 5555" -ForegroundColor Green
+$port5500 = Get-NetTCPConnection -LocalPort 5500 -ErrorAction SilentlyContinue
+if ($port5500) {
+    Write-Host "  [OK] Trading service running on port 5500" -ForegroundColor Green
 } else {
     Write-Host "  [WARNING] Trading service not running" -ForegroundColor Yellow
     if (Test-Path "run-trading-service.py") {
         Write-Host "  Starting trading service..." -ForegroundColor Yellow
         Start-Process python -ArgumentList "run-trading-service.py" -WindowStyle Minimized
         Start-Sleep -Seconds 3
-        $port5555 = Get-NetTCPConnection -LocalPort 5555 -ErrorAction SilentlyContinue
-        if ($port5555) {
+        $port5500 = Get-NetTCPConnection -LocalPort 5500 -ErrorAction SilentlyContinue
+        if ($port5500) {
             Write-Host "  [OK] Trading service started" -ForegroundColor Green
         } else {
             Write-Host "  [INFO] Service may still be starting" -ForegroundColor Yellow

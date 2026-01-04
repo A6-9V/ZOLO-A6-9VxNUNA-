@@ -6,9 +6,9 @@ Write-Host ""
 
 # Check trading service
 Write-Host "Trading Service:" -ForegroundColor Yellow
-$port5555 = Get-NetTCPConnection -LocalPort 5555 -ErrorAction SilentlyContinue
-if ($port5555) {
-    Write-Host "  ✓ Running on port 5555" -ForegroundColor Green
+$port5500 = Get-NetTCPConnection -LocalPort 5500 -ErrorAction SilentlyContinue
+if ($port5500) {
+    Write-Host "  ✓ Running on port 5500" -ForegroundColor Green
 } else {
     Write-Host "  ✗ Not running" -ForegroundColor Red
     Write-Host "  Start with: python run-trading-service.py" -ForegroundColor Cyan
