@@ -145,3 +145,15 @@ For issues or questions:
 3. Verify configuration files
 4. Check service status
 
+## Website
+
+A simple web server is provided to host the static landing page.
+
+### Running the server
+
+1. Make sure you are in the root directory of the repository.
+2. Run the following command:
+   ```bash
+   python3 serve.py
+   ```
+3. Open your web browser and navigate to `http://localhost:8000` to view the website.
