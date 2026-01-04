@@ -88,7 +88,7 @@ Set environment variables:
 2. Compile the EA in MetaEditor (F7)
 3. Attach EA to chart
 4. Configure parameters:
-   - **BridgePort**: 5500 (default)
+   - **BridgePort**: 5555 (default)
    - **BrokerName**: "EXNESS"
    - **AutoExecute**: true/false
    - **DefaultLotSize**: 0.01
@@ -104,7 +104,7 @@ C:\Users\USER\AppData\Roaming\MetaQuotes\Terminal\53785E099C927DB68A545C249CDBCE
 
 ### Port Configuration
 
-Default bridge port: **5500**
+Default bridge port: **5555**
 
 To change port:
 1. Edit `python/services/background_service.py`
@@ -113,9 +113,9 @@ To change port:
 
 ### Firewall Rules
 
-Allow port 5500 (or your custom port) through Windows Firewall:
+Allow port 5555 (or your custom port) through Windows Firewall:
 ```powershell
-New-NetFirewallRule -DisplayName "Trading Bridge" -Direction Inbound -LocalPort 5500 -Protocol TCP -Action Allow
+New-NetFirewallRule -DisplayName "Trading Bridge" -Direction Inbound -LocalPort 5555 -Protocol TCP -Action Allow
 ```
 
 ## VPS Configuration
@@ -191,7 +191,7 @@ if broker:
 ```python
 from bridge.mql5_bridge import MQL5Bridge
 
-bridge = MQL5Bridge(port=5500)
+bridge = MQL5Bridge(port=5555)
 bridge.start()  # In separate thread
 ```
 
@@ -207,7 +207,7 @@ bridge.start()  # In separate thread
 ### Bridge Not Connecting
 
 1. Verify Python service is running
-2. Check port 5500 is not in use
+2. Check port 5555 is not in use
 3. Verify firewall rules
 4. Check logs for errors
 

@@ -1,9 +1,9 @@
 #Requires -Version 5.1
 <#
 .SYNOPSIS
-    Configure Windows Firewall for MetaTrader Exness Trading Bridge Port 5500
+    Configure Windows Firewall for MetaTrader Exness Trading Bridge Port 5555
 .DESCRIPTION
-    This script creates a firewall rule to allow inbound connections on port 5500
+    This script creates a firewall rule to allow inbound connections on port 5555
     for the MetaTrader Exness trading bridge communication.
 #>
 
@@ -11,7 +11,7 @@ $ErrorActionPreference = "Continue"
 
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host "  Firewall Configuration" -ForegroundColor Cyan
-Write-Host "  MetaTrader Exness Bridge Port 5500" -ForegroundColor Cyan
+Write-Host "  MetaTrader Exness Bridge Port 5555" -ForegroundColor Cyan
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host ""
 
@@ -26,9 +26,9 @@ if (-not $isAdmin) {
     exit 1
 }
 
-$port = 5500
+$port = 5555
 $ruleName = "MetaTrader Exness Trading Bridge"
-$ruleDescription = "Allow inbound connections on port 5500 for MetaTrader Exness trading bridge communication"
+$ruleDescription = "Allow inbound connections on port 5555 for MetaTrader Exness trading bridge communication"
 
 Write-Host "[1/3] Checking existing firewall rules..." -ForegroundColor Yellow
 try {

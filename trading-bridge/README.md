@@ -121,7 +121,7 @@ See `SECURITY.md` for security best practices.
 ## Troubleshooting
 
 1. **Python service not starting**: Check Python installation and dependencies
-2. **Bridge connection failed**: Verify port 5500 is not in use and firewall is configured
+2. **Bridge connection failed**: Verify port 5555 is not in use and firewall is configured
 3. **Broker API errors**: Check API keys in Windows Credential Manager
 4. **MQL5 EA not receiving signals**: Verify EA is attached to chart and bridge is running
 

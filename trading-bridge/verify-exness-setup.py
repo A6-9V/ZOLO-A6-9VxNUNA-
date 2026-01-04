@@ -171,9 +171,9 @@ if config_file.exists():
     with open(config_file, 'r') as f:
         content = f.read()
         if '5500' in content:
-            print("    ⚠ Configuration mentions port 5500")
+            print("    ⚠ Configuration mentions legacy port 5500 (should be updated to 5555)")
         if '5555' in content:
-            print("    ✓ Configuration mentions port 5555 (default)")
+            print("    ✓ Configuration uses port 5555 (default)")
     
 print(f"    Default bridge port: 5555")
 print(f"    Note: Ensure MQL5 EA uses same port")

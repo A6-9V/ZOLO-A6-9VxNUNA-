@@ -1,6 +1,6 @@
 @echo off
 echo ========================================
-echo   Firewall Configuration for Port 5500
+echo   Firewall Configuration for Port 5555
 echo   MetaTrader Exness Trading Bridge
 echo ========================================
 echo.
