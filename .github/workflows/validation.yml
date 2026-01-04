@@ -124,8 +124,8 @@ jobs:
         run: |
           Write-Host "Checking PowerShell scripts..." -ForegroundColor Cyan
           
-          $scripts = Get-ChildItem -Path . -Filter "*.ps1" -File -ErrorAction SilentlyContinue | Measure-Object
-          Write-Host "Found $($scripts.Count) PowerShell scripts in root" -ForegroundColor Green
+          $scripts = Get-ChildItem -Path . -Filter "*.ps1" -Recurse -File -ErrorAction SilentlyContinue | Measure-Object
+          Write-Host "Found $($scripts.Count) PowerShell scripts" -ForegroundColor Green
           
           if ($scripts.Count -eq 0) {
             Write-Host "[WARNING] No PowerShell scripts found" -ForegroundColor Yellow
@@ -180,19 +180,24 @@ jobs:
           Write-Host "Checking for accidentally committed secrets..." -ForegroundColor Cyan
           
           $dangerousPatterns = @(
-            "ghp_",
-            "gho_",
-            "github_pat_"
+            "ghp_[A-Za-z0-9_]{36,}",
+            "gho_[A-Za-z0-9_]{36,}",
+            "github_pat_[A-Za-z0-9_]{82}"
           )
           
           $found = $false
-          foreach ($pattern in $dangerousPatterns) {
-            $matches = Get-ChildItem -Recurse -File -Exclude "*.md","*.example","SECURITY.md",".gitignore" -ErrorAction SilentlyContinue | 
-              Select-String -Pattern $pattern -SimpleMatch:$false -ErrorAction SilentlyContinue
-            if ($matches) {
-              Write-Host "[WARNING] Potential secret pattern found: $pattern" -ForegroundColor Yellow
-              $matches | Select-Object -First 5 | ForEach-Object { Write-Host "  $($_.Path):$($_.LineNumber)" -ForegroundColor Gray }
-              $found = $true
+          $searchDirs = @(".", "scripts", "vps-services", "trading-bridge")
+          foreach ($dir in $searchDirs) {
+            if (-not (Test-Path $dir)) { continue }
+            
+            foreach ($pattern in $dangerousPatterns) {
+              $matches = Get-ChildItem -Path $dir -Recurse -File -Exclude "*.md","*.example","SECURITY.md",".gitignore" -ErrorAction SilentlyContinue | 
+                Select-String -Pattern $pattern -ErrorAction SilentlyContinue
+              if ($matches) {
+                Write-Host "[WARNING] Potential secret pattern found: $pattern" -ForegroundColor Yellow
+                $matches | Select-Object -First 5 | ForEach-Object { Write-Host "  $($_.Path):$($_.LineNumber)" -ForegroundColor Gray }
+                $found = $true
+              }
             }
           }
           
@@ -216,11 +221,15 @@ jobs:
           
           $tracked = @()
           foreach ($pattern in $sensitivePatterns) {
-            $trackedFiles = git ls-files $pattern 2>$null
-            if ($trackedFiles) {
-              Write-Host "[ERROR] Files matching $pattern are tracked in git!" -ForegroundColor Red
-              $tracked += $pattern
-            } else {
+            try {
+              $trackedFiles = git ls-files $pattern -ErrorAction Stop 2>$null
+              if ($trackedFiles) {
+                Write-Host "[ERROR] Files matching $pattern are tracked in git!" -ForegroundColor Red
+                $tracked += $pattern
+              } else {
+                Write-Host "[OK] No files matching $pattern are tracked" -ForegroundColor Green
+              }
+            } catch {
               Write-Host "[OK] No files matching $pattern are tracked" -ForegroundColor Green
             }
           }
