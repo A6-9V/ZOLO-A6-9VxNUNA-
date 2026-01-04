@@ -16,7 +16,7 @@ Write-Host "========================================" -ForegroundColor Cyan
 Write-Host ""
 
 $scriptPath = Split-Path -Parent $MyInvocation.MyCommand.Path
-$firewallScript = Join-Path $scriptPath "setup-firewall-port-5500.ps1"
+$firewallScript = Join-Path $scriptPath "setup-firewall-port-5555.ps1"
 
 Write-Host "[INFO] Configuration Summary:" -ForegroundColor Yellow
 Write-Host "  - Python Bridge Port: 5555" -ForegroundColor White
@@ -42,7 +42,7 @@ if (Test-Path $firewallScript) {
 }
 else {
     Write-Host "    [WARNING] Firewall script not found: $firewallScript" -ForegroundColor Yellow
-    Write-Host "    [INFO] Please run setup-firewall-port-5500.ps1 as administrator" -ForegroundColor Cyan
+    Write-Host "    [INFO] Please run setup-firewall-port-5555.ps1 as administrator" -ForegroundColor Cyan
 }
 
 Write-Host "[2/2] Verifying configuration files..." -ForegroundColor Yellow
