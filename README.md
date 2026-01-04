@@ -79,7 +79,28 @@ git clone https://github.com/Mouy-leng/ZOLO-A6-9VxNUNA-.git
 cd ZOLO-A6-9VxNUNA-
 ```
 
-### 2. Run the Setup
+### 2. Run Full Setup (Recommended)
+
+Run the complete system setup for one-time configuration:
+
+```powershell
+# Run as Administrator
+.\full-setup.ps1
+```
+
+Or double-click: **`RUN-FULL-SETUP.bat`**
+
+This will set up everything:
+- ✅ Complete device setup (Windows configuration)
+- ✅ Workspace structure
+- ✅ Windows auto-configuration
+- ✅ Cloud sync services (OneDrive, Google Drive, Dropbox)
+- ✅ Git repositories
+- ✅ Security settings
+- ✅ EXNESS trading system (MetaTrader 5 & EAs)
+- ✅ VPS services (optional)
+
+### 2b. Alternative: Individual Component Setup
 
 Run the master launch script to begin the setup on any platform:
 
