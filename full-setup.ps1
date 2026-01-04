@@ -25,7 +25,9 @@ if (-not $isAdmin) {
     exit
 }
 
-if (-not $IsWindows) {
+# Check if running on Windows (compatible with PowerShell 5.1+)
+$isWindows = ($PSVersionTable.PSVersion.Major -le 5) -or ($PSVersionTable.Platform -eq 'Win32NT') -or ($env:OS -eq 'Windows_NT')
+if (-not $isWindows) {
     Write-Host "This script is only compatible with Windows." -ForegroundColor Red
     Write-Host "Please run start.ps1 to begin the setup process." -ForegroundColor Yellow
     exit 1
@@ -89,7 +91,7 @@ function Invoke-SetupScript {
         try {
             & powershell.exe -ExecutionPolicy Bypass -File $scriptPath -ErrorAction Continue
             
-            if ($LASTEXITCODE -eq 0 -or $LASTEXITCODE -eq $null) {
+            if ($null -eq $LASTEXITCODE -or $LASTEXITCODE -eq 0) {
                 Write-Host ""
                 Write-Host "[OK] $Description completed successfully" -ForegroundColor Green
                 $script:setupSteps += @{Step=$StepNumber; Name=$Description; Status="Success"; Script=$ScriptName}
@@ -252,8 +254,8 @@ if ($errors.Count -eq 0) {
     Write-Host "   - Compile and attach Expert Advisors" -ForegroundColor White
     Write-Host ""
     Write-Host "2. Cloud Services:" -ForegroundColor Yellow
-    Write-Host "   - Sign in to OneDrive (Lengkundee01@outlook.com)" -ForegroundColor White
-    Write-Host "   - Sign in to Google Drive (Lengkundee01@gmail.com)" -ForegroundColor White
+    Write-Host "   - Sign in to OneDrive with your Microsoft account" -ForegroundColor White
+    Write-Host "   - Sign in to Google Drive with your Google account" -ForegroundColor White
     Write-Host "   - Verify sync status in system tray icons" -ForegroundColor White
     Write-Host ""
     Write-Host "3. Git Operations:" -ForegroundColor Yellow

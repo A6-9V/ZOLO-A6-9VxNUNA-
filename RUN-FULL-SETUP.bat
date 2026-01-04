@@ -20,10 +20,6 @@ echo   [6] Security Setup (Security checks)
 echo   [7] EXNESS Trading System (MetaTrader 5 ^& EAs)
 echo   [8] VPS Services (Optional 24/7 trading)
 echo.
-echo Accounts:
-echo   - Gmail: Lengkundee01@gmail.com
-echo   - Outlook: Lengkundee01@outlook.com
-echo.
 echo Press Ctrl+C to cancel, or
 pause
 echo.
