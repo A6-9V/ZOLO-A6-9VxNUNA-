@@ -132,7 +132,8 @@ try {
         Write-Host "http://$localIP:$Port/"
     }
 } catch {
-    # Silently ignore if we can't get the IP
+    # Network IP detection failed - inform user but continue
+    Write-ColorOutput "   ⚠️  Unable to detect network IP address" "DarkYellow"
 }
 
 Write-Host ""

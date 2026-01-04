@@ -36,7 +36,7 @@ echo ""
 if [ "$CURRENT_BRANCH" = "main" ]; then
     echo -e "${GREEN}✅ On MAIN branch - Production preview${NC}"
     echo -e "${BLUE}   This will show the production-ready version${NC}"
-elif [[ "$CURRENT_BRANCH" == copilot/* ]]; then
+elif [[ "$CURRENT_BRANCH" == "copilot/"* ]]; then
     echo -e "${YELLOW}🔧 On feature branch - Development testing${NC}"
     echo -e "${BLUE}   Testing branch-specific changes${NC}"
 else
