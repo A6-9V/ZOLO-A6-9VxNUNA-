@@ -221,7 +221,6 @@ Features:
 - ✅ Auto-merge with branch management
 - ✅ Secure credential management
 - ✅ Workflow logging and tracking
-- ✅ Secure credential management
 
 ### Security Validation
 - ✅ Comprehensive security checks
@@ -279,8 +278,8 @@ Features:
 |----------|---------|
 | [GitHub Organization](https://github.com/organizations/A6-9V) | Code & Projects |
 | [ORCID Profile](https://orcid.org/0009-0009-3473-2131) | Research ID |
-| [ChatGPT Assistant 1](https://chatgpt.com/gg/v/6945af67a93c819e9ec60205fcc93361) | Trading Strategy |
-| [ChatGPT Assistant 2](https://chatgpt.com/gg/v/6955e0160240819c881221a2de84053d) | Advanced Analysis |
+| [ChatGPT Assistant 1](https://chatgpt.com/gg/v/6945af67a93c819e9ec60205fcc93361) (private) | Trading Strategy |
+| [ChatGPT Assistant 2](https://chatgpt.com/gg/v/6955e0160240819c881221a2de84053d) (private) | Advanced Analysis |
 | [Perplexity AI](https://www.perplexity.ai/collections/genx-bx-sYWiZQGIQge9LAWdTc5pGg) | Research Collection |
 | [WhatsApp Group](https://chat.whatsapp.com/BjT9siY89k2LxYE1X1g8DC) | Team Communication |
 

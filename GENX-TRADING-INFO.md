@@ -21,14 +21,16 @@
 ### ChatGPT Resources
 
 #### GenX Trading Assistant 1
-- **URL**: [https://chatgpt.com/gg/v/6945af67a93c819e9ec60205fcc93361?token=kmx4GgcQDohHEJ9DKam1_g](https://chatgpt.com/gg/v/6945af67a93c819e9ec60205fcc93361?token=kmx4GgcQDohHEJ9DKam1_g)
+- **URL**: [https://chatgpt.com/gg/v/6945af67a93c819e9ec60205fcc93361](https://chatgpt.com/gg/v/6945af67a93c819e9ec60205fcc93361)
 - **Type**: Custom GPT Assistant
 - **Purpose**: Trading strategy and automation assistance
+- **Note**: Access token required (contact team for access)
 
 #### GenX Trading Assistant 2
-- **URL**: [https://chatgpt.com/gg/v/6955e0160240819c881221a2de84053d?token=j78fD5aMMO95GHXpwlThmQ](https://chatgpt.com/gg/v/6955e0160240819c881221a2de84053d?token=j78fD5aMMO95GHXpwlThmQ)
+- **URL**: [https://chatgpt.com/gg/v/6955e0160240819c881221a2de84053d](https://chatgpt.com/gg/v/6955e0160240819c881221a2de84053d)
 - **Type**: Custom GPT Assistant
 - **Purpose**: Advanced trading analysis and support
+- **Note**: Access token required (contact team for access)
 
 ### Perplexity AI Collection
 - **URL**: [https://www.perplexity.ai/collections/genx-bx-sYWiZQGIQge9LAWdTc5pGg](https://www.perplexity.ai/collections/genx-bx-sYWiZQGIQge9LAWdTc5pGg)

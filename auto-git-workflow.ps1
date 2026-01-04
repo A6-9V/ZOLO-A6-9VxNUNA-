@@ -33,7 +33,7 @@ param(
     [string]$Message
 )
 
-$ErrorActionPreference = "Continue"
+$ErrorActionPreference = "Stop"
 
 # ============================================
 # Configuration
@@ -130,17 +130,40 @@ function Invoke-AutoPull {
             Write-Status "  [WARNING] Merge conflicts detected!" -Type "Warning"
             Write-Status "  Attempting automatic conflict resolution..." -Type "Info"
             
-            # Try to use ours strategy for common files
-            $conflictedFiles = git diff --name-only --diff-filter=U 2>&1
-            foreach ($file in $conflictedFiles) {
-                Write-Status "    Resolving: $file (using local version)" -Type "Warning"
-                git checkout --ours $file 2>&1 | Out-Null
-                git add $file 2>&1 | Out-Null
+            # Determine conflict resolution strategy from environment or default to 'ours'
+            $strategy = $env:GIT_AUTO_CONFLICT_STRATEGY
+            if ([string]::IsNullOrWhiteSpace($strategy)) {
+                $strategy = "ours"
+            }
+            
+            $conflictedFiles = git diff --name-only --diff-filter=U 2>&1 | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
+            
+            if ($strategy -eq "ours") {
+                Write-Status "  [INFO] Using 'ours' strategy (local changes win)" -Type "Info"
+                foreach ($file in $conflictedFiles) {
+                    Write-Status "    Resolving: $file (using local version)" -Type "Warning"
+                    git checkout --ours $file 2>&1 | Out-Null
+                    git add $file 2>&1 | Out-Null
+                }
+            } elseif ($strategy -eq "theirs") {
+                Write-Status "  [INFO] Using 'theirs' strategy (remote changes win)" -Type "Info"
+                foreach ($file in $conflictedFiles) {
+                    Write-Status "    Resolving: $file (using remote version)" -Type "Warning"
+                    git checkout --theirs $file 2>&1 | Out-Null
+                    git add $file 2>&1 | Out-Null
+                }
+            } else {
+                Write-Status "  [WARNING] Unknown strategy '$strategy', defaulting to 'ours'" -Type "Warning"
+                foreach ($file in $conflictedFiles) {
+                    Write-Status "    Resolving: $file (using local version)" -Type "Warning"
+                    git checkout --ours $file 2>&1 | Out-Null
+                    git add $file 2>&1 | Out-Null
+                }
             }
             
             # Complete merge
             git commit --no-edit 2>&1 | Out-Null
-            Write-Status "  [OK] Conflicts resolved automatically" -Type "Success"
+            Write-Status "  [OK] Conflicts resolved automatically using '$strategy' strategy" -Type "Success"
             return $true
         }
         
@@ -177,10 +200,20 @@ function Invoke-AutoCommit {
         
         Write-Status "  Commit message: $CommitMessage" -Type "Info"
         
-        # Commit
-        git commit -m $CommitMessage 2>&1 | Out-Null
+        # Commit and capture output
+        $commitOutput = git commit -m $CommitMessage 2>&1
         
         if ($LASTEXITCODE -eq 0) {
+            # Check for significant warnings in commit output
+            if ($commitOutput) {
+                $warnings = $commitOutput | Where-Object { $_ -match '(?i)warning|large file|sensitive' }
+                if ($warnings) {
+                    Write-Status "  [WARNING] Git commit warnings:" -Type "Warning"
+                    foreach ($warning in $warnings) {
+                        Write-Status "    $warning" -Type "Warning"
+                    }
+                }
+            }
             Write-Status "  [OK] Changes committed successfully" -Type "Success"
             return $true
         } else {
@@ -270,12 +303,21 @@ function Invoke-AutoMerge {
         if ($mergeOutput -match "conflict|CONFLICT") {
             Write-Status "  [WARNING] Merge conflicts detected, attempting auto-resolve..." -Type "Warning"
             
-            # Auto-resolve using theirs strategy
-            git merge --strategy-option theirs $currentBranch 2>&1 | Out-Null
+            # Abort the failed merge first
+            git merge --abort 2>&1 | Out-Null
             
-            Write-Status "  [OK] Conflicts auto-resolved" -Type "Success"
+            # Retry merge with 'theirs' strategy (prefer changes from branch being merged)
+            $mergeOutput = git merge -X theirs $currentBranch --no-edit 2>&1 | Out-String
+            
+            if ($LASTEXITCODE -eq 0) {
+                Write-Status "  [OK] Conflicts auto-resolved using 'theirs' strategy" -Type "Success"
+                git checkout $currentBranch 2>&1 | Out-Null
+                return $true
+            }
+            
+            Write-Status "  [ERROR] Automatic conflict resolution failed" -Type "Error"
             git checkout $currentBranch 2>&1 | Out-Null
-            return $true
+            return $false
         }
         
         git checkout $currentBranch 2>&1 | Out-Null
@@ -349,9 +391,18 @@ Write-Status ""
 
 Write-Status "Results:" -Type "Info"
 foreach ($key in $results.Keys) {
+    # Determine if this operation was attempted
+    $operationAttempted = $false
+    switch ($key.ToLower()) {
+        'pull'   { $operationAttempted = ($Action -eq 'pull'   -or $Action -eq 'auto') }
+        'commit' { $operationAttempted = ($Action -eq 'commit' -or $Action -eq 'auto') }
+        'push'   { $operationAttempted = ($Action -eq 'push'   -or $Action -eq 'auto') }
+        'merge'  { $operationAttempted = ($Action -eq 'merge'  -or ($Action -eq 'auto' -and $Branch)) }
+    }
+    
     if ($results[$key] -eq $true) {
         Write-Status "  ✅ $key : SUCCESS" -Type "Success"
-    } elseif ($results[$key] -eq $false -and $Action -eq $key.ToLower() -or $Action -eq 'auto') {
+    } elseif ($results[$key] -eq $false -and $operationAttempted) {
         Write-Status "  ⚠️  $key : SKIPPED/FAILED" -Type "Warning"
     }
 }
@@ -363,6 +414,7 @@ Write-Status ""
 
 # Save workflow log
 $logPath = Join-Path $repoPath "git-workflow-log.txt"
+$resultsText = ($results.Keys | ForEach-Object { "  $_ : $($results[$_])" }) -join "`n"
 $logEntry = @"
 ===========================================
 Git Workflow Execution
@@ -371,7 +423,7 @@ Timestamp: $timestamp
 Action: $Action
 Branch: $(Get-CurrentBranch)
 Results:
-$(foreach ($key in $results.Keys) { "  $key : $($results[$key])" })
+$resultsText
 ===========================================
 
 "@

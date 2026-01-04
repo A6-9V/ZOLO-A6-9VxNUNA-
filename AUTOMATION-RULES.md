@@ -96,8 +96,6 @@ This document defines the automation rules and intelligent defaults used by the 
 - `.gitignore` - Excludes all sensitive files
 
 ### Documentation
-- `git-credentials.txt` - GitHub tokens (gitignored)
-- `.gitignore` - Excludes all sensitive files
 - `AUTOMATION-RULES.md` - This file
 - `README.md` - Project documentation
 - `SYSTEM-INFO.md` - System specifications and configuration
