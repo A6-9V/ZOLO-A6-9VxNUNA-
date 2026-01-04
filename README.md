@@ -194,6 +194,7 @@ Automated tools for managing Git branches and pull requests:
 - ✅ MQL5 Forge Integration
 - ✅ Automated error handling
 - ✅ Auto-restart capabilities
+- ✅ SSL/HTTPS Security (DigiCert EV Certificate)
 
 ### Project Scanner
 - ✅ Scan all local drives for development projects
@@ -207,6 +208,7 @@ Automated tools for managing Git branches and pull requests:
 - ✅ Registry optimizations
 - ✅ Cursor IDE configuration
 - ✅ MCP (Model Context Protocol) setup
+- ✅ SSL Certificate management for VPS web hosting
 
 ## 🔗 Connected Repositories
 
@@ -260,6 +262,8 @@ Sensitive files including credentials, API keys, certificates, and logs are auto
 - **SYSTEM-INFO.md** - System specifications
 - **WORKSPACE-SETUP.md** - Workspace setup guide
 - **VPS-SETUP-GUIDE.md** - VPS 24/7 trading system guide
+- **ssl-certificates/README.md** - SSL certificate setup for VPS hosting
+- **ssl-certificates/SSL-QUICK-REFERENCE.md** - Quick SSL reference guide
 - **AUTOMATION-RULES.md** - Automation patterns
 - **GITHUB-DESKTOP-RULES.md** - GitHub Desktop integration
 - **MANUAL-SETUP-GUIDE.md** - Manual setup instructions

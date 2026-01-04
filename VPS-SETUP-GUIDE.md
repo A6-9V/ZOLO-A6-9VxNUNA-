@@ -11,6 +11,7 @@ This system provides:
 - ✅ **CI/CD Automation** - Automated Python project execution
 - ✅ **MQL5 Forge Integration** - https://forge.mql5.io/LengKundee/mql5
 - ✅ **Scheduled Trading System** - Automated trading schedule setup
+- ✅ **SSL/HTTPS Security** - Secure web hosting with DigiCert EV certificate
 
 ## Quick Start
 
@@ -43,6 +44,17 @@ Check all services:
 ```powershell
 .\vps-verification.ps1
 ```
+
+### 4. Setup SSL Certificate (Optional)
+
+For secure HTTPS web hosting, install the SSL certificate:
+
+```powershell
+# Run as Administrator
+.\ssl-certificates\scripts\install-ssl-certificate.ps1
+```
+
+See [SSL Certificate Setup Guide](ssl-certificates/README.md) for detailed instructions.
 
 ## System Components
 
@@ -274,6 +286,137 @@ Get-Process | Where-Object {
 - Logs contain service activity (no sensitive data)
 - GitHub credentials stored securely (not in scripts)
 - Firewall rules may need adjustment for web services
+- SSL certificate available for HTTPS web hosting (see SSL section below)
+
+## SSL Certificate Setup
+
+### Overview
+
+The VPS includes support for secure HTTPS web hosting using a DigiCert Extended Validation (EV) SSL certificate.
+
+**Certificate Details:**
+- **Type**: Extended Validation SSL
+- **Issuer**: DigiCert SHA2 Extended Validation Server CA
+- **Valid Until**: February 19, 2026
+- **Key Size**: RSA 2048-bit
+- **Domains**: Multi-domain certificate (44 domains including a.stripecdn.com)
+
+### Installation
+
+#### 1. Prepare Certificate Files
+
+Place your certificate files in `ssl-certificates/certs/`:
+- `certificate.pfx` - Windows certificate with private key
+- `certificate.pem` - Server certificate (PEM format)
+- `chain.pem` - Certificate chain
+- `private.key` - Private key (keep secure!)
+
+#### 2. Run Installation Script
+
+```powershell
+# Run as Administrator
+.\ssl-certificates\scripts\install-ssl-certificate.ps1 -CertPath "C:\SSL\certificate.pfx"
+```
+
+Options:
+- `-WebServer "IIS"` or `-WebServer "Nginx"` (default: IIS)
+- `-SiteName "ZOLO-Trading"` (website name)
+- `-HttpsPort 443` (HTTPS port)
+
+#### 3. Configure Web Server
+
+```powershell
+# Run as Administrator
+.\ssl-certificates\scripts\configure-webserver.ps1 -WebServer "IIS"
+```
+
+This configures:
+- ✅ HTTP to HTTPS redirect
+- ✅ Security headers (HSTS, X-Frame-Options, etc.)
+- ✅ TLS 1.2/1.3 only
+- ✅ Strong cipher suites
+- ✅ OCSP stapling (Nginx)
+
+#### 4. Deploy to VPS
+
+```powershell
+# If running on the VPS
+.\ssl-certificates\scripts\deploy-to-vps.ps1 -VpsId 675930
+```
+
+### Verification
+
+#### Test HTTPS Locally
+
+```powershell
+# Test local HTTPS
+Invoke-WebRequest -Uri "https://localhost" -UseBasicParsing
+
+# Check certificate
+Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object { $_.Subject -like "*stripecdn.com*" }
+```
+
+#### Test SSL Security
+
+1. **SSL Labs Test**
+   - Visit: https://www.ssllabs.com/ssltest/
+   - Enter your domain
+   - Aim for A+ rating
+
+2. **Security Headers Check**
+   - Visit: https://securityheaders.com/
+   - Verify all headers are configured
+
+3. **Browser Test**
+   - Navigate to https://yourdomain.com
+   - Check for green padlock
+   - View certificate details
+
+### Certificate Monitoring
+
+The deployment script automatically creates a scheduled task to monitor certificate expiry:
+
+```powershell
+# Check certificate expiry manually
+$cert = Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object { $_.Subject -like "*stripecdn.com*" }
+$daysLeft = ($cert.NotAfter - (Get-Date)).Days
+Write-Host "Certificate expires in $daysLeft days"
+```
+
+**⚠️ Important**: Certificate expires on **February 19, 2026**. Plan renewal at least 30 days in advance.
+
+### Troubleshooting
+
+#### Certificate Not Trusted
+```powershell
+# Install intermediate certificates
+certutil -addstore -f "CA" chain.pem
+```
+
+#### Port 443 Not Accessible
+```powershell
+# Check firewall
+Test-NetConnection -ComputerName localhost -Port 443
+
+# Add firewall rule
+New-NetFirewallRule -DisplayName "HTTPS Inbound" -Direction Inbound -Protocol TCP -LocalPort 443 -Action Allow
+```
+
+#### IIS Not Starting
+```powershell
+# Restart IIS
+iisreset
+
+# Check IIS status
+Get-Service -Name W3SVC
+```
+
+### Documentation
+
+For detailed SSL setup instructions, see:
+- [SSL Certificate README](ssl-certificates/README.md)
+- [Certificate Information](ssl-certificates/docs/CERTIFICATE-INFO.md)
+- [Deployment Guide](ssl-certificates/docs/DEPLOYMENT-GUIDE.md)
 
 ## Maintenance
 
@@ -285,11 +428,13 @@ Get-Process | Where-Object {
 - Review service logs
 - Update GitHub repositories
 - Check disk space
+- Verify SSL certificate status
 
 ### Monthly
 - Review and optimize service schedules
 - Update Python dependencies
 - Backup configuration files
+- Check SSL certificate expiry (renew if < 30 days)
 
 ## Support
 
@@ -301,5 +446,8 @@ For issues or questions:
 ---
 
 **Created**: 2025-12-09  
+**Updated**: 2026-01-04 (Added SSL Certificate Support)  
 **System**: NuNa (Windows 11 Home Single Language 25H2)  
-**VPS**: 24/7 Trading System
+**VPS**: 24/7 Trading System  
+**VPS ID**: 675930 (MQL5 VPS Jakarta 01)  
+**SSL Certificate**: DigiCert EV (Expires: Feb 19, 2026)

@@ -42,6 +42,17 @@ mql5-config.txt
 vps-config.txt
 *vps-config*
 
+# SSL Certificates (NEVER COMMIT THESE!)
+*.pfx
+*.p12
+*.crt
+*.cer
+*.der
+*.p7b
+*.p7c
+ssl-certificates/certs/*
+!ssl-certificates/certs/.gitkeep
+
 # Sensitive credentials and keys (from my-drive-projects)
 discovered-projects.json
 execution-summary.json
