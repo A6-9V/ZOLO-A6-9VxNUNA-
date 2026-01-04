@@ -96,6 +96,16 @@ try {
             Write-Host "  .\launch-website.ps1 -Port 8888"
             exit 1
         }
+
+        # Verify that the alternative port 8080 is not also in use
+        $altNetstat = netstat -an | Select-String ":$Port.*LISTENING"
+        if ($altNetstat) {
+            Write-ColorOutput "❌ Port $Port also appears to be in use" "Red"
+            Write-Host ""
+            Write-Host "Please specify a different port:"
+            Write-Host "  .\launch-website.ps1 -Port 8888"
+            exit 1
+        }
     }
 }
 
