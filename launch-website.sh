@@ -84,7 +84,9 @@ echo ""
 echo -e "${YELLOW}   Local URL:${NC}     http://localhost:$PORT/"
 
 # Try to get network IP
+set +e
 NETWORK_IP=$(hostname -I 2>/dev/null | awk '{print $1}')
+set -e
 if [ -n "$NETWORK_IP" ]; then
     echo -e "${YELLOW}   Network URL:${NC}  http://$NETWORK_IP:$PORT/"
 fi
