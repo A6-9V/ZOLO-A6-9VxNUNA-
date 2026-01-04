@@ -112,17 +112,17 @@ Write-Host ""
 Write-ColorOutput "   Local URL:     " "Yellow" -NoNewline
 Write-Host "http://localhost:$Port/"
 
-# Try to get local IP
+# Try to get local IP (with error handling)
 try {
-    $localIP = (Get-NetIPAddress -AddressFamily IPv4 -InterfaceAlias Ethernet*, Wi-Fi* | 
-                Where-Object { $_.IPAddress -notlike "169.254.*" } | 
+    $localIP = (Get-NetIPAddress -AddressFamily IPv4 -PrefixOrigin Manual,Dhcp -ErrorAction SilentlyContinue | 
+                Where-Object { $_.IPAddress -notlike "169.254.*" -and $_.IPAddress -ne "127.0.0.1" } | 
                 Select-Object -First 1).IPAddress
     if ($localIP) {
         Write-ColorOutput "   Network URL:   " "Yellow" -NoNewline
         Write-Host "http://$localIP:$Port/"
     }
 } catch {
-    # Ignore if we can't get the IP
+    # Silently ignore if we can't get the IP
 }
 
 Write-Host ""

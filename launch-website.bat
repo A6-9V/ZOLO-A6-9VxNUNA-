@@ -15,8 +15,8 @@ echo.
 echo Starting local development server...
 echo.
 
-REM Run PowerShell script
-powershell.exe -ExecutionPolicy Bypass -NoProfile -File "%~dp0launch-website.ps1"
+REM Run PowerShell script with RemoteSigned policy (more secure)
+powershell.exe -ExecutionPolicy RemoteSigned -NoProfile -File "%~dp0launch-website.ps1"
 
 if %ERRORLEVEL% NEQ 0 (
     echo.
