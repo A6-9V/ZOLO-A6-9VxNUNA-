@@ -1031,6 +1031,15 @@ section {
     color: var(--primary);
 }
 
+/*
+ * Performance: .animate-in class for Intersection Observer animations.
+ * Defined here to avoid style recalculation from JS-injected styles.
+ */
+.animate-in {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+}
+
 /* Scrollbar */
 ::-webkit-scrollbar {
     width: 10px;
