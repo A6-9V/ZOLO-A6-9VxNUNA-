@@ -282,6 +282,7 @@ Features:
 
 | Resource | Purpose |
 |----------|---------|
+| [**GenX Trading Platform**](https://genx.trade/?utm_campaign=properties.expert&utm_medium=special&utm_source=mt5terminal) | **Professional Trading Platform** |
 | [GitHub Organization](https://github.com/organizations/A6-9V) | Code & Projects |
 | [ORCID Profile](https://orcid.org/0009-0009-3473-2131) | Research ID |
 | [ChatGPT Assistant 1](https://chatgpt.com/gg/v/6945af67a93c819e9ec60205fcc93361) (private) | Trading Strategy |

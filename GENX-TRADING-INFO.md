@@ -8,6 +8,12 @@
 
 ## Official Links
 
+### GenX Trading Platform
+- **URL**: [https://genx.trade/?utm_campaign=properties.expert&utm_medium=special&utm_source=mt5terminal](https://genx.trade/?utm_campaign=properties.expert&utm_medium=special&utm_source=mt5terminal)
+- **Type**: Trading Platform
+- **Purpose**: Professional trading platform integrated with MetaTrader 5
+- **Features**: Properties expert tools, MT5 terminal integration, special trading features
+
 ### GitHub Organization
 - **URL**: [https://github.com/organizations/A6-9V](https://github.com/organizations/A6-9V)
 - **Type**: GitHub Organization
@@ -46,15 +52,17 @@
 
 This project is part of the GenX Trading ecosystem and integrates with:
 
-1. **A6-9V Organization** - Main GitHub organization for all trading projects
-2. **AI Assistants** - Custom ChatGPT models for trading strategy
-3. **Research Platform** - Perplexity AI for market research
-4. **Communication** - WhatsApp group for team coordination
+1. **GenX Trading Platform** - Professional trading platform with MT5 integration
+2. **A6-9V Organization** - Main GitHub organization for all trading projects
+3. **AI Assistants** - Custom ChatGPT models for trading strategy
+4. **Research Platform** - Perplexity AI for market research
+5. **Communication** - WhatsApp group for team coordination
 
 ## Quick Access
 
 | Resource | Link | Purpose |
 |----------|------|---------|
+| **Trading Platform** | [**GenX.trade**](https://genx.trade/?utm_campaign=properties.expert&utm_medium=special&utm_source=mt5terminal) | **Professional Trading** |
 | GitHub Org | [A6-9V](https://github.com/organizations/A6-9V) | Code & Projects |
 | ORCID | [0009-0009-3473-2131](https://orcid.org/0009-0009-3473-2131) | Research ID |
 | ChatGPT 1 | [Assistant 1](https://chatgpt.com/gg/v/6945af67a93c819e9ec60205fcc93361) | Trading Strategy |
