@@ -32,7 +32,7 @@ $ErrorActionPreference = "Continue"
 function Read-Configuration {
     $configFile = Join-Path $PSScriptRoot "html-log-config.txt"
     $config = @{
-        HtmlLogPath = "J:\OneDrive-Backup-20251227-002233\ReportTrade-279410452.html"
+        HtmlLogPath = "J:\OneDrive-Backup\ReportTrade.html"  # Generic default - update in config file
         OpenHtmlLogOnStartup = $true
         LaunchVpsSystem = $true
         LaunchTradingSystem = $true
@@ -143,10 +143,12 @@ if (-not $SkipLogOpen -and $config.OpenHtmlLogOnStartup) {
         Write-LaunchLog "Warning: HTML log file not found"
         
         # Try to find the file in common locations
+        # These are generic patterns - users should update html-log-config.txt with their actual paths
         $searchPaths = @(
-            "J:\OneDrive-Backup-*\ReportTrade*.html",
-            "$env:USERPROFILE\OneDrive\*Backup*\ReportTrade*.html",
-            "D:\OneDrive*\ReportTrade*.html"
+            "J:\OneDrive*\ReportTrade*.html",
+            "C:\Users\*\OneDrive*\ReportTrade*.html",
+            "D:\Backup*\ReportTrade*.html",
+            "$env:USERPROFILE\OneDrive*\ReportTrade*.html"
         )
         
         foreach ($searchPath in $searchPaths) {
@@ -175,11 +177,10 @@ if ($config.LaunchVpsSystem) {
             Write-Status "VPS system requires Administrator privileges - attempting to elevate" "WARNING"
         }
         try {
-            $argList = "-ExecutionPolicy RemoteSigned -File `"$vpsScript`""
             if ($isAdmin) {
-                Start-Process powershell.exe -ArgumentList $argList -WindowStyle Hidden
+                Start-Process powershell.exe -ArgumentList @('-ExecutionPolicy', 'RemoteSigned', '-File', $vpsScript) -WindowStyle Hidden
             } else {
-                Start-Process powershell.exe -ArgumentList $argList -Verb RunAs -WindowStyle Hidden
+                Start-Process powershell.exe -ArgumentList @('-ExecutionPolicy', 'RemoteSigned', '-File', $vpsScript) -Verb RunAs -WindowStyle Hidden
             }
             Write-LaunchLog "VPS system launched"
             Write-Status "VPS system started" "OK"
@@ -202,7 +203,7 @@ if ($config.LaunchTradingSystem) {
     if (Test-Path $tradingScript) {
         Write-Status "Launching Trading System..." "INFO"
         try {
-            Start-Process powershell.exe -ArgumentList "-ExecutionPolicy RemoteSigned -File `"$tradingScript`"" -WindowStyle Hidden
+            Start-Process powershell.exe -ArgumentList @('-ExecutionPolicy', 'RemoteSigned', '-File', $tradingScript) -WindowStyle Hidden
             Write-LaunchLog "Trading system launched"
             Write-Status "Trading system started" "OK"
         } catch {
@@ -223,7 +224,7 @@ $startScript = Join-Path $PSScriptRoot "start.ps1"
 if (Test-Path $startScript) {
     Write-Status "Launching main startup sequence..." "INFO"
     try {
-        Start-Process powershell.exe -ArgumentList "-ExecutionPolicy RemoteSigned -File `"$startScript`"" -NoNewWindow
+        Start-Process powershell.exe -ArgumentList @('-ExecutionPolicy', 'RemoteSigned', '-File', $startScript) -NoNewWindow
         Write-LaunchLog "Main startup sequence launched"
         Write-Status "Startup sequence initiated" "OK"
     } catch {

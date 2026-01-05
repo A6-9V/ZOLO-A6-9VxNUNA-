@@ -3,10 +3,14 @@
 # Update this file to change the HTML log location
 
 # Primary HTML Log Path
-HTML_LOG_PATH=J:\OneDrive-Backup-20251227-002233\ReportTrade-279410452.html
+# IMPORTANT: Update this path to match your actual HTML log file location
+# Example: HTML_LOG_PATH=J:\OneDrive-Backup-20251227-002233\ReportTrade-279410452.html
+HTML_LOG_PATH=J:\OneDrive-Backup\ReportTrade.html
 
 # Alternative paths (comma-separated, will be tried in order if primary fails)
-ALT_HTML_LOG_PATHS=J:\OneDrive-Backup*\ReportTrade*.html,$env:USERPROFILE\OneDrive\*Backup*\ReportTrade*.html,D:\OneDrive*\ReportTrade*.html
+# These are search patterns - update drive letters to match your system
+# Example patterns for common locations:
+ALT_HTML_LOG_PATHS=J:\OneDrive*\ReportTrade*.html,C:\Users\*\OneDrive*\ReportTrade*.html,D:\Backup*\ReportTrade*.html
 
 # Launch Options
 OPEN_HTML_LOG_ON_STARTUP=true

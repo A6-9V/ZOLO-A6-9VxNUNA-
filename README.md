@@ -145,7 +145,7 @@ This will:
 - ✅ Open GitHub Pages website
 - ✅ Initialize all repository components
 
-**Default log path**: `J:\OneDrive-Backup-20251227-002233\ReportTrade-279410452.html`
+**Example log path**: `J:\OneDrive-Backup\ReportTrade.html` (configure your actual path in `html-log-config.txt`)
 
 **📖 See**: [HTML Log Launch Guide](HTML-LOG-LAUNCH-GUIDE.md) for complete documentation
 
