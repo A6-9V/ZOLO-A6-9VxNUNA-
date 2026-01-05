@@ -33,10 +33,17 @@ function Read-Configuration {
     $configFile = Join-Path $PSScriptRoot "html-log-config.txt"
     $config = @{
         HtmlLogPath = "J:\OneDrive-Backup\ReportTrade.html"  # Generic default - update in config file
+        AltHtmlLogPaths = @(
+            "J:\OneDrive*\ReportTrade*.html",
+            "C:\Users\*\OneDrive*\ReportTrade*.html",
+            "D:\Backup*\ReportTrade*.html"
+        )
         OpenHtmlLogOnStartup = $true
         LaunchVpsSystem = $true
         LaunchTradingSystem = $true
         OpenGithubWebsite = $true
+        KeepLaunchLogs = $true
+        LaunchLogDir = "logs"
     }
     
     if (Test-Path $configFile) {
@@ -45,6 +52,10 @@ function Read-Configuration {
             foreach ($line in $content) {
                 if ($line -match '^HTML_LOG_PATH=(.+)$') {
                     $config.HtmlLogPath = $matches[1].Trim()
+                }
+                if ($line -match '^ALT_HTML_LOG_PATHS=(.+)$') {
+                    $paths = $matches[1].Trim() -split ','
+                    $config.AltHtmlLogPaths = $paths | ForEach-Object { $_.Trim() }
                 }
                 if ($line -match '^OPEN_HTML_LOG_ON_STARTUP=(true|false)$') {
                     $config.OpenHtmlLogOnStartup = $matches[1] -eq 'true'
@@ -57,6 +68,12 @@ function Read-Configuration {
                 }
                 if ($line -match '^OPEN_GITHUB_WEBSITE=(true|false)$') {
                     $config.OpenGithubWebsite = $matches[1] -eq 'true'
+                }
+                if ($line -match '^KEEP_LAUNCH_LOGS=(true|false)$') {
+                    $config.KeepLaunchLogs = $matches[1] -eq 'true'
+                }
+                if ($line -match '^LAUNCH_LOG_DIR=(.+)$') {
+                    $config.LaunchLogDir = $matches[1].Trim()
                 }
             }
         } catch {
@@ -96,18 +113,23 @@ function Write-Status {
     Write-Host "[$Status] $Message" -ForegroundColor $color
 }
 
-# Log file for launch tracking
-$logDir = Join-Path $PSScriptRoot "logs"
-if (-not (Test-Path $logDir)) {
-    New-Item -ItemType Directory -Path $logDir -Force | Out-Null
+# Log file for launch tracking (only if enabled in config)
+$launchLogFile = $null
+if ($config.KeepLaunchLogs) {
+    $logDir = Join-Path $PSScriptRoot $config.LaunchLogDir
+    if (-not (Test-Path $logDir)) {
+        New-Item -ItemType Directory -Path $logDir -Force | Out-Null
+    }
+    $launchLogFile = Join-Path $logDir "html-launch-log.txt"
 }
-$launchLogFile = Join-Path $logDir "html-launch-log.txt"
 
 function Write-LaunchLog {
     param([string]$Message)
-    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-    $logMessage = "[$timestamp] $Message"
-    Add-Content -Path $launchLogFile -Value $logMessage -ErrorAction SilentlyContinue
+    if ($config.KeepLaunchLogs -and $launchLogFile) {
+        $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+        $logMessage = "[$timestamp] $Message"
+        Add-Content -Path $launchLogFile -Value $logMessage -ErrorAction SilentlyContinue
+    }
     Write-Status $Message "INFO"
 }
 
@@ -142,16 +164,10 @@ if (-not $SkipLogOpen -and $config.OpenHtmlLogOnStartup) {
         Write-Status "HTML log file not found at: $HtmlLogPath" "WARNING"
         Write-LaunchLog "Warning: HTML log file not found"
         
-        # Try to find the file in common locations
-        # These are generic patterns - users should update html-log-config.txt with their actual paths
-        $searchPaths = @(
-            "J:\OneDrive*\ReportTrade*.html",
-            "C:\Users\*\OneDrive*\ReportTrade*.html",
-            "D:\Backup*\ReportTrade*.html",
-            "$env:USERPROFILE\OneDrive*\ReportTrade*.html"
-        )
+        # Try to find the file using configured alternative paths
+        Write-Status "Searching for HTML log in configured alternative locations..." "INFO"
         
-        foreach ($searchPath in $searchPaths) {
+        foreach ($searchPath in $config.AltHtmlLogPaths) {
             $foundFiles = Get-ChildItem -Path $searchPath -ErrorAction SilentlyContinue
             if ($foundFiles) {
                 Write-Status "Found alternative HTML log: $($foundFiles[0].FullName)" "INFO"
@@ -262,7 +278,11 @@ Write-Status "  - Trading Bridge" "INFO"
 Write-Status "  - GitHub Pages Website" "INFO"
 Write-Status "  - Repository Startup Scripts" "INFO"
 Write-Status "" "INFO"
-Write-Status "Launch log saved to: $launchLogFile" "INFO"
+if ($config.KeepLaunchLogs -and $launchLogFile) {
+    Write-Status "Launch log saved to: $launchLogFile" "INFO"
+} else {
+    Write-Status "Launch logging disabled in configuration" "INFO"
+}
 Write-Status "" "INFO"
 
 Write-LaunchLog "Repository launch sequence completed successfully"
