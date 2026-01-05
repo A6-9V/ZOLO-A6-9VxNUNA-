@@ -31,10 +31,13 @@ $ErrorActionPreference = "Continue"
 # Function to read configuration file
 function Read-Configuration {
     $configFile = Join-Path $PSScriptRoot "html-log-config.txt"
+    # Use a more portable default path
+    $defaultPath = Join-Path ([Environment]::GetFolderPath("MyDocuments")) "ReportTrade.html"
+    
     $config = @{
-        HtmlLogPath = "J:\OneDrive-Backup\ReportTrade.html"  # Generic default - update in config file
+        HtmlLogPath = $defaultPath
         AltHtmlLogPaths = @(
-            "J:\OneDrive*\ReportTrade*.html",
+            "C:\Users\*\Documents\*ReportTrade*.html",
             "C:\Users\*\OneDrive*\ReportTrade*.html",
             "D:\Backup*\ReportTrade*.html"
         )
@@ -133,6 +136,33 @@ function Write-LaunchLog {
     Write-Status $Message "INFO"
 }
 
+# Helper function to launch PowerShell scripts
+function Start-PowerShellScript {
+    param(
+        [string]$ScriptPath,
+        [switch]$Hidden,
+        [switch]$NoNewWindow,
+        [switch]$RequireElevation
+    )
+    
+    $argList = @('-ExecutionPolicy', 'RemoteSigned', '-File', $ScriptPath)
+    
+    try {
+        if ($RequireElevation -and -not $isAdmin) {
+            Start-Process powershell.exe -ArgumentList $argList -Verb RunAs -WindowStyle $(if($Hidden){'Hidden'}else{'Normal'})
+        } else {
+            if ($NoNewWindow) {
+                Start-Process powershell.exe -ArgumentList $argList -NoNewWindow
+            } else {
+                Start-Process powershell.exe -ArgumentList $argList -WindowStyle $(if($Hidden){'Hidden'}else{'Normal'})
+            }
+        }
+        return $true
+    } catch {
+        return $false
+    }
+}
+
 Write-Header "ZOLO Repository Launch from HTML Logs"
 
 # Check if running as Administrator (required for some components)
@@ -192,17 +222,13 @@ if ($config.LaunchVpsSystem) {
         if (-not $isAdmin) {
             Write-Status "VPS system requires Administrator privileges - attempting to elevate" "WARNING"
         }
-        try {
-            if ($isAdmin) {
-                Start-Process powershell.exe -ArgumentList @('-ExecutionPolicy', 'RemoteSigned', '-File', $vpsScript) -WindowStyle Hidden
-            } else {
-                Start-Process powershell.exe -ArgumentList @('-ExecutionPolicy', 'RemoteSigned', '-File', $vpsScript) -Verb RunAs -WindowStyle Hidden
-            }
+        
+        if (Start-PowerShellScript -ScriptPath $vpsScript -Hidden -RequireElevation) {
             Write-LaunchLog "VPS system launched"
             Write-Status "VPS system started" "OK"
-        } catch {
-            Write-Status "VPS system launch failed: $_" "WARNING"
-            Write-LaunchLog "Warning: VPS system launch failed - $_"
+        } else {
+            Write-Status "VPS system launch failed" "WARNING"
+            Write-LaunchLog "Warning: VPS system launch failed"
         }
     } else {
         Write-Status "VPS script not found, skipping" "WARNING"
@@ -218,13 +244,13 @@ if ($config.LaunchTradingSystem) {
     $tradingScript = Join-Path $PSScriptRoot "setup-and-start-trading-auto.ps1"
     if (Test-Path $tradingScript) {
         Write-Status "Launching Trading System..." "INFO"
-        try {
-            Start-Process powershell.exe -ArgumentList @('-ExecutionPolicy', 'RemoteSigned', '-File', $tradingScript) -WindowStyle Hidden
+        
+        if (Start-PowerShellScript -ScriptPath $tradingScript -Hidden) {
             Write-LaunchLog "Trading system launched"
             Write-Status "Trading system started" "OK"
-        } catch {
-            Write-Status "Trading system launch failed: $_" "WARNING"
-            Write-LaunchLog "Warning: Trading system launch failed - $_"
+        } else {
+            Write-Status "Trading system launch failed" "WARNING"
+            Write-LaunchLog "Warning: Trading system launch failed"
         }
     } else {
         Write-Status "Trading script not found, skipping" "WARNING"
@@ -239,13 +265,13 @@ Start-Sleep -Seconds 1
 $startScript = Join-Path $PSScriptRoot "start.ps1"
 if (Test-Path $startScript) {
     Write-Status "Launching main startup sequence..." "INFO"
-    try {
-        Start-Process powershell.exe -ArgumentList @('-ExecutionPolicy', 'RemoteSigned', '-File', $startScript) -NoNewWindow
+    
+    if (Start-PowerShellScript -ScriptPath $startScript -NoNewWindow) {
         Write-LaunchLog "Main startup sequence launched"
         Write-Status "Startup sequence initiated" "OK"
-    } catch {
-        Write-Status "Startup sequence launch failed: $_" "WARNING"
-        Write-LaunchLog "Warning: Startup sequence launch failed - $_"
+    } else {
+        Write-Status "Startup sequence launch failed" "WARNING"
+        Write-LaunchLog "Warning: Startup sequence launch failed"
     }
 }
 
