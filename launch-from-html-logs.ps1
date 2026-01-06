@@ -117,17 +117,17 @@ function Read-Configuration {
 # Read configuration
 $config = Read-Configuration
 
-    # Use parameter if provided, otherwise use config file value
-    if ([string]::IsNullOrEmpty($HtmlLogPath)) {
-        $HtmlLogPath = $config.HtmlLogPath
-    }
-    
-    # Selective Elevation Design: 
-    # This script does not use '#Requires -RunAsAdministrator' at the top.
-    # Instead, it handles elevation selectively for components that need it (like VPS system).
-    # This ensures other components can still launch even if the user declines elevation.
+# Use parameter if provided, otherwise use config file value
+if ([string]::IsNullOrEmpty($HtmlLogPath)) {
+    $HtmlLogPath = $config.HtmlLogPath
+}
 
-    # Color functions for output
+# Selective Elevation Design: 
+# This script does not use '#Requires -RunAsAdministrator' at the top.
+# Instead, it handles elevation selectively for components that need it (like VPS system).
+# This ensures other components can still launch even if the user declines elevation.
+
+# Color functions for output
 function Write-Header {
     param([string]$Message)
     Write-Host ""
