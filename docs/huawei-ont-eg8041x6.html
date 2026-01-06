@@ -642,11 +642,11 @@
                             <p>To access the web management interface:</p>
                             <ol>
                                 <li>Connect your computer to one of the LAN ports on the ONT</li>
-                                <li>Open a web browser and enter the default gateway IP address (typically https://192.168.1.1 or https://192.168.100.1)</li>
+                                <li>Open a web browser and enter the default gateway IP address (typically http://192.168.1.1 or http://192.168.100.1, or as specified by your ISP)</li>
                                 <li>Enter the default username and password (usually found on the device label or provided by your ISP)</li>
                                 <li>You should now have access to the configuration interface</li>
                             </ol>
-                            <p><strong>Note:</strong> Some ISPs may restrict access to the management interface. Contact your ISP if you cannot access it. If your browser shows a security warning, you may need to accept the self-signed certificate.</p>
+                            <p><strong>Note:</strong> Some ISPs may restrict access to the management interface. Contact your ISP if you cannot access it. If your device uses HTTPS, your browser may show a security warning due to a self-signed certificate; you may need to review and accept this warning to proceed.</p>
                         </div>
                     </details>
 
@@ -842,12 +842,12 @@
                     <h3>Digital Signature</h3>
                     <p>This document is digitally signed to ensure authenticity and integrity.</p>
                     <div class="doc-footer-actions">
-                        <a href="#" class="doc-btn" title="Digital signature verification - Contact Huawei Support">
+                        <button type="button" class="doc-btn" title="Direct viewing of the digital signature is not available in this document. Please use the Download Signature Tool below for verification." disabled aria-disabled="true">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
                             </svg>
                             View Digital Signature
-                        </a>
+                        </button>
                         <a href="https://support.huawei.com" class="doc-btn secondary" target="_blank" rel="noopener">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
@@ -867,7 +867,7 @@
                                 <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
                                 <line x1="12" y1="18" x2="12.01" y2="18"/>
                             </svg>
-                            <span>Huawei e+ App</span>
+                            <span>HUAWEI e+ App</span>
                         </a>
                         <a href="https://www.huawei.com/en/apps" class="app-link" target="_blank" rel="noopener">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -881,7 +881,7 @@
                                 <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
                                 <line x1="12" y1="18" x2="12.01" y2="18"/>
                             </svg>
-                            <span>Huawei HiKnow APP</span>
+                            <span>HUAWEI HiKnow App</span>
                         </a>
                         <a href="https://www.huawei.com/en/apps" class="app-link" target="_blank" rel="noopener">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

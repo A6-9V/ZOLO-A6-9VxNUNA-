@@ -646,6 +646,22 @@
     flex-shrink: 0;
 }
 
+.doc-btn:disabled,
+.doc-btn[disabled] {
+    background: rgba(255, 255, 255, 0.02);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: #666;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.doc-btn:disabled:hover,
+.doc-btn[disabled]:hover {
+    background: rgba(255, 255, 255, 0.02);
+    border-color: rgba(255, 255, 255, 0.1);
+    transform: none;
+}
+
 /* App Grid */
 .app-grid {
     display: grid;
