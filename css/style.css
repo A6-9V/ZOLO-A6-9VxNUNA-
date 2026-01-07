@@ -1038,6 +1038,11 @@ section {
     color: var(--primary);
 }
 
+.animate-in {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+}
+
 /* Scrollbar */
 ::-webkit-scrollbar {
     width: 10px;

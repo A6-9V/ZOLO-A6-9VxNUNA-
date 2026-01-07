@@ -135,15 +135,7 @@ function initAnimations() {
         observer.observe(el);
     });
     
-    // Add CSS for animation
-    const style = document.createElement('style');
-    style.textContent = `
-        .animate-in {
-            opacity: 1 !important;
-            transform: translateY(0) !important;
-        }
-    `;
-    document.head.appendChild(style);
+    // CSS for animation is now in style.css
 }
 
 /**
