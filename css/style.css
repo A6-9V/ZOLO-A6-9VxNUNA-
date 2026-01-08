@@ -1062,3 +1062,8 @@ section {
     color: var(--bg-dark);
 }
 
+/* Animation Utilities */
+.animate-in {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+}
