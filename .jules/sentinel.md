@@ -1,0 +1,4 @@
+## 2024-07-22 - Enforce `noreferrer` on `target="_blank"` links
+**Vulnerability:** External links using `target="_blank"` without `rel="noreferrer"` can lead to tabnabbing, where the opened page can take control of the referring page, potentially for phishing attacks.
+**Learning:** This project's landing page had several external links that were missing the `noreferrer` attribute, creating a potential security risk.
+**Prevention:** Always include `rel="noopener noreferrer"` on all links that use `target="_blank"` to ensure the new page runs in a separate process and cannot access the original page's `window` object. This should be a standard practice for all future development.
