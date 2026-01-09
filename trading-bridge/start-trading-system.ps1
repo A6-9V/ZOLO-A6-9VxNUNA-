@@ -82,6 +82,16 @@ Write-Host "[5/5] Starting trading service..." -ForegroundColor Yellow
 $currentDay = (Get-Date).DayOfWeek
 Write-Host "    Today is: $currentDay" -ForegroundColor Cyan
 
+# Start the Node.js real-time data service
+$nodejsServiceScript = Join-Path $PSScriptRoot ".." "start-nodejs-realtime-service.ps1"
+if (Test-Path $nodejsServiceScript) {
+    Write-Host "    Starting Node.js real-time data service..." -ForegroundColor Yellow
+    & $nodejsServiceScript
+    Start-Sleep -Seconds 5 # Give it a moment to initialize
+} else {
+    Write-Host "    [WARNING] Node.js real-time service script not found. Live data will be unavailable." -ForegroundColor Yellow
+}
+
 # Start Python service
 try {
     Write-Host "    Starting background service..." -ForegroundColor Yellow
