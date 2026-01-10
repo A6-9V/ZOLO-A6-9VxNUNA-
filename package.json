@@ -1,0 +1,37 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "AI-Powered Trading & Automation Platform",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"WARN: No tests specified\" && exit 0",
+    "lint": "eslint --fix .",
+    "outdated": "ncu --target minor --dep prod",
+    "depcheck": "depcheck",
+    "check-node-eol": "node check-node-eol.js",
+    "audit": "npm audit --audit-level=high"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mouy-leng/ZOLO-A6-9VxNUNA-.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Mouy-leng/ZOLO-A6-9VxNUNA-/issues"
+  },
+  "homepage": "https://github.com/Mouy-leng/ZOLO-A6-9VxNUNA-#readme",
+  "devDependencies": {
+    "depcheck": "^1.4.7",
+    "eslint": "^9.39.2",
+    "npm-check-updates": "^19.3.1"
+  }
+}
