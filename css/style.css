@@ -169,6 +169,15 @@ a:hover {
     backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border);
     padding: var(--space-md) 0;
+    /* ⚡ Bolt Optimization: Added transition for smoother background change on scroll */
+    transition: background-color var(--transition-base);
+}
+
+/* ⚡ Bolt Optimization: Changes navbar background on scroll for better performance.
+   This class is toggled by JavaScript, avoiding direct style manipulation
+   which can cause unnecessary browser repaints. */
+.navbar.scrolled {
+    background: rgba(10, 14, 20, 0.95);
 }
 
 .nav-container {
