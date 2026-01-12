@@ -110,7 +110,7 @@ function initAnimations() {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'
     };
-    
+
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -119,19 +119,26 @@ function initAnimations() {
             }
         });
     }, observerOptions);
-    
+
     // Observe elements
     const animateElements = document.querySelectorAll(
         '.feature-card, .system-card, .doc-card, .step, .arch-layer'
     );
-    
+
+    /*
+      ⚡ Bolt Optimization:
+      - Replaced direct `el.style` manipulation with CSS classes (`.pre-animate`).
+        - Avoids causing multiple style recalculations and repaints within the loop.
+        - Browser can optimize rendering by knowing the final state from CSS.
+      - Used a CSS custom property (`--animation-delay`) for staggered animations.
+        - Cleaner separation of concerns (JS for logic, CSS for styling).
+        - More performant than dynamically creating transition strings.
+    */
     animateElements.forEach((el, index) => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(30px)';
-        el.style.transition = `all 0.6s ease ${index * 0.1}s`;
+        el.classList.add('pre-animate');
+        el.style.setProperty('--animation-delay', `${index * 0.1}s`);
         observer.observe(el);
     });
-    
 }
 
 /**

@@ -1074,8 +1074,24 @@ section {
     background: var(--primary);
     color: var(--bg-dark);
 }
+
+/*
+  ⚡ Bolt Optimization: Pre-animation state class.
+  - This class sets the initial state for elements that will be animated on scroll.
+  - By defining these properties in CSS instead of manipulating them with JavaScript's
+    el.style, we avoid triggering unnecessary style recalculations and repaints.
+  - This allows the browser to better optimize the rendering process, resulting in
+    smoother animations and a faster initial page load.
+*/
+.pre-animate {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease;
+}
+
 .animate-in {
     opacity: 1 !important;
     transform: translateY(0) !important;
+    transition-delay: var(--animation-delay, 0s);
 }
 
