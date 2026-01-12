@@ -162,24 +162,6 @@ function initCopyButtons() {
     };
 }
 
-/**
- * Terminal typing effect (optional enhancement)
- */
-function typeWriter(element, text, speed = 50) {
-    let i = 0;
-    element.textContent = '';
-    
-    function type() {
-        if (i < text.length) {
-            element.textContent += text.charAt(i);
-            i++;
-            setTimeout(type, speed);
-        }
-    }
-    
-    type();
-}
-
 // Console branding
 console.log(`
 %c⚡ ZOLO-A6-9VxNUNA %c
