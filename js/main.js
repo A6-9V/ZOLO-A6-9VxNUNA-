@@ -84,22 +84,19 @@ function initNavigation() {
  */
 function initScrollEffects() {
     const navbar = document.querySelector('.navbar');
-    let lastScroll = 0;
 
     // Performance: Throttle scroll events to prevent excessive function calls.
-    // The scroll handler is limited to executing once every 100ms, improving
-    // rendering performance and reducing CPU load during fast scrolling.
+    // Toggling a class is more performant than changing styles directly,
+    // as it allows the browser to optimize rendering.
     const handleScroll = () => {
         const currentScroll = window.pageYOffset;
         
-        // Navbar background on scroll
+        // Add/remove .scrolled class based on scroll position
         if (currentScroll > 50) {
-            navbar.style.background = 'rgba(10, 14, 20, 0.95)';
+            navbar.classList.add('scrolled');
         } else {
-            navbar.style.background = 'rgba(10, 14, 20, 0.85)';
+            navbar.classList.remove('scrolled');
         }
-        
-        lastScroll = currentScroll;
     };
 
     window.addEventListener('scroll', throttle(handleScroll, 100));
