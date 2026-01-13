@@ -126,9 +126,11 @@ function initAnimations() {
     );
     
     animateElements.forEach((el, index) => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(30px)';
-        el.style.transition = `all 0.6s ease ${index * 0.1}s`;
+        // ⚡ Bolt Optimization: Use a class to set initial animation state.
+        // This is more performant than setting inline styles directly, as it
+        // avoids triggering unnecessary style recalculations by the browser.
+        el.classList.add('animation-prepare');
+        el.style.transitionDelay = `${index * 0.1}s`;
         observer.observe(el);
     });
     

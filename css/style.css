@@ -1078,6 +1078,16 @@ section {
     background: var(--primary);
     color: var(--bg-dark);
 }
+/* ⚡ Bolt Optimization: Prepare elements for animation.
+   This class sets the initial state for elements before they animate in.
+   Using a class is more performant than setting inline styles via JS
+   as it allows the browser to better optimize rendering. */
+.animation-prepare {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease;
+}
+
 .animate-in {
     opacity: 1 !important;
     transform: translateY(0) !important;
