@@ -560,7 +560,9 @@ section {
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
     padding: var(--space-xl);
-    transition: all var(--transition-base);
+    /* ⚡ Bolt Optimization: Transition only specific properties for performance.
+       Animating 'all' properties can be inefficient. This targets only what changes. */
+    transition: transform var(--transition-base), border-color var(--transition-base), box-shadow var(--transition-base);
 }
 
 .feature-card:hover {
@@ -603,7 +605,8 @@ section {
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
     padding: var(--space-xl);
-    transition: all var(--transition-base);
+    /* ⚡ Bolt Optimization: Transition only specific properties for performance. */
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
 }
 
 .system-card.primary {
@@ -782,7 +785,8 @@ section {
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
     padding: var(--space-xl);
-    transition: all var(--transition-base);
+    /* ⚡ Bolt Optimization: Transition only specific properties for performance. */
+    transition: transform var(--transition-base), border-color var(--transition-base);
     display: block;
     color: var(--text-primary);
 }
