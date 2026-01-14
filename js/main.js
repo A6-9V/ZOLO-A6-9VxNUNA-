@@ -140,10 +140,12 @@ function initAnimations() {
  * Copy to clipboard functionality
  */
 function initCopyButtons() {
-    window.copyCode = function(btn) {
+    const copyButtons = document.querySelectorAll('.copy-btn');
+
+    const copyCode = (btn) => {
         const codeBlock = btn.closest('.code-block');
         const code = codeBlock.querySelector('code').textContent;
-        
+
         navigator.clipboard.writeText(code).then(() => {
             // Show feedback
             const originalHTML = btn.innerHTML;
@@ -153,7 +155,7 @@ function initCopyButtons() {
                 </svg>
             `;
             btn.style.color = 'var(--primary)';
-            
+
             setTimeout(() => {
                 btn.innerHTML = originalHTML;
                 btn.style.color = '';
@@ -162,6 +164,10 @@ function initCopyButtons() {
             console.error('Failed to copy:', err);
         });
     };
+
+    copyButtons.forEach(btn => {
+        btn.addEventListener('click', () => copyCode(btn));
+    });
 }
 
 /**
