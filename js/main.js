@@ -130,7 +130,10 @@ function initAnimations() {
         // This is more performant than setting inline styles directly, as it
         // avoids triggering unnecessary style recalculations by the browser.
         el.classList.add('animation-prepare');
-        el.style.transitionDelay = `${index * 0.1}s`;
+        // ⚡ Bolt Optimization: Set a CSS custom property for the animation order.
+        // This is more performant than setting `transitionDelay` directly, as it
+        // offloads the animation timing to the CSS rendering engine.
+        el.style.setProperty('--animation-order', index);
         observer.observe(el);
     });
     

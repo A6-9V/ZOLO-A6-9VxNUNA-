@@ -1086,6 +1086,10 @@ section {
     opacity: 0;
     transform: translateY(30px);
     transition: opacity 0.6s ease, transform 0.6s ease;
+    /* ⚡ Bolt Optimization: Use a CSS variable to calculate animation delay.
+       This is more performant as it offloads the staggered delay calculation
+       to the browser's CSS engine, avoiding JS-driven style recalculations. */
+    transition-delay: calc(var(--animation-order, 0) * 100ms);
 }
 
 .animate-in {
