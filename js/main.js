@@ -42,6 +42,10 @@ function throttle(func, limit = 100) {
 function initNavigation() {
     const navToggle = document.querySelector('.nav-toggle');
     const navLinks = document.querySelector('.nav-links');
+    // Performance: Cache the navbar element to avoid repeated DOM queries.
+    // This query is now performed only once during initialization, making
+    // subsequent smooth scroll clicks more efficient.
+    const navbar = document.querySelector('.navbar');
     
     if (navToggle && navLinks) {
         navToggle.addEventListener('click', () => {
@@ -65,9 +69,9 @@ function initNavigation() {
             if (targetId === '#') return;
             
             const target = document.querySelector(targetId);
-            if (target) {
+            if (target && navbar) {
                 e.preventDefault();
-                const navHeight = document.querySelector('.navbar').offsetHeight;
+                const navHeight = navbar.offsetHeight;
                 const targetPosition = target.offsetTop - navHeight - 20;
                 
                 window.scrollTo({
