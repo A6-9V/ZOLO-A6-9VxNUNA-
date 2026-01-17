@@ -569,6 +569,7 @@ section {
     border-color: var(--primary);
     transform: translateY(-4px);
     box-shadow: var(--shadow-glow);
+    will-change: transform;
 }
 
 .feature-icon {
