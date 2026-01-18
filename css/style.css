@@ -563,13 +563,18 @@ section {
     /* ⚡ Bolt Optimization: Transition only specific properties for performance.
        Animating 'all' properties can be inefficient. This targets only what changes. */
     transition: transform var(--transition-base), border-color var(--transition-base), box-shadow var(--transition-base);
+    /* ⚡ Bolt Optimization: Prepare the element for transform changes.
+       By setting `will-change` and a default transform, we hint to the browser
+       to create a separate compositor layer, making the hover animation smoother
+       and preventing any initial stutter. */
+    will-change: transform;
+    transform: translateY(0);
 }
 
 .feature-card:hover {
     border-color: var(--primary);
     transform: translateY(-4px);
     box-shadow: var(--shadow-glow);
-    will-change: transform;
 }
 
 .feature-icon {
