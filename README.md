@@ -27,6 +27,13 @@ ZOLO-A6-9VxNUNA is a comprehensive system that combines:
 
 ## 🆕 Recent Updates
 
+### GitHub Actions & NUNA Integration (2026-01-04)
+**New CI/CD and MQL5 Forge updates!**
+
+- ✅ **GitHub Actions** - Added automated workflow for testing and status reporting
+- ✅ **NUNA Integration** - Updated MQL5 Forge integration to use the NUNA project
+- ✅ **Terminal Documentation** - New guide for accessing NUNA repository and terminal
+
 ### Privacy Badger Integration (2026-01-04)
 **Enhanced Privacy and Security!**
 
@@ -268,7 +275,7 @@ Features:
 - ✅ Web Research Automation (Perplexity AI)
 - ✅ GitHub Website Hosting (ZOLO-A6-9VxNUNA)
 - ✅ CI/CD Automation (Python projects)
-- ✅ MQL5 Forge Integration
+- ✅ **NUNA MQL5 Forge Integration** (Automated sync)
 - ✅ Automated error handling
 - ✅ Auto-restart capabilities
 - ✅ SSL/HTTPS Security (DigiCert EV Certificate)
@@ -354,6 +361,7 @@ Sensitive files including credentials, API keys, certificates, and logs are auto
 - [Automation Rules](docs/automation-rules.html) - Automation patterns
 - [Security Guide](docs/security.html) - Security configurations
 - [MT5 Integration](docs/mt5-integration.html) - Trading setup
+- [NUNA Terminal Guide](docs/NUNA-TERMINAL-GUIDE.md) - NUNA repo & terminal access
 - **trading-bridge/mql5/README.md** - MQL5 Workspace paths and configuration
 - **trading-bridge/README.md** - Trading bridge system documentation
 - **DEVICE-SKELETON.md** - Complete device structure blueprint

@@ -3,10 +3,10 @@ $ErrorActionPreference = "Continue"
 $workspaceRoot = "C:\Users\USER\OneDrive"
 $logsPath = "C:\Users\USER\OneDrive\vps-logs"
 $usbSupportScript = Join-Path $workspaceRoot "vps-services\usb-support.ps1"
-$mql5RepoUrl = "https://forge.mql5.io/LengKundee/mql5.git"
+$mql5RepoUrl = "https://forge.mql5.io/LengKundee/NUNA.git"
 $mql5RepoPath = Join-Path $workspaceRoot "mql5-repo"
 $mql5ConfigFile = Join-Path $workspaceRoot "mql5-config.txt"
-$mql5ForgeUrl = "https://forge.mql5.io/LengKundee/mql5"
+$mql5ForgeUrl = "https://forge.mql5.io/LengKundee/NUNA"
 
 # USB Support Configuration
 $useUSBForMQL5 = $true  # Enable USB support for MQL5 repository

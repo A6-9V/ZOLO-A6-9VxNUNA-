@@ -6,7 +6,7 @@ $usbSupportScript = Join-Path $workspaceRoot "vps-services\usb-support.ps1"
 Set-Location $workspaceRoot
 
 # MQL5 Forge Configuration
-$mql5RepoUrl = "https://forge.mql5.io/LengKundee/mql5.git"
+$mql5RepoUrl = "https://forge.mql5.io/LengKundee/NUNA.git"
 $mql5RepoPath = Join-Path $workspaceRoot "mql5-repo"
 $mql5ConfigFile = Join-Path $workspaceRoot "mql5-config.txt"
 
