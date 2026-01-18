@@ -292,6 +292,7 @@ class AITradingService:
             lot_size = risk_assessment.get('recommended_lot_size', 0.01)
             stop_loss = risk_assessment.get('stop_loss')
             take_profit = risk_assessment.get('take_profit')
+            risk_reward_ratio = risk_assessment.get('risk_reward_ratio', 2.5)
             
             # Create trade signal
             trade_signal = TradeSignal(
@@ -301,7 +302,8 @@ class AITradingService:
                 lot_size=lot_size,
                 stop_loss=stop_loss,
                 take_profit=take_profit,
-                comment=f"AI Signal: {signal.get('reasoning', '')} (confidence: {confidence:.2f})"
+                comment=f"AI Signal: {signal.get('reasoning', '')} (confidence: {confidence:.2f})",
+                risk_reward_ratio=risk_reward_ratio
             )
             
             # Send signal to bridge or execute directly

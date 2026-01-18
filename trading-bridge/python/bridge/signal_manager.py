@@ -29,6 +29,7 @@ class TradeSignal:
     comment: str = ""
     timestamp: Optional[datetime] = None
     signal_id: Optional[str] = None
+    risk_reward_ratio: float = 2.5
     
     def __post_init__(self):
         """Initialize timestamp and signal_id if not provided"""
