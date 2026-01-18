@@ -17,6 +17,7 @@ struct TradeSignal
    double take_profit;
    string comment;
    string signal_id;
+   double risk_reward_ratio;
 };
 
 //--- Python Bridge Class

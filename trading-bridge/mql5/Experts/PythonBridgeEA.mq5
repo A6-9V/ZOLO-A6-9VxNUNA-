@@ -111,11 +111,11 @@ void ProcessSignal(TradeSignal &signal)
    // Execute trade based on action
    if (signal.action == "BUY")
    {
-      ExecuteBuy(signal.symbol, lotSize, signal.stop_loss, signal.take_profit, signal.comment);
+      ExecuteBuy(signal.symbol, lotSize, signal.stop_loss, signal.take_profit, signal.comment, signal.risk_reward_ratio);
    }
    else if (signal.action == "SELL")
    {
-      ExecuteSell(signal.symbol, lotSize, signal.stop_loss, signal.take_profit, signal.comment);
+      ExecuteSell(signal.symbol, lotSize, signal.stop_loss, signal.take_profit, signal.comment, signal.risk_reward_ratio);
    }
    else if (signal.action == "CLOSE")
    {
@@ -130,7 +130,7 @@ void ProcessSignal(TradeSignal &signal)
 //+------------------------------------------------------------------+
 //| Execute BUY order                                                |
 //+------------------------------------------------------------------+
-void ExecuteBuy(string symbol, double lotSize, double stopLoss, double takeProfit, string comment)
+void ExecuteBuy(string symbol, double lotSize, double stopLoss, double takeProfit, string comment, double riskRewardRatio = 0.0)
 {
    if (!AutoExecute)
    {
@@ -142,7 +142,18 @@ void ExecuteBuy(string symbol, double lotSize, double stopLoss, double takeProfi
    
    // Normalize prices
    double sl = stopLoss > 0 ? NormalizeDouble(stopLoss, _Digits) : 0;
-   double tp = takeProfit > 0 ? NormalizeDouble(takeProfit, _Digits) : 0;
+
+   // Calculate TP if not provided
+   double tp = 0;
+   if (takeProfit > 0) {
+      tp = NormalizeDouble(takeProfit, _Digits);
+   } else if (sl > 0) {
+      // Default risk/reward ratio if not provided
+      double rr = riskRewardRatio > 0 ? riskRewardRatio : 2.5;
+      double slDistance = MathAbs(price - sl);
+      tp = NormalizeDouble(price + (slDistance * rr), _Digits);
+      Print("INFO: Calculated TP from SL using R:R ", rr, " -> TP: ", tp);
+   }
    
    if (trade.Buy(lotSize, symbol, price, sl, tp, comment))
    {
@@ -161,7 +172,7 @@ void ExecuteBuy(string symbol, double lotSize, double stopLoss, double takeProfi
 //+------------------------------------------------------------------+
 //| Execute SELL order                                               |
 //+------------------------------------------------------------------+
-void ExecuteSell(string symbol, double lotSize, double stopLoss, double takeProfit, string comment)
+void ExecuteSell(string symbol, double lotSize, double stopLoss, double takeProfit, string comment, double riskRewardRatio = 0.0)
 {
    if (!AutoExecute)
    {
@@ -173,7 +184,18 @@ void ExecuteSell(string symbol, double lotSize, double stopLoss, double takeProf
    
    // Normalize prices
    double sl = stopLoss > 0 ? NormalizeDouble(stopLoss, _Digits) : 0;
-   double tp = takeProfit > 0 ? NormalizeDouble(takeProfit, _Digits) : 0;
+
+   // Calculate TP if not provided
+   double tp = 0;
+   if (takeProfit > 0) {
+      tp = NormalizeDouble(takeProfit, _Digits);
+   } else if (sl > 0) {
+      // Default risk/reward ratio if not provided
+      double rr = riskRewardRatio > 0 ? riskRewardRatio : 2.5;
+      double slDistance = MathAbs(price - sl);
+      tp = NormalizeDouble(price - (slDistance * rr), _Digits);
+      Print("INFO: Calculated TP from SL using R:R ", rr, " -> TP: ", tp);
+   }
    
    if (trade.Sell(lotSize, symbol, price, sl, tp, comment))
    {
