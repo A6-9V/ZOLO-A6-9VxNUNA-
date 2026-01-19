@@ -115,10 +115,15 @@ function initAnimations() {
         rootMargin: '0px 0px -50px 0px'
     };
     
+    // ⚡ Bolt Optimization: Use requestAnimationFrame to schedule animations.
+    // This ensures that animations are processed only when the browser is ready
+    // to paint a new frame, preventing jank and improving smoothness.
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.classList.add('animate-in');
+                requestAnimationFrame(() => {
+                    entry.target.classList.add('animate-in');
+                });
                 observer.unobserve(entry.target);
             }
         });
