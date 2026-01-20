@@ -23,9 +23,11 @@ Write-Host ""
 $exnessTerminalPath = "C:\Program Files\MetaTrader 5 EXNESS\terminal64.exe"
 $exnessMetaEditorPath = "C:\Program Files\MetaTrader 5 EXNESS\metaeditor64.exe"
 $mql5DataPath = "$env:APPDATA\MetaQuotes\Terminal"
-$mql5RepoPath = "C:\Users\USER\OneDrive\mql5-repo"
-$eaSourcePath = Join-Path $mql5RepoPath "Experts\Advisors"
-$workspacePath = "C:\Users\USER\OneDrive"
+# The workspace path is the directory where the script is located (the repo root).
+$workspacePath = "."
+# The MQL5 files are sourced locally from the trading-bridge directory.
+$mql5RepoPath = "trading-bridge\mql5"
+$eaSourcePath = Join-Path $mql5RepoPath "Experts"
 
 # Step 1: Verify EXNESS Terminal Installation
 Write-Host "[1/6] Verifying EXNESS Terminal Installation..." -ForegroundColor Yellow
