@@ -28,7 +28,7 @@ $eaSourcePath = Join-Path $mql5RepoPath "Experts\Advisors"
 $workspacePath = "C:\Users\USER\OneDrive"
 
 # Step 1: Verify EXNESS Terminal Installation
-Write-Host "[1/6] Verifying EXNESS Terminal Installation..." -ForegroundColor Yellow
+Write-Host "[1/7] Verifying EXNESS Terminal Installation..." -ForegroundColor Yellow
 try {
     if (Test-Path $exnessTerminalPath) {
         Write-Host "    [OK] EXNESS Terminal found: $exnessTerminalPath" -ForegroundColor Green
@@ -53,7 +53,7 @@ catch {
 }
 
 # Step 2: Find MT5 Data Directory
-Write-Host "[2/6] Locating MT5 Data Directory..." -ForegroundColor Yellow
+Write-Host "[2/7] Locating MT5 Data Directory..." -ForegroundColor Yellow
 try {
     $mt5Directories = Get-ChildItem -Path $mql5DataPath -Directory -ErrorAction SilentlyContinue | Where-Object {
         $configPath = Join-Path $_.FullName "config"
@@ -79,7 +79,7 @@ catch {
 }
 
 # Step 3: Copy EA Files to Terminal Directory
-Write-Host "[3/6] Copying Expert Advisors to Terminal..." -ForegroundColor Yellow
+Write-Host "[3/7] Copying Expert Advisors to Terminal..." -ForegroundColor Yellow
 try {
     if ($eaTargetPath -and (Test-Path $eaSourcePath)) {
         # Create target directory if it doesn't exist
@@ -133,7 +133,7 @@ catch {
 }
 
 # Step 4: Compile Expert Advisors
-Write-Host "[4/6] Compiling Expert Advisors..." -ForegroundColor Yellow
+Write-Host "[4/7] Compiling Expert Advisors..." -ForegroundColor Yellow
 try {
     if ($eaTargetPath -and (Test-Path $exnessMetaEditorPath)) {
         $eaFiles = Get-ChildItem -Path $eaTargetPath -Filter "*.mq5" -ErrorAction SilentlyContinue
@@ -159,7 +159,7 @@ catch {
 }
 
 # Step 5: Launch EXNESS Terminal
-Write-Host "[5/6] Launching EXNESS Terminal..." -ForegroundColor Yellow
+Write-Host "[5/7] Launching EXNESS Terminal..." -ForegroundColor Yellow
 try {
     $exnessProcess = Get-Process -Name "terminal64" -ErrorAction SilentlyContinue
 
@@ -184,8 +184,20 @@ catch {
     Write-Host "    [WARNING] Failed to launch EXNESS Terminal: $_" -ForegroundColor Yellow
 }
 
-# Step 6: VPS Setup (Optional)
-Write-Host "[6/6] VPS Setup (Optional)..." -ForegroundColor Yellow
+# Step 6: Connect MQL5 Account
+Write-Host "[6/7] Connect MQL5 Account..." -ForegroundColor Yellow
+$connectMql5Script = Join-Path $PSScriptRoot "connect-mql5-account.ps1"
+if (Test-Path $connectMql5Script) {
+    Write-Host "    [INFO] To access purchased EAs and assets from the MQL5 Market," -ForegroundColor Cyan
+    Write-Host "    [INFO] you need to connect your MQL5 account in the terminal." -ForegroundColor Cyan
+    Write-Host "    [INFO] For a step-by-step guide, run: .\connect-mql5-account.ps1" -ForegroundColor Cyan
+}
+else {
+    Write-Host "    [INFO] MQL5 connection script not found, skipping." -ForegroundColor Yellow
+}
+
+# Step 7: VPS Setup (Optional)
+Write-Host "[7/7] VPS Setup (Optional)..." -ForegroundColor Yellow
 $vpsDeployScript = Join-Path $workspacePath "vps-deployment.ps1"
 if (Test-Path $vpsDeployScript) {
     Write-Host "    [INFO] VPS deployment script found" -ForegroundColor Cyan
@@ -212,6 +224,9 @@ Write-Host "  5. Compile EAs in MetaEditor: Open EA → Press F7" -ForegroundCol
 Write-Host "  6. Attach EA to chart: Drag EA from Navigator to chart" -ForegroundColor White
 Write-Host "  7. Configure EA parameters (1% risk recommended)" -ForegroundColor White
 Write-Host "  8. Monitor EA activity in Terminal, Journal, and Experts tabs" -ForegroundColor White
+Write-Host "  9. Connect your MQL5 Account to access purchased assets." -ForegroundColor White
+Write-Host "     - Run '.\connect-mql5-account.ps1' for a guided setup." -ForegroundColor Cyan
+Write-Host "  10. Verify MQL5 assets are available by running '.\verify-mql5-assets.ps1'" -ForegroundColor White
 Write-Host ""
 
 if ($eaTargetPath) {

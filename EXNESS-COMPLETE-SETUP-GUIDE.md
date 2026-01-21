@@ -9,7 +9,8 @@ Complete setup guide for EXNESS Terminal, App Settings, Expert Advisors, and VPS
 1. [EXNESS Terminal Installation & Setup](#1-exness-terminal-installation--setup)
 2. [EXNESS App Settings (Color & Symbol)](#2-exness-app-settings-color--symbol)
 3. [Expert Advisor (EA) Setup](#3-expert-advisor-ea-setup)
-4. [VPS Setup for 24/7 Trading](#4-vps-setup-for-247-trading)
+4. [Connecting Your MQL5 Account](#4-connecting-your-mql5-account)
+5. [VPS Setup for 24/7 Trading](#5-vps-setup-for-247-trading)
 
 ---
 
@@ -330,9 +331,54 @@ C:\Users\USER\OneDrive\mql5-repo\Experts\Advisors
 
 ---
 
-## 4. VPS Setup for 24/7 Trading
+## 4. Connecting Your MQL5 Account
 
-### Step 4.1: VPS Requirements
+### Step 4.1: Why Connect Your MQL5 Account?
+
+Connecting your MQL5 account to the MetaTrader 5 terminal allows you to:
+- **Access Purchased Assets**: Download and use Expert Advisors (EAs), indicators, and scripts that you have purchased from the MQL5 Market.
+- **Use Community Assets**: Access free and open-source tools shared by the MQL5 community.
+- **Stay Updated**: Easily update your purchased assets to the latest versions.
+
+### Step 4.2: How to Connect
+
+You can connect your MQL5 account by following the guided instructions in the `connect-mql5-account.ps1` script.
+
+**Run the script:**
+```powershell
+.\connect-mql5-account.ps1
+```
+
+This script will provide you with the following manual steps:
+
+1.  **Open EXNESS MetaTrader 5 Terminal.**
+2.  Go to **'Tools' -> 'Options'** from the top menu.
+3.  Click on the **'Community'** tab.
+4.  Enter your MQL5 username and password.
+    - Your username is: `lengkundee`
+5.  Click **'OK'** to save.
+
+### Step 4.3: Verify Your Connection and Assets
+
+After connecting your account, you can verify that your assets are available by running the `verify-mql5-assets.ps1` script.
+
+**Run the script:**
+```powershell
+.\verify-mql5-assets.ps1
+```
+
+This script will:
+- Locate your MetaTrader 5 data directory.
+- Check for the `MQL5\Market` folder.
+- List any assets you have downloaded from the MQL5 Market.
+
+If the script shows an empty list, you may need to go to the "Market" tab in the terminal's "Toolbox" window and download your purchased items.
+
+---
+
+## 5. VPS Setup for 24/7 Trading
+
+### Step 5.1: VPS Requirements
 
 **Minimum Requirements:**
 - **OS**: Windows Server 2019/2022 or Windows 10/11
@@ -675,6 +721,10 @@ C:\Users\USER\OneDrive\vps-logs\
 - [ ] AutoTrading enabled
 - [ ] EA monitoring set up (Terminal, Journal, Experts tabs)
 
+### MQL5 Account
+- [ ] MQL5 account connected in terminal
+- [ ] MQL5 assets verified
+
 ### VPS Setup
 - [ ] VPS provisioned and accessible
 - [ ] EXNESS Terminal installed on VPS
@@ -688,22 +738,27 @@ C:\Users\USER\OneDrive\vps-logs\
 
 ## 🎯 Next Steps
 
-1. **Test Trading:**
+1. **Connect MQL5 Account:**
+   - Run `.\connect-mql5-account.ps1`
+   - Follow the on-screen instructions
+   - Run `.\verify-mql5-assets.ps1` to confirm
+
+2. **Test Trading:**
    - Start with demo account
    - Test EA with small lot sizes
    - Monitor performance
 
-2. **Optimize Settings:**
+3. **Optimize Settings:**
    - Adjust risk parameters based on results
    - Fine-tune EA parameters
    - Optimize VPS resources
 
-3. **Monitor Performance:**
+4. **Monitor Performance:**
    - Check logs regularly
    - Monitor trading activity
    - Review EA performance
 
-4. **Maintain System:**
+5. **Maintain System:**
    - Update EAs regularly
    - Update VPS services
    - Backup configurations
