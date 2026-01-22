@@ -190,7 +190,19 @@ $connectMql5Script = Join-Path $PSScriptRoot "connect-mql5-account.ps1"
 if (Test-Path $connectMql5Script) {
     Write-Host "    [INFO] To access purchased EAs and assets from the MQL5 Market," -ForegroundColor Cyan
     Write-Host "    [INFO] you need to connect your MQL5 account in the terminal." -ForegroundColor Cyan
-    Write-Host "    [INFO] For a step-by-step guide, run: .\connect-mql5-account.ps1" -ForegroundColor Cyan
+    $choice = Read-Host "Would you like to run the interactive MQL5 connection guide now? (Y/N)"
+    if ($choice -eq 'y' -or $choice -eq 'Y') {
+        Write-Host "    [INFO] Running MQL5 connection guide..." -ForegroundColor Cyan
+        try {
+            Invoke-Expression -Command "& '$connectMql5Script'"
+        }
+        catch {
+            Write-Host "    [ERROR] An error occurred while running the connection guide: $_" -ForegroundColor Red
+        }
+    }
+    else {
+        Write-Host "    [INFO] Skipping MQL5 connection guide. You can run '.\connect-mql5-account.ps1' manually later." -ForegroundColor Yellow
+    }
 }
 else {
     Write-Host "    [INFO] MQL5 connection script not found, skipping." -ForegroundColor Yellow
