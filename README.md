@@ -120,7 +120,17 @@ This will set up:
 .\setup-mt5-integration.ps1
 ```
 
-### 4. Launch Trading System
+### 4. Connecting to MQL5
+
+To access purchased assets from the MQL5 Market, you need to connect your MQL5 account to the EXNESS MetaTrader 5 terminal. This is a manual process that must be done inside the terminal application.
+
+For a step-by-step guide, run the following script:
+
+```powershell
+.\connect-mql5-account.ps1
+```
+
+### 5. Launch Trading System
 
 ```powershell
 .\start-trading-system.ps1
