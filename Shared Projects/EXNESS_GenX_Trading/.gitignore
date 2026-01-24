@@ -1,0 +1,32 @@
+# Project Configuration (contains sensitive credentials)
+project_config.env
+*.env
+
+# Compiled MQL5 files
+*.ex5
+*.ex4
+
+# MetaTrader 5 temporary files
+*.log
+*.tmp
+*.tlc
+
+# IDE files
+.vs/
+.vscode/
+*.suo
+*.user
+.idea/
+
+# Deployment package (can be regenerated)
+DEPLOY/deployment_package/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Backup files
+*.bak
+*~
+

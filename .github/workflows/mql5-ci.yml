@@ -1,0 +1,24 @@
+name: MQL5 CI/CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Verify Project Structure
+      run: |
+        if (Test-Path "Experts") { Write-Host "Experts folder found" } else { throw "Experts folder missing" }
+        if (Test-Path "Include") { Write-Host "Include folder found" } else { throw "Include folder missing" }
+        if (Test-Path "Indicators") { Write-Host "Indicators folder found" } else { throw "Indicators folder missing" }
+
+    - name: Check Deployment Scripts
+      run: |
+        if (Test-Path "Shared Projects/EXNESS_GenX_Trading/DEPLOY") { Write-Host "Deployment scripts found" }
