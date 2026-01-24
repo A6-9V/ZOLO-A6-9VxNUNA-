@@ -4,6 +4,7 @@
 //| Alerts / Push notifications + optional auto-trading              |
 //+------------------------------------------------------------------+
 #property strict
+#property version   "2.01"
 
 #include <Trade/Trade.mqh>
 
@@ -70,6 +71,7 @@ input group "Notifications"
 input bool   PopupAlerts           = true;
 input bool   PushNotifications     = true;
 
+//--- Globals
 CTrade gTrade;
 
 int gFractalsHandle = INVALID_HANDLE;
@@ -79,7 +81,7 @@ int gEmaFastHandle  = INVALID_HANDLE;
 int gEmaSlowHandle  = INVALID_HANDLE;
 
 datetime gLastSignalBarTime = 0;
-int gTrendDir = 0; // 1 bullish, -1 bearish, 0 unknown (for CHoCH labelling)
+int gTrendDir = 0; // 1 bullish, -1 bearish, 0 unknown
 
 // PERF: Cached signal timeframe.
 ENUM_TIMEFRAMES gSignalTf = PERIOD_CURRENT;
@@ -88,37 +90,32 @@ ENUM_TIMEFRAMES gSignalTf = PERIOD_CURRENT;
 int gDonchianLookback = 20;
 
 // --- Cached symbol properties (performance)
-// Initialized once in OnInit to avoid repeated calls in OnTick.
-static double G_POINT = 0.0;
-static double G_TICK_SIZE = 0.0;
-static double G_TICK_VALUE = 0.0;
-static double G_VOL_MIN = 0.0;
-static double G_VOL_MAX = 0.0;
-static double G_VOL_STEP = 0.0;
-static int    G_DIGITS = 2;
-static int    G_STOPS_LEVEL = 0;
-static double G_MIN_STOP_PRICE = 0.0;
+double G_POINT = 0.0;
+double G_TICK_SIZE = 0.0;
+double G_TICK_VALUE = 0.0;
+double G_VOL_MIN = 0.0;
+double G_VOL_MAX = 0.0;
+double G_VOL_STEP = 0.0;
+int    G_DIGITS = 2;
+int    G_STOPS_LEVEL = 0;
+double G_MIN_STOP_PRICE = 0.0;
 
 // --- Cached MTF direction (performance)
-// The lower-TF EMA direction only needs to be checked once per new bar on that TF.
-static datetime g_mtfDir_lastCheckTime = 0;
-static int      g_mtfDir_cachedValue = 0;
+datetime g_mtfDir_lastCheckTime = 0;
+int      g_mtfDir_cachedValue = 0;
 
-static int GetMTFDir()
+//--- Functions
+int GetMTFDir()
 {
   if(!RequireMTFConfirm) return 0;
   if(gEmaFastHandle==INVALID_HANDLE || gEmaSlowHandle==INVALID_HANDLE) return 0;
 
-  // PERF: Only check for new MTF direction on a new bar of the LowerTF.
-  datetime mtf_time[1];
-  if(CopyTime(_Symbol, LowerTF, 0, 1, mtf_time) != 1) return 0; // if data not ready, return neutral
-  if(mtf_time[0] == g_mtfDir_lastCheckTime) return g_mtfDir_cachedValue; // return cached value
+  datetime mtf_time[];
+  if(CopyTime(_Symbol, LowerTF, 0, 1, mtf_time) != 1) return 0;
+  if(mtf_time[0] == g_mtfDir_lastCheckTime) return g_mtfDir_cachedValue;
   g_mtfDir_lastCheckTime = mtf_time[0];
 
-  double fast[2], slow[2];
-  ArraySetAsSeries(fast, true);
-  ArraySetAsSeries(slow, true);
-  // Using CopyBuffer on bar 1 (last completed bar) to avoid repainting.
+  double fast[], slow[];
   if(CopyBuffer(gEmaFastHandle, 0, 1, 1, fast) != 1) { g_mtfDir_cachedValue=0; return 0; }
   if(CopyBuffer(gEmaSlowHandle, 0, 1, 1, slow) != 1) { g_mtfDir_cachedValue=0; return 0; }
 
@@ -130,21 +127,13 @@ static int GetMTFDir()
 }
 
 // --- Cached ATR value (performance)
-// The ATR only needs to be calculated once per OnTick event, and only if needed.
-static double   g_atr_cachedValue = 0.0;
-static datetime g_atr_cacheTime = 0; // The bar time this cache is valid for.
+double   g_atr_cachedValue = 0.0;
+datetime g_atr_cacheTime = 0;
 
-// PERF: Lazy-loads the ATR value for the current signal bar.
-// This avoids an expensive CopyBuffer call if the SL/TP modes do not require ATR.
-static double GetATR(const int signalBar, const datetime signalBarTime)
+double GetATR(const int signalBar, const datetime signalBarTime)
 {
-  // If we already calculated ATR for this specific bar, return the cached value.
-  if(g_atr_cacheTime == signalBarTime && g_atr_cachedValue > 0.0)
-  {
-    return g_atr_cachedValue;
-  }
+  if(g_atr_cacheTime == signalBarTime && g_atr_cachedValue > 0.0) return g_atr_cachedValue;
 
-  // Reset cache if the bar time is different.
   if(g_atr_cacheTime != signalBarTime)
   {
     g_atr_cachedValue = 0.0;
@@ -153,30 +142,31 @@ static double GetATR(const int signalBar, const datetime signalBarTime)
 
   if(gAtrHandle == INVALID_HANDLE) return 0.0;
 
-  double atr[1];
+  double atr[];
   if(CopyBuffer(gAtrHandle, 0, signalBar, 1, atr) != 1) return 0.0;
   if(atr[0] <= 0.0) return 0.0;
 
-  g_atr_cachedValue = atr[0]; // Cache the valid ATR.
+  g_atr_cachedValue = atr[0];
   return g_atr_cachedValue;
 }
 
-static bool HasOpenPosition(const string sym, const long magic)
+bool HasOpenPosition(const string sym, const long magic)
 {
-  for(int i=PositionsTotal()-1;i>=0;i--)
+  for(int i=PositionsTotal()-1; i>=0; i--)
   {
-    if(!PositionSelectByIndex(i)) continue;
-    string ps = PositionGetString(POSITION_SYMBOL);
-    if(ps != sym) continue;
-    if((long)PositionGetInteger(POSITION_MAGIC) != magic) continue;
+    ulong ticket = PositionGetTicket(i);
+    if(ticket <= 0) continue;
+    if(!PositionSelectByTicket(ticket)) continue;
+    
+    if(PositionGetString(POSITION_SYMBOL) != sym) continue;
+    if(PositionGetInteger(POSITION_MAGIC) != magic) continue;
     return true;
   }
   return false;
 }
 
-static double NormalizeLots(const string sym, double lots)
+double NormalizeLots(double lots)
 {
-  // Use cached properties
   lots = MathMax(G_VOL_MIN, MathMin(G_VOL_MAX, lots));
   lots = MathFloor(lots/G_VOL_STEP) * G_VOL_STEP;
   int volDigits = (int)MathRound(-MathLog10(G_VOL_STEP));
@@ -185,10 +175,9 @@ static double NormalizeLots(const string sym, double lots)
   return NormalizeDouble(lots, volDigits);
 }
 
-static double LotsFromRisk(const string sym, const double riskPct, const double slPoints, const bool useEquity)
+double LotsFromRisk(const double riskPct, const double slPoints, const bool useEquity)
 {
-  if(riskPct <= 0.0) return 0.0;
-  if(slPoints <= 0.0) return 0.0;
+  if(riskPct <= 0.0 || slPoints <= 0.0) return 0.0;
 
   double base = (useEquity ? AccountInfoDouble(ACCOUNT_EQUITY) : AccountInfoDouble(ACCOUNT_BALANCE));
   double riskMoney = base * (riskPct/100.0);
@@ -197,362 +186,190 @@ static double LotsFromRisk(const string sym, const double riskPct, const double 
   double valuePerPointPerLot = G_TICK_VALUE * (G_POINT / G_TICK_SIZE);
   if(valuePerPointPerLot <= 0) return 0.0;
 
-  double lots = riskMoney / (slPoints * valuePerPointPerLot);
-  return lots;
+  return riskMoney / (slPoints * valuePerPointPerLot);
 }
 
-static double NormalizePriceToTick(const string sym, double price)
+double NormalizePriceToTick(double price)
 {
-  // Use cached properties
   double tick = (G_TICK_SIZE > 0.0 ? G_TICK_SIZE : G_POINT);
   if(tick > 0.0) price = MathRound(price / tick) * tick;
   return NormalizeDouble(price, G_DIGITS);
 }
 
-static double ClampLotsToMargin(const string sym, const ENUM_ORDER_TYPE type, double lots, const double price)
+double ClampLotsToMargin(const ENUM_ORDER_TYPE type, double lots, const double price)
 {
-  if(lots <= 0.0) return 0.0;
-  if(!RiskClampToFreeMargin) return lots;
+  if(lots <= 0.0 || !RiskClampToFreeMargin) return lots;
 
-  double freeMargin = AccountInfoDouble(ACCOUNT_FREEMARGIN);
+  double freeMargin = AccountInfoDouble(ACCOUNT_MARGIN_FREE);
   if(freeMargin <= 0.0) return 0.0;
 
   double margin=0.0;
-  if(!OrderCalcMargin(type, sym, lots, price, margin)) return lots; // if broker doesn't provide calc, don't block
+  if(!OrderCalcMargin(type, _Symbol, lots, price, margin)) return lots;
   if(margin <= freeMargin) return lots;
 
-  // Estimate from 1-lot margin, then clamp down.
   double margin1=0.0;
-  if(!OrderCalcMargin(type, sym, 1.0, price, margin1)) return lots;
-  if(margin1 <= 0.0) return lots;
+  if(!OrderCalcMargin(type, _Symbol, 1.0, price, margin1) || margin1 <= 0.0) return lots;
 
-  double maxLots = (freeMargin / margin1) * 0.95; // small cushion
-  return MathMin(lots, maxLots);
+  return MathMin(lots, (freeMargin / margin1) * 0.95);
 }
 
-static void Notify(const string msg)
+void Notify(const string msg)
 {
   if(PopupAlerts) Alert(msg);
   if(PushNotifications) SendNotification(msg);
 }
 
+//--- Entry Points
 int OnInit()
 {
-  // PERF: Calculate and cache the signal timeframe once.
   gSignalTf = (SignalTF==PERIOD_CURRENT ? (ENUM_TIMEFRAMES)_Period : SignalTF);
 
   gFractalsHandle = iFractals(_Symbol, gSignalTf);
-  if(gFractalsHandle == INVALID_HANDLE) return INIT_FAILED;
-
   gAtrHandle = iATR(_Symbol, gSignalTf, ATRPeriod);
-  if(gAtrHandle == INVALID_HANDLE) return INIT_FAILED;
-
-  // PERF: Validate and cache Donchian lookback once.
+  
   gDonchianLookback = (DonchianLookback < 2 ? 2 : DonchianLookback);
-  gDonchianHandle = iDonchian(_Symbol, gSignalTf, gDonchianLookback);
-  if(gDonchianHandle == INVALID_HANDLE) return INIT_FAILED;
+  gDonchianHandle = iCustom(_Symbol, gSignalTf, "Free Indicators\\Donchian Channel", gDonchianLookback, false);
 
   gEmaFastHandle = iMA(_Symbol, LowerTF, EMAFast, 0, MODE_EMA, PRICE_CLOSE);
   gEmaSlowHandle = iMA(_Symbol, LowerTF, EMASlow, 0, MODE_EMA, PRICE_CLOSE);
 
+  if(gFractalsHandle == INVALID_HANDLE || gAtrHandle == INVALID_HANDLE || 
+     gDonchianHandle == INVALID_HANDLE || gEmaFastHandle == INVALID_HANDLE || 
+     gEmaSlowHandle == INVALID_HANDLE) return INIT_FAILED;
+
   gTrade.SetExpertMagicNumber(MagicNumber);
   gTrade.SetDeviationInPoints(SlippagePoints);
 
-  // --- Cache symbol properties for performance
   G_POINT = SymbolInfoDouble(_Symbol, SYMBOL_POINT);
-  if(G_POINT <= 0.0) G_POINT = _Point; // Fallback
   G_TICK_SIZE = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_SIZE);
   G_TICK_VALUE = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_VALUE_LOSS);
   if(G_TICK_VALUE <= 0.0) G_TICK_VALUE = SymbolInfoDouble(_Symbol, SYMBOL_TRADE_TICK_VALUE);
   G_VOL_MIN = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MIN);
   G_VOL_MAX = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MAX);
   G_VOL_STEP = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_STEP);
-  if(G_VOL_STEP <= 0) G_VOL_STEP = 0.01;
   G_DIGITS = (int)SymbolInfoInteger(_Symbol, SYMBOL_DIGITS);
-
-  int stopsLevel  = (int)SymbolInfoInteger(_Symbol, SYMBOL_TRADE_STOPS_LEVEL);
-  int freezeLevel = (int)SymbolInfoInteger(_Symbol, SYMBOL_TRADE_FREEZE_LEVEL);
-  G_STOPS_LEVEL = MathMax(stopsLevel, freezeLevel);
-  G_MIN_STOP_PRICE = (G_STOPS_LEVEL > 0 ? G_STOPS_LEVEL * G_POINT : 0.0);
-
-  // PERF: Validate and cache Donchian lookback once.
-  gDonchianLookback = (DonchianLookback < 2 ? 2 : DonchianLookback);
+  G_STOPS_LEVEL = (int)MathMax(SymbolInfoInteger(_Symbol, SYMBOL_TRADE_STOPS_LEVEL), SymbolInfoInteger(_Symbol, SYMBOL_TRADE_FREEZE_LEVEL));
+  G_MIN_STOP_PRICE = G_STOPS_LEVEL * G_POINT;
 
   return INIT_SUCCEEDED;
 }
 
 void OnDeinit(const int reason)
 {
-  if(gFractalsHandle != INVALID_HANDLE) IndicatorRelease(gFractalsHandle);
-  if(gAtrHandle != INVALID_HANDLE) IndicatorRelease(gAtrHandle);
-  if(gDonchianHandle != INVALID_HANDLE) IndicatorRelease(gDonchianHandle);
-  if(gEmaFastHandle != INVALID_HANDLE) IndicatorRelease(gEmaFastHandle);
-  if(gEmaSlowHandle != INVALID_HANDLE) IndicatorRelease(gEmaSlowHandle);
+  IndicatorRelease(gFractalsHandle);
+  IndicatorRelease(gAtrHandle);
+  IndicatorRelease(gDonchianHandle);
+  IndicatorRelease(gEmaFastHandle);
+  IndicatorRelease(gEmaSlowHandle);
 }
 
 void OnTick()
 {
   // --- Weekend Filter ---
-  datetime current_time = TimeCurrent();
   MqlDateTime dt;
-  TimeToStruct(current_time, dt);
-  
-  bool is_weekend = (dt.day_of_week == 0 || dt.day_of_week == 6); // 0=Sunday, 6=Saturday
-  if(is_weekend)
+  TimeToStruct(TimeCurrent(), dt);
+  if(dt.day_of_week == 0 || dt.day_of_week == 6)
   {
-    // Only allow weekend trading if enabled OR specifically for BTCUSD/ETFXAU
-    bool is_special_symbol = (_Symbol == "BTCUSD" || _Symbol == "ETFXAU");
-    if(!AllowWeekendTrading && !is_special_symbol) return;
+    if(!AllowWeekendTrading && _Symbol != "BTCUSD" && _Symbol != "ETFXAU") return;
   }
 
-  // PERF: Early exit if a new bar hasn't formed on the signal timeframe.
-  // This is a critical optimization that prevents expensive calls (like CopyRates)
-  // from running on every single price tick within the same bar.
   const int sigBar = (FireOnClose ? 1 : 0);
-  datetime time[2]; // Index 0 is current bar, 1 is last closed bar.
-  ArraySetAsSeries(time, true);
-  // Ensure we have enough bars to get the time for our signal bar.
-  if(CopyTime(_Symbol, gSignalTf, 0, sigBar + 1, time) <= sigBar) return;
+  datetime bar_time[];
+  if(CopyTime(_Symbol, gSignalTf, 0, sigBar+1, bar_time) <= sigBar) return;
+  if(bar_time[sigBar] == gLastSignalBarTime) return;
+  gLastSignalBarTime = bar_time[sigBar];
 
-  datetime sigTime = time[sigBar];
-  if(sigTime == gLastSignalBarTime) return; // Not a new signal bar, exit early.
-
-  // Now that we've passed all checks, we can commit to this bar time.
-  gLastSignalBarTime = sigTime;
-
-  // --- Data Loading & Primary Signals ---
-  // PERF: Defer expensive data loading. Only load full history if needed.
-  double lastSwingHigh = 0.0; datetime lastSwingHighT = 0;
-  double lastSwingLow  = 0.0; datetime lastSwingLowT  = 0;
+  double lastSwingHigh = 0.0, lastSwingLow = 0.0;
+  datetime lastSwingHighT = 0, lastSwingLowT = 0;
   double closeSig = 0.0;
 
-  // PERF: Lazy Calculation - only search for swings if needed for SMC or SL.
   if(UseSMC || SLMode == SL_SWING)
   {
-    // PERF: Array allocation is deferred to this block to avoid overhead on the lighter path.
-    MqlRates rates[400];
-    ArraySetAsSeries(rates, true);
-
-    // This path requires a deep history for fractal/swing analysis.
+    MqlRates rates[];
     int needBars = MathMin(400, Bars(_Symbol, gSignalTf));
-    if(needBars < 100) return;
-    if(CopyRates(_Symbol, gSignalTf, 0, needBars, rates) < 100) return;
-    if(sigBar >= needBars-1) return;
-    closeSig = rates[sigBar].close; // Get close from the full rates array.
+    if(needBars < 100 || CopyRates(_Symbol, gSignalTf, 0, needBars, rates) < 100) return;
+    ArraySetAsSeries(rates, true);
+    closeSig = rates[sigBar].close;
 
-    // Get fractals (for structure break)
+    double upFr[], dnFr[];
     int frNeed = MathMin(300, needBars);
-    double upFr[300], dnFr[300];
-    ArraySetAsSeries(upFr, true);
-    ArraySetAsSeries(dnFr, true);
-    if(CopyBuffer(gFractalsHandle, 0, 0, frNeed, upFr) <= 0) return;
-    if(CopyBuffer(gFractalsHandle, 1, 0, frNeed, dnFr) <= 0) return;
-
-    for(int i=sigBar+2; i<frNeed; i++)
+    if(CopyBuffer(gFractalsHandle, 0, 0, frNeed, upFr) > 0 && CopyBuffer(gFractalsHandle, 1, 0, frNeed, dnFr) > 0)
     {
-      if(lastSwingHighT==0 && upFr[i] != 0.0) { lastSwingHigh = upFr[i]; lastSwingHighT = rates[i].time; }
-      if(lastSwingLowT==0  && dnFr[i] != 0.0) { lastSwingLow  = dnFr[i]; lastSwingLowT  = rates[i].time; }
-      if(lastSwingHighT!=0 && lastSwingLowT!=0) break;
-    }
-  }
-  else
-  {
-    // This path is much lighter.
-    // PERF: Use the lightweight iClose() instead of heavy CopyRates() just to get a single price.
-    closeSig = iClose(_Symbol, gSignalTf, sigBar);
-    if(closeSig <= 0.0) return; // Abort if price is invalid.
-  }
-
-  // --- Donchian Channel (using native indicator for performance) ---
-  // The native iDonchian is faster as the terminal manages state and calculations.
-  double donchianUp[1], donchianDn[1];
-  // We need the Donchian value from the bar *preceding* the signal bar.
-  int donStart = sigBar + 1;
-  if(CopyBuffer(gDonchianHandle, 0, donStart, 1, donchianUp) != 1) return;
-  if(CopyBuffer(gDonchianHandle, 1, donStart, 1, donchianDn) != 1) return;
-
-  double donHigh = donchianUp[0];
-  double donLow  = donchianDn[0];
-  if(donHigh <= 0 || donLow <= 0) return; // Data not ready or invalid
-
-  // --- Primary Signals (without MTF confirmation yet) ---
-  bool smcLong=false, smcShort=false, donLong=false, donShort=false;
-  if(UseSMC)
-  {
-    if(lastSwingHighT!=0 && closeSig > lastSwingHigh) smcLong = true;
-    if(lastSwingLowT!=0  && closeSig < lastSwingLow)  smcShort = true;
-  }
-  if(UseDonchianBreakout)
-  {
-    if(closeSig > donHigh) donLong = true;
-    if(closeSig < donLow)  donShort = true;
-  }
-
-  // PERF: Early exit if no primary signal exists. This avoids the GetMTFDir()
-  // call (which performs a CopyTime) on the vast majority of bars.
-  if(!(smcLong || donLong || smcShort || donShort)) return;
-
-  // --- Lower TF confirmation (only after a primary signal) ---
-  int mtfDir = GetMTFDir();
-  bool mtfOkLong  = (!RequireMTFConfirm) || (mtfDir == 1);
-  bool mtfOkShort = (!RequireMTFConfirm) || (mtfDir == -1);
-
-  bool finalLong  = (smcLong || donLong) && mtfOkLong;
-  bool finalShort = (smcShort || donShort) && mtfOkShort;
-
-  if(!finalLong && !finalShort) return;
-
-  // CHoCH / BOS label (informational)
-  string kind = "";
-  if(finalLong)
-  {
-    int breakDir = 1;
-    bool choch = (UseCHoCH && gTrendDir!=0 && breakDir != gTrendDir);
-    kind = (choch ? "CHoCH↑" : "BOS↑");
-    gTrendDir = breakDir;
-  }
-  if(finalShort)
-  {
-    int breakDir = -1;
-    bool choch = (UseCHoCH && gTrendDir!=0 && breakDir != gTrendDir);
-    kind = (choch ? "CHoCH↓" : "BOS↓");
-    gTrendDir = breakDir;
-  }
-
-  string msg = StringFormat("%s %s %s | TF=%s | MTF=%s | SMC=%s DON=%s",
-                            _Symbol,
-                            (finalLong ? "LONG" : "SHORT"),
-                            kind,
-                            EnumToString(gSignalTf),
-                            EnumToString(LowerTF),
-                            (smcLong||smcShort ? "Y" : "N"),
-                            (donLong||donShort ? "Y" : "N"));
-  Notify(msg);
-
-  if(!EnableTrading) return;
-  if(OnePositionPerSymbol && HasOpenPosition(_Symbol, MagicNumber)) return;
-
-  // PERF: G_POINT is now guaranteed to be valid from OnInit.
-  double point = G_POINT;
-  // PERF: Use pre-defined Ask/Bid globals in OnTick to avoid function call overhead.
-  double ask = Ask;
-  double bid = Bid;
-
-  double entry = (finalLong ? ask : bid);
-  double sl = 0.0, tp = 0.0;
-
-  // --- Build SL
-  if(SLMode == SL_SWING)
-  {
-    // For a long breakout, protective SL typically goes below the last confirmed swing low.
-    // For a short breakout, SL goes above the last confirmed swing high.
-    double buf = SwingSLBufferPoints * G_POINT;
-    if(finalLong && lastSwingLowT != 0 && lastSwingLow > 0.0) sl = lastSwingLow - buf;
-    if(finalShort && lastSwingHighT != 0 && lastSwingHigh > 0.0) sl = lastSwingHigh + buf;
-
-    // Fallback if swing is missing/invalid for current entry.
-    if((finalLong && (sl <= 0.0 || sl >= entry)) || (finalShort && (sl <= 0.0 || sl <= entry)))
-    {
-      // PERF: ATR is lazy-loaded only for this fallback case.
-      double atrVal = GetATR(sigBar, sigTime);
-      if(atrVal > 0.0)
+      ArraySetAsSeries(upFr, true);
+      ArraySetAsSeries(dnFr, true);
+      for(int i=sigBar+2; i<frNeed; i++)
       {
-        if(finalLong) sl = entry - (ATR_SL_Mult * atrVal);
-        else sl = entry + (ATR_SL_Mult * atrVal);
+        if(lastSwingHighT==0 && upFr[i] != 0.0 && upFr[i] != EMPTY_VALUE) { lastSwingHigh = upFr[i]; lastSwingHighT = rates[i].time; }
+        if(lastSwingLowT==0  && dnFr[i] != 0.0 && dnFr[i] != EMPTY_VALUE)  { lastSwingLow  = dnFr[i]; lastSwingLowT  = rates[i].time; }
+        if(lastSwingHighT!=0 && lastSwingLowT!=0) break;
       }
     }
   }
-  else if(SLMode == SL_FIXED_POINTS)
+  else
   {
-    double dist = MathMax(1, FixedSLPoints) * point;
-    sl = (finalLong ? entry - dist : entry + dist);
+    double closes[];
+    if(CopyClose(_Symbol, gSignalTf, sigBar, 1, closes) != 1) return;
+    closeSig = closes[0];
   }
-  else // SL_ATR
+
+  double donUp[], donDn[];
+  if(CopyBuffer(gDonchianHandle, 0, sigBar+1, 1, donUp) != 1 || CopyBuffer(gDonchianHandle, 2, sigBar+1, 1, donDn) != 1) return;
+  double donHigh = donUp[0], donLow = donDn[0];
+
+  bool smcLong = (UseSMC && lastSwingHighT!=0 && closeSig > lastSwingHigh);
+  bool smcShort = (UseSMC && lastSwingLowT!=0 && closeSig < lastSwingLow);
+  bool donLong = (UseDonchianBreakout && closeSig > donHigh);
+  bool donShort = (UseDonchianBreakout && closeSig < donLow);
+
+  if(!(smcLong || donLong || smcShort || donShort)) return;
+
+  int mtfDir = GetMTFDir();
+  if(RequireMTFConfirm)
   {
-    // PERF: ATR is lazy-loaded only when this SL mode is active.
-    double atrVal = GetATR(sigBar, sigTime);
-    if(atrVal > 0.0)
+    if((smcLong || donLong) && mtfDir != 1) return;
+    if((smcShort || donShort) && mtfDir != -1) return;
+  }
+
+  bool isLong = (smcLong || donLong);
+  if(isLong) gTrendDir = 1; else gTrendDir = -1;
+
+  Notify(StringFormat("%s %s | TF=%s | SMC=%s DON=%s", _Symbol, (isLong?"LONG":"SHORT"), EnumToString(gSignalTf), (smcLong||smcShort?"Y":"N"), (donLong||donShort?"Y":"N")));
+
+  if(!EnableTrading || (OnePositionPerSymbol && HasOpenPosition(_Symbol, MagicNumber))) return;
+
+  double ask = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
+  double bid = SymbolInfoDouble(_Symbol, SYMBOL_BID);
+  double entry = (isLong ? ask : bid);
+  double sl = 0.0, tp = 0.0;
+
+  if(SLMode == SL_SWING)
+  {
+    double buf = SwingSLBufferPoints * G_POINT;
+    sl = (isLong ? lastSwingLow - buf : lastSwingHigh + buf);
+    if(sl <= 0.0 || (isLong && sl >= entry) || (!isLong && sl <= entry))
     {
-      sl = (finalLong ? entry - (ATR_SL_Mult * atrVal) : entry + (ATR_SL_Mult * atrVal));
+      double atr = GetATR(sigBar, bar_time[sigBar]);
+      sl = (isLong ? entry - ATR_SL_Mult * atr : entry + ATR_SL_Mult * atr);
     }
   }
+  else if(SLMode == SL_FIXED_POINTS) sl = (isLong ? entry - FixedSLPoints * G_POINT : entry + FixedSLPoints * G_POINT);
+  else sl = (isLong ? entry - ATR_SL_Mult * GetATR(sigBar, bar_time[sigBar]) : entry + ATR_SL_Mult * GetATR(sigBar, bar_time[sigBar]));
 
-  // CRITICAL: If SL is 0 after this block, it means a required calculation
-  // (like GetATR) failed. Abort to prevent placing a trade with no stop loss.
-  if(sl == 0.0)
-  {
-    // Optionally notify the user about the failure.
-    // Notify(StringFormat("SL calculation failed for %s.", _Symbol));
-    return;
-  }
+  if(sl <= 0.0) return;
 
-  // --- Build TP
-  if(TPMode == TP_FIXED_POINTS)
-  {
-    double dist = MathMax(1, FixedTPPoints) * point;
-    tp = (finalLong ? entry + dist : entry - dist);
-  }
-  else if(TPMode == TP_DONCHIAN_WIDTH)
-  {
-    double width = MathAbs(donHigh - donLow);
-    if(width <= 0.0)
-    {
-      // PERF: ATR is lazy-loaded only for this fallback case.
-      double atrVal = GetATR(sigBar, sigTime);
-      if(atrVal > 0.0) width = ATR_SL_Mult * atrVal; // fallback
-    }
-    double dist = DonchianTP_Mult * width;
-    tp = (finalLong ? entry + dist : entry - dist);
-  }
-  else // TP_RR
-  {
-    double slDist = MathAbs(entry - sl);
-    tp = (finalLong ? entry + (RR * slDist) : entry - (RR * slDist));
-  }
+  if(TPMode == TP_FIXED_POINTS) tp = (isLong ? entry + FixedTPPoints * G_POINT : entry - FixedTPPoints * G_POINT);
+  else if(TPMode == TP_DONCHIAN_WIDTH) tp = (isLong ? entry + DonchianTP_Mult * MathAbs(donHigh-donLow) : entry - DonchianTP_Mult * MathAbs(donHigh-donLow));
+  else tp = (isLong ? entry + RR * MathAbs(entry-sl) : entry - RR * MathAbs(entry-sl));
 
-  // CRITICAL: If TP is 0, it means a calculation failed. Abort.
-  if(tp == 0.0) return;
-
-  // Respect broker minimum stop distance (in points)
   if(G_MIN_STOP_PRICE > 0)
   {
-    if(finalLong)
-    {
-      if(entry - sl < G_MIN_STOP_PRICE) sl = entry - G_MIN_STOP_PRICE;
-      if(tp - entry < G_MIN_STOP_PRICE) tp = entry + G_MIN_STOP_PRICE;
-    }
-    else
-    {
-      if(sl - entry < G_MIN_STOP_PRICE) sl = entry + G_MIN_STOP_PRICE;
-      if(entry - tp < G_MIN_STOP_PRICE) tp = entry - G_MIN_STOP_PRICE;
-    }
+    if(isLong) { sl = MathMin(sl, entry - G_MIN_STOP_PRICE); tp = MathMax(tp, entry + G_MIN_STOP_PRICE); }
+    else { sl = MathMax(sl, entry + G_MIN_STOP_PRICE); tp = MathMin(tp, entry - G_MIN_STOP_PRICE); }
   }
 
-  // Respect tick size / digits
-  sl = NormalizePriceToTick(_Symbol, sl);
-  tp = NormalizePriceToTick(_Symbol, tp);
+  sl = NormalizePriceToTick(sl); tp = NormalizePriceToTick(tp);
+  double lots = (RiskPercent > 0 ? LotsFromRisk(RiskPercent, MathAbs(entry-sl)/G_POINT, RiskUseEquity) : FixedLots);
+  lots = NormalizeLots(ClampLotsToMargin(isLong?ORDER_TYPE_BUY:ORDER_TYPE_SELL, lots, entry));
 
-  // Size
-  double slPoints = MathAbs(entry - sl) / point;
-  double lots = FixedLots;
-  if(RiskPercent > 0.0)
-  {
-    double riskLots = LotsFromRisk(_Symbol, RiskPercent, slPoints, RiskUseEquity);
-    if(riskLots > 0.0) lots = riskLots;
-  }
-  lots = NormalizeLots(_Symbol, ClampLotsToMargin(_Symbol, (finalLong ? ORDER_TYPE_BUY : ORDER_TYPE_SELL), lots, entry));
-  if(lots <= 0.0) return;
-
-  bool ok = false;
-  if(finalLong)
-    ok = gTrade.Buy(lots, _Symbol, 0.0, sl, tp, "SMC_TB_MTF");
-  else
-    ok = gTrade.Sell(lots, _Symbol, 0.0, sl, tp, "SMC_TB_MTF");
-
-  if(!ok)
-  {
-    int err = GetLastError();
-    Notify(StringFormat("Order failed: %d", err));
-  }
+  if(lots > 0) { if(isLong) gTrade.Buy(lots, _Symbol, 0.0, sl, tp); else gTrade.Sell(lots, _Symbol, 0.0, sl, tp); }
 }
-

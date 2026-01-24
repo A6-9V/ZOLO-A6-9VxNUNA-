@@ -16,6 +16,8 @@ REM Set environment variables for project management
 set GITHUB_TOKEN={{GITHUB_TOKEN}}
 set MQL5_CLIENT_ID={{MQL5_CLIENT_ID}}
 set MQL5_CLIENT_SECRET={{MQL5_CLIENT_SECRET}}
+set TELEGRAM_BOT_TOKEN={{TELEGRAM_BOT_TOKEN}}
+set TELEGRAM_CHAT_ID={{TELEGRAM_CHAT_ID}}
 set MQL5_REDIRECT_URI=http://127.0.0.1:50729/
 
 echo [INFO] Environment variables set:
@@ -29,8 +31,8 @@ set MT5_PATH=E:\Program Files\MetaTrader 5 EXNESS
 set MT5_EXE=%MT5_PATH%\terminal64.exe
 
 REM Account credentials
-set MT5_ACCOUNT={{MT5_ACCOUNT}}
-set MT5_PASSWORD={{MT5_PASSWORD}}
+set MT5_ACCOUNT=411534497
+set MT5_PASSWORD=Leng3A69V[@Una]
 set MT5_SERVER=Exness-MT5Real8
 
 echo [INFO] Starting MetaTrader 5 EXNESS Terminal...
