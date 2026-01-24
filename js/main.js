@@ -12,17 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /**
- * Utility: Debounce function
- */
-function debounce(func, wait = 100) {
-    let timeout;
-    return function(...args) {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => func.apply(this, args), wait);
-    };
-}
-
-/**
  * Utility: Throttle function
  */
 function throttle(func, limit = 100) {
@@ -176,24 +165,6 @@ function initCopyButtons() {
     copyButtons.forEach(btn => {
         btn.addEventListener('click', () => copyCode(btn));
     });
-}
-
-/**
- * Terminal typing effect (optional enhancement)
- */
-function typeWriter(element, text, speed = 50) {
-    let i = 0;
-    element.textContent = '';
-    
-    function type() {
-        if (i < text.length) {
-            element.textContent += text.charAt(i);
-            i++;
-            setTimeout(type, speed);
-        }
-    }
-    
-    type();
 }
 
 // Console branding
