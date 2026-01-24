@@ -390,6 +390,12 @@ Sensitive files including credentials, API keys, certificates, and logs are auto
 - **MANUAL-SETUP-GUIDE.md** - Manual setup instructions
 - **HTML-LOG-LAUNCH-GUIDE.md** - HTML log-based repository launch system
 
+## 🌳 Branch Management
+
+- **Default Branch**: `main` is the primary production branch. All stable code resides here.
+- **Feature Branches**: All new features and bug fixes should be developed in separate branches (e.g., `feat/`, `fix/`) and merged into `main` via Pull Requests.
+- **CI/CD**: Every push to `main` and every Pull Request triggers automated security audits and linting via GitHub Actions.
+
 ## 🏢 Organization
 
 Managed by **A6-9V** organization for better control and collaboration.
