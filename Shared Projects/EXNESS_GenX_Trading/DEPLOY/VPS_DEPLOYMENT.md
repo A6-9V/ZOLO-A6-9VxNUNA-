@@ -59,15 +59,18 @@
 2. Verify EA is running (smiley face icon on chart)
 3. Check the "Experts" tab for EA logs
 
-## VPS Configuration
+## VPS Configuration (Current Device: NuNa)
 
-### Recommended VPS Specifications
+### Specifications
 
-- **CPU**: 2+ cores
-- **RAM**: 4GB minimum
-- **Storage**: 20GB+ SSD
-- **OS**: Windows Server 2016+ or Windows 10/11
+- **Device name**: NuNa
+- **Processor**: Intel(R) Core(TM) i3-N305 (1.80 GHz)
+- **RAM**: 8.00 GB (7.63 GB usable)
+- **Storage**: 20GB+ SSD (Recommended)
+- **OS**: Windows 11 Home Single Language (Build 26220.7653)
 - **Network**: Low latency connection (<50ms to broker)
+- **Device ID**: 32680105-F98A-49B6-803C-8A525771ABA3
+- **Product ID**: 00356-24782-61221-AAOEM
 
 ### MT5 Terminal Settings on VPS
 

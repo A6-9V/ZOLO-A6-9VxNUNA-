@@ -31,8 +31,8 @@ set MT5_PATH=E:\Program Files\MetaTrader 5 EXNESS
 set MT5_EXE=%MT5_PATH%\terminal64.exe
 
 REM Account credentials
-set MT5_ACCOUNT=411534497
-set MT5_PASSWORD=Leng3A69V[@Una]
+set MT5_ACCOUNT={{MT5_ACCOUNT}}
+set MT5_PASSWORD={{MT5_PASSWORD}}
 set MT5_SERVER=Exness-MT5Real8
 
 echo [INFO] Starting MetaTrader 5 EXNESS Terminal...

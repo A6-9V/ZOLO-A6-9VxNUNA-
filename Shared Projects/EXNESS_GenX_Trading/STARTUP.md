@@ -64,6 +64,20 @@ This local redirect URI is configured for OAuth authentication with MQL5.io serv
 - `project_config.env` - Configuration file (DO NOT commit to git)
 - `.gitignore` - Git ignore rules for sensitive files
 
+## System Information (Current Device: NuNa)
+
+- **Device name**: NuNa
+- **Processor**: Intel(R) Core(TM) i3-N305 (1.80 GHz)
+- **Installed RAM**: 8.00 GB (7.63 GB usable)
+- **Device ID**: 32680105-F98A-49B6-803C-8A525771ABA3
+- **Product ID**: 00356-24782-61221-AAOEM
+- **System type**: 64-bit operating system, x64-based processor
+- **Windows Edition**: Windows 11 Home Single Language
+- **Version**: 25H2
+- **OS build**: 26220.7653
+- **Experience**: Windows Feature Experience Pack 1000.26100.323.0
+- **Terminal Path**: `E:\Program Files\MetaTrader 5 EXNESS`
+
 ## Next Steps After Terminal Starts
 
 1. **Wait for Connection**: Allow the terminal to connect to the Exness server
