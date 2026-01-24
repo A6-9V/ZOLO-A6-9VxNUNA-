@@ -1,6 +1,0 @@
-﻿========================================
-  Trading System Setup & Start
-========================================
-
-[OK] Found trading-bridge at: D:\ZOLO-A6-9VxNUNA-\trading-bridge
-[1/6] Checking Python installation...
