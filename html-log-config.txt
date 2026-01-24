@@ -21,7 +21,7 @@ LAUNCH_TRADING_SYSTEM=true
 OPEN_GITHUB_WEBSITE=true
 
 # Website Configuration
-GITHUB_WEBSITE_URL=https://mouy-leng.github.io/ZOLO-A6-9VxNUNA-/
+GITHUB_WEBSITE_URL=https://accounting-pw8oj98.public.builtwithrocket.new/?rk_owner=true
 
 # Log Settings
 KEEP_LAUNCH_LOGS=true

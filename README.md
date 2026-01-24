@@ -12,6 +12,8 @@
 
 **🔗 [https://mouy-leng.github.io/ZOLO-A6-9VxNUNA-/](https://mouy-leng.github.io/ZOLO-A6-9VxNUNA-/)**
 
+**📊 [Management Dashboard](https://accounting-pw8oj98.public.builtwithrocket.new/?rk_owner=true)**
+
 ### 🚀 Launch Website Locally
 
 Test the website on your local machine before deploying:
