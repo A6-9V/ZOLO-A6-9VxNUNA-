@@ -389,6 +389,8 @@ Sensitive files including credentials, API keys, certificates, and logs are auto
 - **GITHUB-DESKTOP-RULES.md** - GitHub Desktop integration
 - **MANUAL-SETUP-GUIDE.md** - Manual setup instructions
 - **HTML-LOG-LAUNCH-GUIDE.md** - HTML log-based repository launch system
+- **NETWORK-INFO.md** - Specific network configuration and hardware details
+- **network-setup/README.md** - WiFi configuration tools and setup guide
 
 ## 🌳 Branch Management
 
