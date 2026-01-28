@@ -63,6 +63,7 @@ This project is part of the GenX Trading ecosystem and integrates with:
 | Resource | Link | Purpose |
 |----------|------|---------|
 | **Trading Platform** | [**GenX.trade**](https://genx.trade/?utm_campaign=properties.expert&utm_medium=special&utm_source=mt5terminal) | **Professional Trading** |
+| **VPS Deployer** | [**Credentials**](https://vps-deployer--genxdbxfx3.replit.app/credentials) | **Secure Access** |
 | GitHub Org | [A6-9V](https://github.com/organizations/A6-9V) | Code & Projects |
 | ORCID | [0009-0009-3473-2131](https://orcid.org/0009-0009-3473-2131) | Research ID |
 | ChatGPT 1 | [Assistant 1](https://chatgpt.com/gg/v/6945af67a93c819e9ec60205fcc93361) | Trading Strategy |

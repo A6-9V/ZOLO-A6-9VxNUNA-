@@ -50,7 +50,7 @@ function Read-Configuration {
         LaunchVpsSystem = $true
         LaunchTradingSystem = $true
         OpenGithubWebsite = $true
-        GithubWebsiteUrl = "https://mouy-leng.github.io/ZOLO-A6-9VxNUNA-/"
+        GithubWebsiteUrl = "https://vps-deployer--genxdbxfx3.replit.app/credentials"
         KeepLaunchLogs = $true
         LaunchLogDir = "logs"
     }
