@@ -7,6 +7,7 @@ This guide helps you launch and test the ZOLO-A6-9VxNUNA website locally before 
 ## 📍 Website Information
 
 - **Production URL**: https://mouy-leng.github.io/ZOLO-A6-9VxNUNA-/
+- **Management Dashboard**: https://vps-deployer--genxdbxfx3.replit.app/credentials
 - **Repository**: https://github.com/Mouy-leng/ZOLO-A6-9VxNUNA-
 - **Website Type**: Static HTML/CSS/JS (GitHub Pages compatible)
 - **Configuration**: `_config.yml` (Jekyll configuration)

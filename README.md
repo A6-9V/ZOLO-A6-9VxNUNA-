@@ -12,6 +12,8 @@
 
 **🔗 [https://mouy-leng.github.io/ZOLO-A6-9VxNUNA-/](https://mouy-leng.github.io/ZOLO-A6-9VxNUNA-/)**
 
+**🔑 [VPS Deployer Credentials](https://vps-deployer--genxdbxfx3.replit.app/credentials)**
+
 ### 🚀 Launch Website Locally
 
 Test the website on your local machine before deploying:
@@ -325,6 +327,7 @@ Features:
 | Resource | Purpose |
 |----------|---------|
 | [**GenX Trading Platform**](https://genx.trade/?utm_campaign=properties.expert&utm_medium=special&utm_source=mt5terminal) | **Professional Trading Platform** |
+| **VPS Deployer** | [**Credentials**](https://vps-deployer--genxdbxfx3.replit.app/credentials) | **Secure Access** |
 | [GitHub Organization](https://github.com/organizations/A6-9V) | Code & Projects |
 | [ORCID Profile](https://orcid.org/0009-0009-3473-2131) | Research ID |
 | [ChatGPT Assistant 1](https://chatgpt.com/gg/v/6945af67a93c819e9ec60205fcc93361) (private) | Trading Strategy |
