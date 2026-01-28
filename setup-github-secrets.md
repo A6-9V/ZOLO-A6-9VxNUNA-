@@ -2,7 +2,7 @@
 
 ## Your OAuth Credentials
 - **Client ID**: `Ov23liVH34OCl6XkcrH6`
-- **Client Secret**: `666665669ac851c05533d8ee472d64cbd2061eba`
+- **Client Secret**: `[SECRET_SET_IN_LOCAL_ENV]`
 
 ## Repository
 - **Repository**: `Mouy-leng/ZOLO-A6-9VxNUNA-`
@@ -18,7 +18,7 @@
 2. **Set the secrets:**
    ```bash
    gh secret set CLIENT_ID --body "Ov23liVH34OCl6XkcrH6" --repo Mouy-leng/ZOLO-A6-9VxNUNA-
-   gh secret set CLIENT_SECRET --body "666665669ac851c05533d8ee472d64cbd2061eba" --repo Mouy-leng/ZOLO-A6-9VxNUNA-
+   gh secret set CLIENT_SECRET --body "YOUR_CLIENT_SECRET" --repo Mouy-leng/ZOLO-A6-9VxNUNA-
    ```
    
    **Note:** Secret names cannot start with `GITHUB_` as that prefix is reserved by GitHub.
@@ -41,7 +41,7 @@
 6. Click **New repository secret** again
 7. Add the second secret:
    - **Name**: `CLIENT_SECRET`
-   - **Secret**: `666665669ac851c05533d8ee472d64cbd2061eba`
+   - **Secret**: `YOUR_CLIENT_SECRET`
    - Click **Add secret**
    
    **Note:** Secret names cannot start with `GITHUB_` as that prefix is reserved by GitHub.
@@ -70,3 +70,6 @@ Or directly:
 - ✓ `CLIENT_ID` - Set for repository `Mouy-leng/ZOLO-A6-9VxNUNA-`
 - ✓ `CLIENT_SECRET` - Set for repository `Mouy-leng/ZOLO-A6-9VxNUNA-`
 
+## Other Secrets (Reference)
+
+Secrets such as `DATABASE_URL`, `GH_TOKEN`, `JULES_API`, and `TELEGRAM_BOT_API` should be managed via GitHub Secrets or local `.env` files. Ensure they are never committed in plaintext.
